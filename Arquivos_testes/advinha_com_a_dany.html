@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🏡 Advinha com a Dany</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --cor-ouro: #B8956A;
+            --cor-bege: #F5F1E8;
+            --cor-texto: #5C4A3D;
+            --cor-texto-claro: #8B7355;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, var(--cor-bege) 0%, #f0ebe0 100%);
+            min-height: 100vh;
+            padding: 30px 20px;
+            color: var(--cor-texto);
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 10px 40px rgba(184, 149, 106, 0.15);
+            border: 2px solid var(--cor-ouro);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            border-bottom: 3px solid var(--cor-ouro);
+            padding-bottom: 25px;
+        }
+
+        .titulo-principal {
+            font-size: 36px;
+            color: var(--cor-ouro);
+            margin-bottom: 10px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .subtitulo {
+            font-size: 18px;
+            color: var(--cor-texto-claro);
+            font-style: italic;
+            margin-bottom: 15px;
+        }
+
+        .descricao {
+            font-size: 14px;
+            color: var(--cor-texto);
+            background: var(--cor-bege);
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 5px solid var(--cor-ouro);
+        }
+
+        .opcoes-formato {
+            margin-top: 30px;
+            padding: 20px;
+            background: #fff8f0;
+            border-radius: 8px;
+            border: 2px solid var(--cor-ouro);
+        }
+
+        .opcoes-formato h3 {
+            color: var(--cor-ouro);
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+
+        .formato-item {
+            margin-bottom: 12px;
+            font-size: 14px;
+            color: var(--cor-texto);
+            line-height: 1.6;
+        }
+
+        .formato-item strong {
+            color: var(--cor-ouro);
+        }
+
+        .bloco {
+            margin-top: 50px;
+            page-break-inside: avoid;
+        }
+
+        .titulo-bloco {
+            font-size: 24px;
+            color: white;
+            background: var(--cor-ouro);
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .pergunta {
+            margin-bottom: 28px;
+            padding: 20px;
+            background: var(--cor-bege);
+            border-left: 5px solid var(--cor-ouro);
+            border-radius: 6px;
+        }
+
+        .numero-pergunta {
+            font-size: 18px;
+            font-weight: bold;
+            color: var(--cor-ouro);
+            margin-bottom: 12px;
+        }
+
+        .texto-pergunta {
+            font-size: 16px;
+            color: var(--cor-texto);
+            margin-bottom: 12px;
+            font-weight: 500;
+            line-height: 1.5;
+        }
+
+        .opcoes {
+            margin-left: 20px;
+            margin-top: 12px;
+        }
+
+        .opcao {
+            font-size: 14px;
+            color: var(--cor-texto);
+            margin-bottom: 8px;
+            line-height: 1.4;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .opcao-letra {
+            font-weight: bold;
+            color: var(--cor-ouro);
+            min-width: 30px;
+            margin-right: 8px;
+        }
+
+        .pergunta-aberta {
+            background: #f5f1e8;
+            border-left: 5px solid #8B7355;
+        }
+
+        .tipo-pergunta {
+            display: inline-block;
+            background: var(--cor-ouro);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .tipo-pergunta.aberta {
+            background: #8B7355;
+        }
+
+        .instrucoes-jogo {
+            background: #fff8f0;
+            border: 2px solid var(--cor-ouro);
+            padding: 25px;
+            border-radius: 8px;
+            margin-top: 40px;
+        }
+
+        .instrucoes-jogo h3 {
+            color: var(--cor-ouro);
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .instrucao-item {
+            margin-bottom: 12px;
+            font-size: 14px;
+            color: var(--cor-texto);
+            line-height: 1.6;
+        }
+
+        .instrucao-item strong {
+            color: var(--cor-ouro);
+        }
+
+        .dica {
+            background: white;
+            border-left: 4px solid #d4a574;
+            padding: 15px;
+            margin-top: 15px;
+            border-radius: 4px;
+            font-size: 13px;
+            color: var(--cor-texto-claro);
+            font-style: italic;
+        }
+
+        .fechamento {
+            margin-top: 50px;
+            padding: 30px;
+            background: linear-gradient(135deg, var(--cor-bege) 0%, #f0ebe0 100%);
+            border-radius: 8px;
+            text-align: center;
+            border: 2px solid var(--cor-ouro);
+        }
+
+        .fechamento h3 {
+            font-size: 20px;
+            color: var(--cor-ouro);
+            margin-bottom: 15px;
+        }
+
+        .fechamento p {
+            font-size: 16px;
+            color: var(--cor-texto);
+            font-weight: 500;
+            line-height: 1.6;
+        }
+
+        .emoji-grande {
+            font-size: 48px;
+            margin: 20px 0;
+        }
+
+        .gestos-container {
+            background: linear-gradient(135deg, #fff8f0 0%, var(--cor-bege) 100%);
+            border: 3px solid var(--cor-ouro);
+            border-radius: 12px;
+            padding: 30px;
+            margin: 30px 0;
+            text-align: center;
+        }
+
+        .gestos-titulo {
+            font-size: 22px;
+            color: var(--cor-ouro);
+            font-weight: bold;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .gestos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .gesto-item {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            border: 2px solid var(--cor-ouro);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .gesto-emoji {
+            font-size: 60px;
+            margin-bottom: 15px;
+        }
+
+        .gesto-letra {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--cor-ouro);
+            margin-bottom: 10px;
+        }
+
+        .gesto-descricao {
+            font-size: 14px;
+            color: var(--cor-texto);
+            font-weight: 500;
+            line-height: 1.5;
+        }
+
+        .aviso-dinamica {
+            background: #ffeaa7;
+            border-left: 5px solid #f39c12;
+            padding: 15px;
+            border-radius: 6px;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #5C3D00;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 25px;
+            }
+
+            .titulo-principal {
+                font-size: 28px;
+            }
+
+            .titulo-bloco {
+                font-size: 20px;
+            }
+
+            .texto-pergunta {
+                font-size: 15px;
+            }
+
+            .opcao {
+                font-size: 13px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- HEADER -->
+        <div class="header">
+            <div class="titulo-principal">🏡 ADVINHA COM A DANY</div>
+            <div class="subtitulo">Quiz Personalizado da Casa Nova</div>
+            <div class="descricao">
+                Os convidados precisam adivinhar coisas sobre a sua casa nova, mesmo sem morar nela ainda! 
+                É quase um "quiz da Dany + vida real". 😄
+            </div>
+        </div>
+
+        <!-- GESTOS CORPORAIS -->
+        <div class="gestos-container">
+            <div class="gestos-titulo">🎭 Como Escolher a Resposta (com o Corpo!)</div>
+            
+            <div class="gestos-grid">
+                <div class="gesto-item">
+                    <div class="gesto-emoji">🙋</div>
+                    <div class="gesto-letra">A)</div>
+                    <div class="gesto-descricao">Ergue a mão!</div>
+                </div>
+
+                <div class="gesto-item">
+                    <div class="gesto-emoji">👐</div>
+                    <div class="gesto-letra">B)</div>
+                    <div class="gesto-descricao">Mão no ombro</div>
+                </div>
+
+                <div class="gesto-item">
+                    <div class="gesto-emoji">🙌</div>
+                    <div class="gesto-letra">C)</div>
+                    <div class="gesto-descricao">Mão na cabeça</div>
+                </div>
+            </div>
+
+            <div class="aviso-dinamica">
+                ⚡ <strong>Dinâmica:</strong> Quando você revela a opção correta, todos que acertaram fazem o gesto juntos! Fica bem divertido e visível pra todo mundo! 🎉
+            </div>
+        </div>
+
+        <!-- COMO ORGANIZAR -->
+        <div class="opcoes-formato">
+            <h3>👥 COMO ORGANIZAR (Escolha no dia)</h3>
+            
+            <div class="formato-item">
+                <strong>✅ Opção 1 – Times (mais animado)</strong><br>
+                Use os mesmos times do Passa ou Repassa. Cada resposta certa = 1 ponto
+            </div>
+
+            <div class="formato-item">
+                <strong>✅ Opção 2 – Todo mundo junto</strong><br>
+                Faça a pergunta. Quem acertar levanta a mão. Você escolhe quem respondeu primeiro.
+            </div>
+
+            <div class="formato-item">
+                <strong>✅ Opção 3 – Climinha descontraído</strong><br>
+                Sem pontuação. Só pra rir, comentar e seguir.
+            </div>
+        </div>
+
+        <!-- BLOCO 1 -->
+        <div class="bloco">
+            <div class="titulo-bloco">🔹 BLOCO 1 – Intuição Doméstica</div>
+            
+            <div class="pergunta">
+                <div class="tipo-pergunta">Múltipla escolha</div>
+                <div class="numero-pergunta">1. Qual será o cômodo mais usado da casa?</div>
+                <div class="opcoes">
+                    <div class="opcao"><span class="opcao-letra">A)</span> Sala</div>
+                    <div class="opcao"><span class="opcao-letra">B)</span> Cozinha</div>
+                    <div class="opcao"><span class="opcao-letra">C)</span> Quarto</div>
+                </div>
+            </div>
+
+            <div class="pergunta">
+                <div class="tipo-pergunta">Múltipla escolha</div>
+                <div class="numero-pergunta">2. Onde a Dany vai passar mais tempo?</div>
+                <div class="opcoes">
+                    <div class="opcao"><span class="opcao-letra">A)</span> Sofá</div>
+                    <div class="opcao"><span class="opcao-letra">B)</span> Cama</div>
+                    <div class="opcao"><span class="opcao-letra">C)</span> Cozinha</div>
+                </div>
+            </div>
+
+            <div class="pergunta">
+                <div class="tipo-pergunta">Múltipla escolha</div>
+                <div class="numero-pergunta">3. Qual objeto tem mais chance de quebrar primeiro?</div>
+                <div class="opcoes">
+                    <div class="opcao"><span class="opcao-letra">A)</span> Copo</div>
+                    <div class="opcao"><span class="opcao-letra">B)</span> Prato</div>
+                    <div class="opcao"><span class="opcao-letra">C)</span> Alguma coisa aleatória</div>
+                </div>
+            </div>
+
+            <div class="pergunta">
+                <div class="tipo-pergunta">Múltipla escolha</div>
+                <div class="numero-pergunta">4. A casa vai ficar organizada por quanto tempo?</div>
+                <div class="opcoes">
+                    <div class="opcao"><span class="opcao-letra">A)</span> 1 semana</div>
+                    <div class="opcao"><span class="opcao-letra">B)</span> 3 dias</div>
+                    <div class="opcao"><span class="opcao-letra">C)</span> Depende do humor</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- BLOCO 2 -->
+        <div class="bloco">
+            <div class="titulo-bloco">🔹 BLOCO 2 – Vida Real Oficial</div>
+            
+            <div class="pergunta">
+                <div class="tipo-pergunta">Múltipla escolha</div>
+                <div class="numero-pergunta">1. O que mais vai acumular rápido?</div>
+                <div class="opcoes">
+                    <div class="opcao"><span class="opcao-letra">A)</span> Louça</div>
+                    <div class="opcao"><span class="opcao-letra">B)</span> Roupa</div>
+                    <div class="opcao"><span class="opcao-letra">C)</span> Caixas</div>
+                </div>
+            </div>
+
+            <div class="pergunta">
+                <div class="tipo-pergunta">Múltipla escolha</div>
+                <div class="numero-pergunta">2. Qual tarefa vai ser empurrada com a barriga?</div>
+                <div class="opcoes">
+                    <div class="opcao"><span class="opcao-letra">A)</span> Limpeza pesada</div>
+                    <div class="opcao"><span class="opcao-letra">B)</span> Organizar armários</div>
+                    <div class="opcao"><span class="opcao-letra">C)</span> Lavar banheiro</div>
+                </div>
+            </div>
+
+            <div class="pergunta">
+                <div class="tipo-pergunta">Múltipla escolha</div>
+                <div class="numero-pergunta">3. O horário preferido de arrumar a casa será:</div>
+                <div class="opcoes">
+                    <div class="opcao"><span class="opcao-letra">A)</span> Manhã</div>
+                    <div class="opcao"><span class="opcao-letra">B)</span> Noite</div>
+                    <div class="opcao"><span class="opcao-letra">C)</span> Nunca é o horário certo</div>
+                </div>
+            </div>
+
+            <div class="pergunta">
+                <div class="tipo-pergunta">Múltipla escolha</div>
+                <div class="numero-pergunta">4. Quantas vezes por dia a geladeira será aberta "sem fome"?</div>
+                <div class="opcoes">
+                    <div class="opcao"><span class="opcao-letra">A)</span> Poucas</div>
+                    <div class="opcao"><span class="opcao-letra">B)</span> Algumas</div>
+                    <div class="opcao"><span class="opcao-letra">C)</span> Várias vezes</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- BLOCO 3 -->
+        <div class="bloco">
+            <div class="titulo-bloco">👻 BLOCO 3 – Dany, a Casa e Gasparzinho</div>
+            
+            <div class="pergunta">
+                <div class="tipo-pergunta">Múltipla escolha</div>
+                <div class="numero-pergunta">1. Quem apaga a luz que ficou acesa?</div>
+                <div class="opcoes">
+                    <div class="opcao"><span class="opcao-letra">A)</span> Dany</div>
+                    <div class="opcao"><span class="opcao-letra">B)</span> O vento</div>
+                    <div class="opcao"><span class="opcao-letra">C)</span> Gasparzinho</div>
+                </div>
+            </div>
+
+            <div class="pergunta">
+                <div class="tipo-pergunta">Múltipla escolha</div>
+                <div class="numero-pergunta">2. Barulho estranho à noite é:</div>
+                <div class="opcoes">
+                    <div class="opcao"><span class="opcao-letra">A)</span> Encanamento</div>
+                    <div class="opcao"><span class="opcao-letra">B)</span> Vizinho</div>
+                    <div class="opcao"><span class="opcao-letra">C)</span> Imaginação criativa</div>
+                </div>
+            </div>
+
+            <div class="pergunta">
+                <div class="tipo-pergunta">Múltipla escolha</div>
+                <div class="numero-pergunta">3. Se algo cair sozinho, a reação será:</div>
+                <div class="opcoes">
+                    <div class="opcao"><span class="opcao-letra">A)</span> Investigar</div>
+                    <div class="opcao"><span class="opcao-letra">B)</span> Fingir que não ouviu</div>
+                    <div class="opcao"><span class="opcao-letra">C)</span> Rezar e dormir</div>
+                </div>
+            </div>
+
+            <div class="pergunta">
+                <div class="tipo-pergunta">Múltipla escolha</div>
+                <div class="numero-pergunta">4. Quem mora nessa casa além da Dany?</div>
+                <div class="opcoes">
+                    <div class="opcao"><span class="opcao-letra">A)</span> Só ela</div>
+                    <div class="opcao"><span class="opcao-letra">B)</span> Ela e os pensamentos</div>
+                    <div class="opcao"><span class="opcao-letra">C)</span> Ela e Gasparzinho</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- BLOCO 4 -->
+        <div class="bloco">
+            <div class="titulo-bloco">🔹 BLOCO 4 – Final Leve e Afetivo</div>
+            
+            <div class="pergunta pergunta-aberta">
+                <div class="tipo-pergunta aberta">Resposta Aberta</div>
+                <div class="numero-pergunta">1. O que mais representa "estar em casa" pra Dany?</div>
+                <div style="color: var(--cor-texto-claro); font-size: 14px; margin-top: 10px; font-style: italic;">
+                    💭 Deixe aberta para comentários lindos! Você julga a resposta.
+                </div>
+            </div>
+
+            <div class="pergunta pergunta-aberta">
+                <div class="tipo-pergunta aberta">Resposta Aberta</div>
+                <div class="numero-pergunta">2. Qual vai ser o cantinho de refúgio?</div>
+                <div style="color: var(--cor-texto-claro); font-size: 14px; margin-top: 10px; font-style: italic;">
+                    💭 Deixe aberta para comentários lindos! Você julga a resposta.
+                </div>
+            </div>
+
+            <div class="pergunta pergunta-aberta">
+                <div class="tipo-pergunta aberta">Resposta Aberta</div>
+                <div class="numero-pergunta">3. Qual detalhe vai fazer ela pensar: "agora sim"?</div>
+                <div style="color: var(--cor-texto-claro); font-size: 14px; margin-top: 10px; font-style: italic;">
+                    💭 Deixe aberta para comentários lindos! Você julga a resposta.
+                </div>
+            </div>
+        </div>
+
+        <!-- INSTRUÇÕES DO JOGO -->
+        <div class="instrucoes-jogo">
+            <h3>🧠 COMO FUNCIONA</h3>
+            
+            <div class="instrucao-item">
+                <strong>1. Você lê a pergunta</strong><br>
+                Na sua tela, tablet ou papel (até pode imprimir este documento!)
+            </div>
+
+            <div class="instrucao-item">
+                <strong>2. Dá as 3 opções (Blocos 1-3)</strong><br>
+                Para que todos possam escolher qual acham que é a resposta
+            </div>
+
+            <div class="instrucao-item">
+                <strong>3. Eles escolhem</strong><br>
+                Levantando a mão, respondendo no celular, ou comentando (depende do formato que escolher)
+            </div>
+
+            <div class="instrucao-item">
+                <strong>4. Você revela a resposta</strong><br>
+                E comenta! Isso é o charme do jogo - a conversa que rende depois 💕
+            </div>
+
+            <div class="instrucao-item">
+                <strong>5. Bloco 4 (Final)</strong><br>
+                Deixe bem aberto, sem opções. Essa parte rende comentários lindos sobre a Dany e a amizade de vocês!
+            </div>
+
+            <div class="dica">
+                💡 <strong>Dica:</strong> As respostas corretas você saberá porque a Dany já deve ter contado algumas coisas, ou você conhece bem os hábitos dela! Se ficar em dúvida em alguma resposta, a gente conversa depois da festa. O importante é o clima que cria! 😄
+            </div>
+        </div>
+
+        <!-- FECHAMENTO -->
+        <div class="fechamento">
+            <h3>🏡 FECHAMENTO</h3>
+            <div class="emoji-grande">💕</div>
+            <p>
+                Uma casa nova é mais do que um lugar.<br>
+                É o começo de uma história<br>
+                onde tudo é possível e tudo é dela.
+            </p>
+            <p style="margin-top: 20px; font-size: 14px;">
+                <em>"Que essa casa seja cheia de risadas,<br>
+                silêncios aconchegantes e muito, muito amor."</em>
+            </p>
+        </div>
+    </div>
+</body>
+</html>

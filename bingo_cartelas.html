@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>🏡 Bingo Casa Nova — Cartelas</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --ouro: #B8956A;
+  --ouro-escuro: #9a7550;
+  --ouro-claro: #d4aa82;
+  --bege: #F5F1E8;
+  --bege-escuro: #ede5d4;
+  --terracota: #C97B5A;
+  --texto: #5C4A3D;
+  --texto-claro: #8B7355;
+  --branco: #ffffff;
+}
+
+body {
+  font-family: 'Georgia', serif;
+  background: #e8e0d0;
+  color: var(--texto);
+  padding: 20px;
+}
+
+/* ── BOTÃO IMPRIMIR ── */
+.btn-imprimir {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: linear-gradient(135deg, var(--ouro) 0%, var(--ouro-escuro) 100%);
+  color: white;
+  border: none;
+  border-radius: 50px;
+  padding: 14px 26px;
+  font-family: 'Georgia', serif;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 6px 24px rgba(184,149,106,0.5);
+  z-index: 100;
+  letter-spacing: 0.5px;
+  transition: all 0.2s;
+}
+.btn-imprimir:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(184,149,106,0.5); }
+
+.btn-recriar {
+  position: fixed;
+  bottom: 24px;
+  left: 24px;
+  background: white;
+  color: var(--ouro);
+  border: 2px solid var(--ouro);
+  border-radius: 50px;
+  padding: 13px 22px;
+  font-family: 'Georgia', serif;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  z-index: 100;
+  transition: all 0.2s;
+}
+.btn-recriar:hover { background: var(--bege); }
+
+/* ── PÁGINA A4 ── */
+.pagina {
+  width: 210mm;
+  height: 297mm;
+  background: white;
+  margin: 0 auto 20px;
+  padding: 10mm 10mm;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.15);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Decoração de fundo sutil */
+.pagina::before {
+  content: '🏡';
+  position: absolute;
+  font-size: 180px;
+  opacity: 0.03;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+/* ── SEPARADOR RECORTE ── */
+.recorte {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 0;
+  flex-shrink: 0;
+}
+.recorte-linha {
+  flex: 1;
+  border-top: 1.5px dashed #c8b89a;
+}
+.recorte-texto {
+  font-size: 10px;
+  color: var(--texto-claro);
+  font-style: italic;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+/* ── CARTELA ── */
+.cartela {
+  border: 2.5px solid var(--ouro);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(184,149,106,0.2);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header */
+.cartela-header {
+  background: linear-gradient(135deg, var(--ouro) 0%, var(--ouro-escuro) 100%);
+  padding: 8px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+}
+.cartela-header::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+}
+.header-esq { display: flex; align-items: center; gap: 6px; }
+.header-emoji { font-size: 20px; }
+.header-titulo { color: white; font-weight: bold; letter-spacing: 1.5px; text-transform: uppercase; font-size: 13px; }
+.header-sub { color: rgba(255,255,255,0.8); font-size: 9px; font-style: italic; letter-spacing: 0.5px; }
+.header-num {
+  background: rgba(255,255,255,0.2);
+  color: white;
+  border: 1.5px solid rgba(255,255,255,0.4);
+  border-radius: 20px;
+  padding: 3px 10px;
+  font-size: 11px;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+/* Grid */
+.cartela-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+  gap: 0;
+  background: var(--ouro-claro);
+  flex: 1;
+}
+.cartela-celula {
+  background: white;
+  border: 0.8px solid #e8ddd0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 8px 6px;
+  font-size: 12px;
+  color: var(--texto);
+  line-height: 1.3;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+.cartela-celula:hover { background: #fff8f0; }
+.celula-emoji { font-size: 20px; margin-bottom: 4px; line-height: 1; }
+.celula-texto { font-size: 10.5px; font-weight: 600; color: var(--texto); line-height: 1.2; }
+
+/* Células alternadas com fundo sutil */
+.cartela-celula:nth-child(odd) { background: white; }
+.cartela-celula:nth-child(even) { background: #fdfaf5; }
+
+/* Footer */
+.cartela-footer {
+  background: var(--bege);
+  padding: 5px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1.5px solid var(--ouro-claro);
+}
+.footer-instrucao { font-size: 9px; color: var(--texto-claro); font-style: italic; }
+.footer-decs { font-size: 12px; letter-spacing: 2px; }
+
+/* ── PRINT ── */
+@media print {
+  body { background: white; padding: 0; }
+  .btn-imprimir, .btn-recriar { display: none; }
+  .pagina {
+    box-shadow: none;
+    margin: 0;
+    padding: 10mm 8mm;
+    page-break-after: always;
+    width: 100%;
+  }
+  .pagina:last-child { page-break-after: auto; }
+  .cartela-celula:nth-child(odd) { background: white !important; }
+  .cartela-celula:nth-child(even) { background: #fdfaf5 !important; }
+}
+
+@media screen and (max-width: 230mm) {
+  .pagina { width: 100%; }
+}
+</style>
+</head>
+<body>
+
+<a href="index.html" class="btn-imprimir" style="text-decoration:none;">🔙 Início</a>
+<button class="btn-imprimir" onclick="window.print()">🖨️ Imprimir cartelas</button>
+<button class="btn-recriar" onclick="gerarEDesenhar()">🔀 Novas cartelas</button>
+
+<div id="app"></div>
+
+<script>
+const ITENS = [
+  { texto: "Sofá",               emoji: "🛋️" },
+  { texto: "Cama",               emoji: "🛏️" },
+  { texto: "Travesseiro",        emoji: "😴" },
+  { texto: "Almofada",           emoji: "🌸" },
+  { texto: "Tapete",             emoji: "🟫" },
+  { texto: "Cortina",            emoji: "🪟" },
+  { texto: "Espelho",            emoji: "🪞" },
+  { texto: "Quadro",             emoji: "🖼️" },
+  { texto: "Porta-retrato",      emoji: "💛" },
+  { texto: "Relógio",            emoji: "🕰️" },
+  { texto: "Panela",             emoji: "🍲" },
+  { texto: "Frigideira",         emoji: "🍳" },
+  { texto: "Pano de prato",      emoji: "🧺" },
+  { texto: "Pratos",             emoji: "🍽️" },
+  { texto: "Copos",              emoji: "🥛" },
+  { texto: "Talheres",           emoji: "🍴" },
+  { texto: "Geladeira",          emoji: "🧊" },
+  { texto: "Fogão",              emoji: "🔥" },
+  { texto: "Micro-ondas",        emoji: "📦" },
+  { texto: "Cafeteira",          emoji: "☕" },
+  { texto: "Toalha",             emoji: "🛁" },
+  { texto: "Roupa de cama",      emoji: "🌙" },
+  { texto: "Vassoura",           emoji: "🧹" },
+  { texto: "Rodo",               emoji: "💧" },
+  { texto: "Balde",              emoji: "🪣" },
+  { texto: "Planta",             emoji: "🌿" },
+  { texto: "Lâmpada",            emoji: "💡" },
+  { texto: "Tomada",             emoji: "🔌" },
+  { texto: "Extensão",           emoji: "🔌" },
+  { texto: "Pia cheia",          emoji: "🚿" },
+  { texto: "Roupa acumulada",    emoji: "👕" },
+  { texto: "Caixa fechada",      emoji: "📦" },
+  { texto: "Procurar e não achar", emoji: "🔍" },
+  { texto: "Tomada longe da cama", emoji: "😤" },
+  { texto: "Luz acesa",          emoji: "💡" },
+  { texto: "Café esquecido",     emoji: "☕" },
+  { texto: "Visita sem avisar",  emoji: "🚪" },
+  { texto: "Móvel torto",        emoji: "😅" },
+  { texto: "Planta morrendo",    emoji: "🥀" },
+  { texto: "Chegar e sentar",    emoji: "😌" },
+  { texto: "Casa de risadas",    emoji: "😂" },
+  { texto: "Casa em silêncio",   emoji: "🤫" },
+  { texto: "Geladeira sem fome", emoji: "🤔" },
+  { texto: "Dia de limpeza",     emoji: "🧽" },
+  { texto: "Casa bagunçada",     emoji: "🌀" },
+  { texto: "Amo minha casa",     emoji: "💕" },
+];
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function gerarCartela(num) {
+  const itens = shuffle(ITENS).slice(0, 16);
+  const celulas = itens.map(item =>
+    `<div class="cartela-celula">
+      <div class="celula-emoji">${item.emoji}</div>
+      <div class="celula-texto">${item.texto}</div>
+    </div>`
+  ).join('');
+
+  return `
+    <div class="cartela">
+      <div class="cartela-header">
+        <div class="header-esq">
+          <span class="header-emoji">🏡</span>
+          <div>
+            <div class="header-titulo">Bingo Casa Nova</div>
+            <div class="header-sub">Marque com feijãozinho · Chá de Casa Nova da Dany ✨</div>
+          </div>
+        </div>
+        <div class="header-num">Nº ${String(num).padStart(2,'0')}</div>
+      </div>
+      <div class="cartela-grid">${celulas}</div>
+      <div class="cartela-footer">
+        <span class="footer-instrucao">✨ Chá de Casa Nova da Dany</span>
+        <span class="footer-decs">🏡 🌟 💕</span>
+      </div>
+    </div>`;
+}
+
+const SEPARADOR = `
+  <div class="recorte">
+    <div class="recorte-linha"></div>
+    <span class="recorte-texto">✂️ recorte aqui</span>
+    <div class="recorte-linha"></div>
+  </div>`;
+
+function gerarEDesenhar() {
+  const app = document.getElementById('app');
+  app.innerHTML = '';
+  for (let p = 0; p < 13; p++) {
+    const n1 = p * 2 + 1;
+    const n2 = p * 2 + 2;
+    const pagina = document.createElement('div');
+    pagina.className = 'pagina';
+    const segunda = n2 <= 25 ? SEPARADOR + gerarCartela(n2) : '';
+    pagina.innerHTML = gerarCartela(n1) + segunda;
+    app.appendChild(pagina);
+  }
+}
+
+gerarEDesenhar();
+</script>
+</body>
+</html>

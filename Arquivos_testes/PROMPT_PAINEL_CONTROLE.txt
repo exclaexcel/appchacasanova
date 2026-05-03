@@ -1,0 +1,347 @@
+🎮 PAINEL DE CONTROLE DO CHÁ DE CASA NOVA
+==============================================================
+
+CONTEXTO:
+Você vai criar um aplicativo web (HTML + CSS + JavaScript) que funcione como painel de controle para um Chá de Casa Nova. A apresentadora (você) usa este app no celular para controlar 3 jogos independentes. Cada jogo tem seu próprio placar e ganhador exclusivo.
+
+TEMA VISUAL:
+- Cores principais: Ouro (#B8956A) e Bege (#F5F1E8)
+- Cor de texto: #5C4A3D
+- Fonte: Georgia ou serif elegante
+- Design responsivo (mobile-first)
+- Layout profissional e elegante
+
+==============================================================
+🎯 FUNCIONALIDADES PRINCIPAIS
+==============================================================
+
+1️⃣ MENU PRINCIPAL COM ABAS/GUIAS
+- 5 GUIAS DIFERENTES (cada uma é uma página):
+  1. 🏠 HOME - Menu inicial com os 3 botões
+  2. 🎲 BINGO - Interface completa do Bingo
+  3. 👻 ADVINHA - Interface completa do Advinha com a Dany
+  4. 🎤 QUIZ - Interface completa do Quiz
+  5. 📊 RESULTADOS - Placar final de TUDO
+
+NAVEGAÇÃO:
+- Abas fixas no topo (HOME | BINGO | ADVINHA | QUIZ | RESULTADOS)
+- Cada aba tem seu próprio layout e funcionalidades
+- Transições suaves entre abas
+- Indicador visual de qual aba está ativa
+- Botão "← Voltar" em cada jogo leva de volta pra HOME
+
+MENU HOME (primeira aba):
+- Título grande: "🎮 Painel de Controle - Chá de Casa Nova"
+- Subtítulo: "Selecione um jogo para começar"
+- 3 botões GRANDES:
+  [🎲 INICIAR BINGO]
+  [👻 ADVINHA COM A DANY]
+  [🎤 QUIZ CASA NOVA]
+- Botão "📊 Ver Resultados"
+- Botão "💾 Backup/Download"
+- Ícone de status: ✅ (dados salvos) ou ⚠️ (não salvo)
+
+==============================================================
+🎲 JOGO 1: BINGO CASA NOVA
+==============================================================
+
+ESTRUTURA:
+- 3 rodadas independentes (Cartela Cheia, Pé Frio, 5 Pedras)
+- Sorteador integrado de 46 itens
+- Placar individual de cada rodada
+
+FUNCIONALIDADES:
+✅ Lista com 46 itens para sorteio (ver lista abaixo)
+✅ Botão "🎲 Sortear Próximo Item" - sorteia aleatoriamente
+✅ Display grande mostrando item sorteado + número de itens restantes
+✅ Seletor de rodada: Cartela Cheia | Pé Frio | 5 Pedras
+✅ Campo para digitar nome do ganhador
+✅ Botão "✅ Registrar Ganhador" - salva e mostra "Parabéns!"
+✅ Histórico de itens sorteados nessa rodada
+✅ Botão "Reiniciar Rodada" - limpa e começa do zero
+✅ Placar com 3 ganhadores (um de cada rodada)
+
+ITENS PARA SORTEAR (46 ITENS):
+Sofá, Cama, Travesseiro, Almofada, Tapete, Cortina, Espelho, Quadro, Porta-retrato, Relógio, Panela, Frigideira, Pano de prato, Pratos, Copos, Talheres, Geladeira, Fogão, Micro-ondas, Cafeteira, Toalha, Roupa de cama, Vassoura, Rodo, Balde, Planta, Lâmpada, Tomada, Extensão, Pia cheia, Roupa acumulada, Caixa ainda fechada, Procurar e não achar, Tomada longe da cama, Luz acesa sem ninguém, Café esquecido, Primeira visita sem avisar, Móvel montado errado, Planta quase morrendo, Chegar cansada e sentar, Casa cheia de risadas, Casa em silêncio, Abrir geladeira sem fome, Dia de limpeza, Casa bagunçada, Pensar: amo minha casa
+
+==============================================================
+👻 JOGO 2: ADVINHA COM A DANY
+==============================================================
+
+ESTRUTURA:
+- 12 perguntas sobre a casa nova da Dany
+- Cada pergunta tem 3 opções (A, B, C)
+- Bloco final com 3 perguntas abertas (sem opções)
+- Placar único
+
+FUNCIONALIDADES:
+✅ Mostra pergunta grande e legível
+✅ Mostra as 3 opções com GESTOS VISUAIS:
+   - 🙋 A) Ergue a mão
+   - 👐 B) Mão no ombro
+   - 🙌 C) Mão na cabeça
+✅ Botão "✅ Registrar Acerto" + nome do ganhador
+✅ Navegação: Próxima Pergunta | Pergunta Anterior
+✅ Mostra número da pergunta (ex: 3/15)
+✅ Placar contando quantos acertaram
+✅ Bloco final (perguntas 13-15) sem opções - você julga quem acertou
+✅ Botão "✅ Esse acertou!" para registrar resposta aberta
+
+PERGUNTAS:
+[12 perguntas com 3 opções cada] + [3 perguntas abertas no final]
+
+==============================================================
+🎤 JOGO 3: QUIZ CASA NOVA
+==============================================================
+
+ESTRUTURA:
+- 40 perguntas com 4 opções (A, B, C, D) - Blocos 1-4
+- 10 perguntas Verdade ou Falso - Bloco 5
+- 5 desafios relâmpago (abertas) - Bloco Final
+- Placar único
+
+FUNCIONALIDADES:
+✅ Mostra pergunta grande
+✅ Mostra as opções (A, B, C, D) ou (V/F) ou (aberta)
+✅ Campo para você digitar a resposta correta (você já sabe qual é)
+✅ Campo para nome de quem acertou
+✅ Botão "✅ Registrar Acerto"
+✅ Navegação: Próxima Pergunta | Pergunta Anterior
+✅ Mostra bloco atual (Ex: "Bloco 1 - Intuição Doméstica")
+✅ Progresso visual (pergunta 23 de 55)
+✅ Placar contando acertos
+
+==============================================================
+💾 SISTEMA DE DADOS
+==============================================================
+
+LOCALSTORAGE:
+- Salva automaticamente cada ação (novo ganhador, rodada terminada)
+- Estrutura JSON com todos os dados dos 3 jogos
+- Exemplo:
+{
+  "bingo": {
+    "rodada1": { "ganhador": "Maria", "itensUsados": 25 },
+    "rodada2": { "ganhador": "João", "itensUsados": 15 },
+    "rodada3": { "ganhador": "Ana", "itensUsados": 5 }
+  },
+  "advinha": {
+    "ganhadores": [
+      { "pergunta": 1, "nome": "Maria", "hora": "14:30" },
+      ...
+    ],
+    "placar": "Maria: 5, João: 3"
+  },
+  "quiz": {
+    "ganhadores": [...],
+    "placar": "..."
+  }
+}
+
+DOWNLOAD:
+- Botão "📥 Baixar Resultados" gera PDF com todos os ganhadores
+- Botão "💾 Salvar Backup JSON" para emergência
+- Aviso visual se dados não foram salvos
+
+OFFLINE:
+- App funciona 100% sem internet
+- Usa localStorage do navegador
+- Todos os dados salvos localmente
+
+==============================================================
+📊 TELA DE RESULTADOS FINAIS
+==============================================================
+
+Mostra:
+🏆 GANHADOR DO BINGO
+   - Rodada 1 (Cartela Cheia): [Nome]
+   - Rodada 2 (Pé Frio): [Nome]
+   - Rodada 3 (5 Pedras): [Nome]
+
+🏆 GANHADOR DO ADVINHA COM A DANY
+   - [Nome]: X acertos
+
+🏆 GANHADOR DO QUIZ
+   - [Nome]: X acertos
+
+🏆 GANHADOR GERAL (opcional - som total de pontos)
+
+Botão "🎉 CELEBRAÇÃO!" (anima a tela)
+Botão "📥 Baixar em PDF"
+
+==============================================================
+⚡ REQUISITOS TÉCNICOS
+==============================================================
+
+1. HTML5 + CSS3 + JavaScript Vanilla (SEM frameworks)
+2. Responsivo (funciona bem em celular)
+3. Tudo em UM arquivo único (HTML + CSS + JS inline)
+4. localStorage para persistência
+5. Sem dependências externas (zero bibliotecas)
+6. Cores: Ouro (#B8956A), Bege (#F5F1E8), Texto (#5C4A3D)
+7. Animações suaves (transições, fade-in, slide)
+8. Botões grandes e fáceis de clicar (mobile-friendly)
+9. Aviso se dados vão ser perdidos (confirmação antes de reset)
+
+==============================================================
+📑 ESTRUTURA DE ABAS/GUIAS
+==============================================================
+
+TOP DO APLICATIVO (SEMPRE VISÍVEL):
+┌─────────────────────────────────────────────────────┐
+│ 🏠 HOME │ 🎲 BINGO │ 👻 ADVINHA │ 🎤 QUIZ │ 📊 RESULTADOS │
+└─────────────────────────────────────────────────────┘
+
+CARACTERÍSTICAS DAS ABAS:
+- Cada aba é uma seção independente
+- Clicar em uma aba muda completamente o conteúdo
+- A aba ativa fica destacada (fundo ouro, letra branca)
+- Transição suave entre abas (fade ou slide)
+- Todos os dados salvos no localStorage mesmo mudando de aba
+- Botão "← Voltar" em BINGO, ADVINHA, QUIZ leva pra HOME
+- Botão "← Voltar" em RESULTADOS leva pra HOME
+
+CORES DAS ABAS:
+- Aba inativa: Bege (#F5F1E8) com texto #5C4A3D
+- Aba ativa: Ouro (#B8956A) com texto branco
+- Hover: Background muda pra cor mais clara
+
+==============================================================
+🎨 LAYOUT ESPERADO (REVISADO)
+==============================================================
+
+PÁGINA HOME:
+┌─────────────────────────────────────────────────────┐
+│ 🏠 HOME │ 🎲 BINGO │ 👻 ADVINHA │ 🎤 QUIZ │ 📊 RESULTADOS │
+├─────────────────────────────────────────────────────┤
+│                                                     │
+│     🎮 PAINEL DE CONTROLE - CHÁ DE CASA NOVA       │
+│     Selecione um jogo para começar                  │
+│                                                     │
+│  ┌───────────────┐  ┌───────────────┐ ┌───────────┐│
+│  │ 🎲 INICIAR    │  │ 👻 ADVINHA    │ │ 🎤 QUIZ   ││
+│  │   BINGO       │  │  COM A DANY   │ │ CASA NOVA ││
+│  └───────────────┘  └───────────────┘ └───────────┘│
+│                                                     │
+│           [ 📊 VER RESULTADOS ]                    │
+│           [ 💾 BACKUP/DOWNLOAD ]                   │
+│                                                     │
+│  Status: ✅ Dados salvos com sucesso               │
+└─────────────────────────────────────────────────────┘
+
+PÁGINA BINGO:
+┌─────────────────────────────────────────────────────┐
+│ 🏠 HOME │ 🎲 BINGO │ 👻 ADVINHA │ 🎤 QUIZ │ 📊 RESULTADOS │
+├─────────────────────────────────────────────────────┤
+│ ← Voltar                                            │
+│                                                     │
+│  Rodada: [ Cartela Cheia ▼ ] [ Pé Frio ] [ 5 Pedras ]
+│                                                     │
+│           [ SOFÁ ]                                  │
+│        Item 15 de 46                                │
+│                                                     │
+│  [ 🎲 SORTEAR ] [ 📋 HISTÓRICO ] [ 🔄 REINICIAR ]  │
+│                                                     │
+│  Nome do ganhador: [________________]              │
+│  [ ✅ REGISTRAR GANHADOR ]                         │
+│                                                     │
+│  PLACAR:                                            │
+│  • Rodada 1 (Cartela Cheia): Maria                 │
+│  • Rodada 2 (Pé Frio): -                           │
+│  • Rodada 3 (5 Pedras): -                          │
+│                                                     │
+└─────────────────────────────────────────────────────┘
+
+PÁGINA ADVINHA:
+┌─────────────────────────────────────────────────────┐
+│ 🏠 HOME │ 🎲 BINGO │ 👻 ADVINHA │ 🎤 QUIZ │ 📊 RESULTADOS │
+├─────────────────────────────────────────────────────┤
+│ ← Voltar                                            │
+│                                                     │
+│  Pergunta 3 de 15                                  │
+│                                                     │
+│  "Onde a Dany vai passar mais tempo?"              │
+│                                                     │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────┐ │
+│  │ 🙋 A)        │  │ 👐 B)        │  │ 🙌 C)    │ │
+│  │ SOFÁ         │  │ CAMA         │  │ COZINHA  │ │
+│  └──────────────┘  └──────────────┘  └──────────┘ │
+│                                                     │
+│  Nome de quem acertou: [________________]          │
+│  [ ✅ REGISTRAR ACERTO ]                           │
+│                                                     │
+│  [ ← ANTERIOR ] [ PRÓXIMA → ]                      │
+│                                                     │
+│  PLACAR: Maria: 5 | João: 3 | Ana: 2             │
+│                                                     │
+└─────────────────────────────────────────────────────┘
+
+PÁGINA QUIZ:
+┌─────────────────────────────────────────────────────┐
+│ 🏠 HOME │ 🎲 BINGO │ 👻 ADVINHA │ 🎤 QUIZ │ 📊 RESULTADOS │
+├─────────────────────────────────────────────────────┤
+│ ← Voltar                                            │
+│                                                     │
+│  Bloco 1: Intuição Doméstica | Pergunta 5/55      │
+│                                                     │
+│  "Qual tarefa doméstica sempre fica pra depois?"  │
+│                                                     │
+│  ☐ A) Lavar louça                                  │
+│  ☐ B) Passar roupa                                 │
+│  ☐ C) Limpar banheiro                              │
+│  ☐ D) Todas as acima                               │
+│                                                     │
+│  Resposta correta: [ A ▼ ]                         │
+│  Nome de quem acertou: [________________]          │
+│  [ ✅ REGISTRAR ACERTO ]                           │
+│                                                     │
+│  [ ← ANTERIOR ] [ PRÓXIMA → ]                      │
+│                                                     │
+│  PLACAR: Maria: 12 | João: 8                      │
+│                                                     │
+└─────────────────────────────────────────────────────┘
+
+PÁGINA RESULTADOS:
+┌─────────────────────────────────────────────────────┐
+│ 🏠 HOME │ 🎲 BINGO │ 👻 ADVINHA │ 🎤 QUIZ │ 📊 RESULTADOS │
+├─────────────────────────────────────────────────────┤
+│ ← Voltar                                            │
+│                                                     │
+│         🏆 PLACAR FINAL DO CHÁ 🏆                  │
+│                                                     │
+│  🎲 BINGO                                           │
+│     • Cartela Cheia: MARIA                         │
+│     • Pé Frio: JOÃO                                │
+│     • 5 Pedras: ANA                                │
+│                                                     │
+│  👻 ADVINHA COM A DANY                              │
+│     • Ganhadora: MARIA (7 acertos)                 │
+│                                                     │
+│  🎤 QUIZ CASA NOVA                                  │
+│     • Ganhador: JOÃO (18 acertos)                  │
+│                                                     │
+│  [ 🎉 CELEBRAÇÃO! ] [ 📥 BAIXAR PDF ]              │
+│  [ 💾 BACKUP JSON ]                                │
+│                                                     │
+└─────────────────────────────────────────────────────┘
+
+==============================================================
+📝 NOTAS IMPORTANTES
+==============================================================
+
+- Deve funcionar OFFLINE (sem internet)
+- Cada jogo é independente (não acumula pontos)
+- Design elegante mas simples (não muito complexo)
+- Fácil de usar durante festa (botões grandes, textos legíveis)
+- Aviso visual se algo foi registrado (tipo "✅ Salvo!")
+- Opção de UNDO (desfazer último ganhador) seria legal
+- Modo escuro opcional (noite tem menos iluminação)
+
+==============================================================
+
+AGORA CRIE O APP COMPLETO!
+Este app será usado durante um Chá de Casa Nova com ~50 convidados.
+Ela é a apresentadora e controla tudo pelo celular.
+A experiência precisa ser fluida, rápida e segura (sem perder dados).
+
+Boa sorte! 🎉

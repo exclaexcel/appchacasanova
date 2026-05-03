@@ -1,0 +1,1682 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>🏡 Painel — Chá de Casa Nova</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --ouro: #B8956A;
+  --ouro-escuro: #a07d54;
+  --bege: #F5F1E8;
+  --bege-escuro: #f0ebe0;
+  --texto: #5C4A3D;
+  --texto-claro: #8B7355;
+  --branco: #ffffff;
+  --radius: 10px;
+}
+
+body {
+  font-family: 'Georgia', serif;
+  background: linear-gradient(135deg, var(--bege) 0%, var(--bege-escuro) 100%);
+  min-height: 100vh;
+  color: var(--texto);
+  padding-bottom: 80px;
+}
+
+/* ── NAV ── */
+.nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: white;
+  border-top: 3px solid var(--ouro);
+  display: flex;
+  z-index: 100;
+  box-shadow: 0 -4px 20px rgba(184,149,106,0.2);
+}
+.nav-btn {
+  flex: 1;
+  padding: 10px 4px 8px;
+  border: none;
+  background: white;
+  color: var(--texto-claro);
+  font-family: 'Georgia', serif;
+  font-size: 10px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  transition: all 0.2s;
+  border-top: 3px solid transparent;
+}
+.nav-btn .icon { font-size: 20px; }
+.nav-btn.ativo {
+  color: var(--ouro);
+  border-top-color: var(--ouro);
+  background: #fff8f0;
+}
+
+/* ── SEÇÕES ── */
+.secao { display: none; padding: 16px; max-width: 600px; margin: 0 auto; }
+.secao.ativa { display: block; }
+
+/* ── CABEÇALHO ── */
+.cabecalho {
+  text-align: center;
+  padding: 20px 0 16px;
+}
+.cabecalho h1 {
+  font-size: 22px;
+  color: var(--ouro);
+  font-weight: bold;
+}
+.cabecalho p {
+  font-size: 13px;
+  color: var(--texto-claro);
+  font-style: italic;
+  margin-top: 4px;
+}
+
+/* ── CARD ── */
+.card {
+  background: white;
+  border-radius: var(--radius);
+  padding: 16px;
+  margin-bottom: 14px;
+  border: 2px solid var(--ouro);
+  box-shadow: 0 4px 16px rgba(184,149,106,0.12);
+}
+.card-titulo {
+  font-size: 13px;
+  font-weight: bold;
+  color: var(--ouro);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 10px;
+}
+
+/* ── BOTÕES ── */
+.btn {
+  border: none;
+  border-radius: var(--radius);
+  font-family: 'Georgia', serif;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.btn:active { transform: scale(0.97); }
+
+.btn-primario {
+  background: var(--ouro);
+  color: white;
+  padding: 14px 20px;
+  font-size: 15px;
+  width: 100%;
+  display: block;
+}
+.btn-primario:hover { background: var(--ouro-escuro); }
+
+.btn-secundario {
+  background: white;
+  color: var(--ouro);
+  border: 2px solid var(--ouro);
+  padding: 12px 18px;
+  font-size: 14px;
+}
+.btn-secundario:hover { background: var(--bege); }
+
+.btn-pequeno {
+  background: var(--ouro);
+  color: white;
+  padding: 10px 16px;
+  font-size: 13px;
+}
+
+.btn-cinza {
+  background: #e8e0d8;
+  color: var(--texto-claro);
+  border: 2px solid #d4c9bc;
+  padding: 10px 16px;
+  font-size: 13px;
+}
+
+.btn-perigo {
+  background: #c0392b;
+  color: white;
+  padding: 10px 16px;
+  font-size: 13px;
+}
+
+/* ── HOME ── */
+.home-titulo {
+  text-align: center;
+  padding: 24px 0 8px;
+}
+.home-titulo h1 { font-size: 26px; color: var(--ouro); }
+.home-titulo .sub { font-size: 14px; color: var(--texto-claro); font-style: italic; margin-top: 6px; }
+
+.jogos-grid { display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px; }
+
+.jogo-btn {
+  background: white;
+  border: 2px solid var(--ouro);
+  border-radius: var(--radius);
+  padding: 18px 20px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: left;
+}
+.jogo-btn:hover { background: #fff8f0; transform: translateX(2px); }
+.jogo-btn .emoji { font-size: 32px; }
+.jogo-btn .info h3 { font-size: 16px; color: var(--texto); font-weight: bold; }
+.jogo-btn .info p { font-size: 12px; color: var(--texto-claro); margin-top: 2px; }
+.jogo-btn .badge {
+  margin-left: auto;
+  background: var(--ouro);
+  color: white;
+  font-size: 11px;
+  font-weight: bold;
+  padding: 4px 8px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+
+.acoes-home { display: flex; gap: 10px; }
+.acoes-home .btn { flex: 1; font-size: 13px; padding: 12px 10px; }
+
+/* ── BINGO ── */
+.rodada-tabs { display: flex; gap: 6px; margin-bottom: 14px; }
+.rodada-tab {
+  flex: 1;
+  padding: 10px 6px;
+  border: 2px solid var(--ouro);
+  background: white;
+  color: var(--texto-claro);
+  border-radius: 8px;
+  font-family: 'Georgia', serif;
+  font-size: 12px;
+  font-weight: bold;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.2s;
+}
+.rodada-tab.ativa {
+  background: var(--ouro);
+  color: white;
+}
+
+.display-bingo {
+  background: linear-gradient(135deg, var(--ouro) 0%, var(--ouro-escuro) 100%);
+  color: white;
+  border-radius: var(--radius);
+  padding: 32px 20px;
+  text-align: center;
+  margin-bottom: 14px;
+  min-height: 140px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  animation: slideIn 0.4s ease-out;
+  box-shadow: 0 6px 20px rgba(184,149,106,0.3);
+}
+.display-bingo .num { font-size: 13px; opacity: 0.85; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px; }
+.display-bingo .item { font-size: 36px; font-weight: bold; line-height: 1.2; word-break: break-word; }
+
+@keyframes slideIn {
+  from { opacity: 0; transform: scale(0.92); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+.bingo-controles { display: flex; gap: 8px; margin-bottom: 14px; }
+.bingo-controles .btn { flex: 1; font-size: 13px; padding: 13px 8px; }
+
+.bingo-stats {
+  background: var(--bege);
+  border-radius: 8px;
+  padding: 12px 16px;
+  border-left: 4px solid var(--ouro);
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  margin-bottom: 14px;
+}
+.bingo-stats span { color: var(--texto-claro); }
+.bingo-stats strong { color: var(--ouro); }
+
+.historico-bingo {
+  background: var(--bege);
+  border-radius: 8px;
+  padding: 12px;
+  max-height: 120px;
+  overflow-y: auto;
+  margin-bottom: 14px;
+}
+.historico-titulo { font-size: 11px; font-weight: bold; color: var(--ouro); text-transform: uppercase; margin-bottom: 8px; }
+.historico-item {
+  font-size: 12px;
+  color: var(--texto-claro);
+  background: white;
+  padding: 5px 10px;
+  border-radius: 4px;
+  border-left: 3px solid var(--ouro);
+  margin-bottom: 4px;
+}
+.historico-item.destaque { color: var(--texto); font-weight: bold; background: #fff8f0; }
+.vazio { font-size: 12px; color: #bbb; font-style: italic; text-align: center; padding: 8px 0; }
+
+/* ── REGISTRO VENCEDOR ── */
+.registro-vencedor { margin-top: 4px; }
+.registro-vencedor .label { font-size: 13px; color: var(--texto-claro); margin-bottom: 8px; }
+.input-grupo { display: flex; gap: 8px; }
+.input-nome {
+  flex: 1;
+  padding: 11px 14px;
+  border: 2px solid var(--ouro);
+  border-radius: 8px;
+  font-family: 'Georgia', serif;
+  font-size: 14px;
+  color: var(--texto);
+  background: white;
+  outline: none;
+}
+.input-nome:focus { border-color: var(--ouro-escuro); }
+
+.vencedor-registrado {
+  background: #f0f9f0;
+  border: 2px solid #4caf50;
+  border-radius: 8px;
+  padding: 12px 14px;
+  font-size: 14px;
+  color: #2e7d32;
+  font-weight: bold;
+  margin-top: 8px;
+  display: none;
+  align-items: center;
+  gap: 8px;
+}
+.vencedor-registrado.visivel { display: flex; }
+
+/* ── PERGUNTAS (ADVINHA / QUIZ) ── */
+.pergunta-display {
+  background: white;
+  border-radius: var(--radius);
+  padding: 16px;
+  margin-bottom: 14px;
+  border: 2px solid var(--ouro);
+}
+.pergunta-bloco-label {
+  font-size: 11px;
+  font-weight: bold;
+  color: white;
+  background: var(--ouro);
+  padding: 3px 10px;
+  border-radius: 20px;
+  display: inline-block;
+  margin-bottom: 10px;
+}
+.pergunta-numero { font-size: 12px; color: var(--texto-claro); margin-bottom: 6px; }
+.pergunta-texto {
+  font-size: 16px;
+  font-weight: bold;
+  color: var(--texto);
+  line-height: 1.4;
+  margin-bottom: 14px;
+}
+.opcoes-lista { display: flex; flex-direction: column; gap: 7px; }
+.opcao-item {
+  padding: 10px 14px;
+  background: var(--bege);
+  border-radius: 8px;
+  border-left: 4px solid var(--ouro);
+  font-size: 14px;
+  color: var(--texto);
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  cursor: pointer;
+  border: none;
+  width: 100%;
+  text-align: left;
+  font-family: 'Georgia', serif;
+  transition: all 0.15s;
+}
+.opcao-item:active { transform: scale(0.98); }
+.opcao-item .letra { font-weight: bold; color: var(--ouro); min-width: 22px; }
+.opcao-item.selecionada {
+  background: #fff3e0;
+  border-left: 4px solid var(--ouro-escuro);
+  box-shadow: 0 2px 8px rgba(184,149,106,0.25);
+}
+.opcao-item.correta {
+  background: #e8f5e9;
+  border-left: 4px solid #4caf50;
+  color: #1b5e20;
+  font-weight: bold;
+}
+.opcao-item.correta .letra { color: #2e7d32; }
+.opcao-item.errada {
+  background: #f5f5f5;
+  border-left: 4px solid #ccc;
+  color: #aaa;
+  opacity: 0.6;
+}
+.opcao-item.errada .letra { color: #bbb; }
+
+.revelar-wrap {
+  margin-top: 10px;
+  display: flex;
+  gap: 8px;
+}
+.btn-revelar {
+  flex: 1;
+  background: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 11px 14px;
+  font-family: 'Georgia', serif;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-revelar:hover { background: #388e3c; }
+.btn-revelar:disabled { background: #ccc; cursor: not-allowed; }
+.btn-limpar-sel {
+  background: var(--bege);
+  color: var(--texto-claro);
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  padding: 11px 14px;
+  font-family: 'Georgia', serif;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-limpar-sel:hover { background: #eee; }
+
+.gestos-mini { display: flex; gap: 8px; margin-top: 10px; }
+.gesto-mini {
+  flex: 1;
+  background: var(--bege);
+  border: 2px solid var(--ouro);
+  border-radius: 8px;
+  padding: 8px 4px;
+  text-align: center;
+  font-size: 11px;
+}
+.gesto-mini .gesto-icon { font-size: 22px; display: block; margin-bottom: 2px; }
+.gesto-mini .gesto-letra { color: var(--ouro); font-weight: bold; }
+
+.pergunta-aberta-tag {
+  background: #8B7355;
+  color: white;
+  font-size: 11px;
+  padding: 3px 10px;
+  border-radius: 20px;
+  display: inline-block;
+  margin-bottom: 10px;
+}
+
+.navegacao-perguntas { display: flex; gap: 8px; align-items: center; margin-bottom: 14px; }
+.navegacao-perguntas .btn { padding: 12px 16px; font-size: 18px; }
+.progresso-texto { flex: 1; text-align: center; font-size: 13px; color: var(--texto-claro); }
+
+/* ── BLOCO SELECTOR (QUIZ) ── */
+.bloco-selector { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px; }
+.bloco-btn {
+  padding: 8px 12px;
+  border: 2px solid var(--ouro);
+  background: white;
+  color: var(--ouro);
+  border-radius: 8px;
+  font-family: 'Georgia', serif;
+  font-size: 12px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.bloco-btn.ativo { background: var(--ouro); color: white; }
+
+/* ── LISTA DE VENCEDORES ── */
+.lista-vencedores { margin-top: 12px; }
+.lista-titulo { font-size: 12px; font-weight: bold; color: var(--ouro); text-transform: uppercase; margin-bottom: 8px; }
+.vencedor-item {
+  background: var(--bege);
+  border-left: 4px solid var(--ouro);
+  border-radius: 6px;
+  padding: 8px 12px;
+  margin-bottom: 6px;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.vencedor-item .trofeu { font-size: 16px; }
+.vencedor-nome { font-weight: bold; color: var(--texto); }
+.vencedor-info { font-size: 11px; color: var(--texto-claro); margin-top: 1px; }
+.sem-vencedores { font-size: 13px; color: #bbb; font-style: italic; text-align: center; padding: 12px; }
+
+/* ── RESULTADOS ── */
+.resultado-secao { margin-bottom: 16px; }
+.resultado-titulo {
+  font-size: 14px;
+  font-weight: bold;
+  color: white;
+  background: var(--ouro);
+  padding: 10px 14px;
+  border-radius: 8px 8px 0 0;
+  margin-bottom: 0;
+}
+.resultado-corpo {
+  background: white;
+  border: 2px solid var(--ouro);
+  border-top: none;
+  border-radius: 0 0 8px 8px;
+  padding: 12px;
+}
+
+.ranking-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  background: var(--bege);
+  border-radius: 8px;
+  margin-bottom: 8px;
+}
+.ranking-medal { font-size: 24px; }
+.ranking-nome { font-size: 15px; font-weight: bold; color: var(--texto); }
+.ranking-pontos { font-size: 13px; color: var(--texto-claro); }
+.ranking-vitoria { margin-left: auto; font-size: 13px; color: var(--ouro); font-weight: bold; }
+
+.celebrar-wrap { text-align: center; padding: 8px 0; }
+
+.confete {
+  position: fixed;
+  top: -30px;
+  font-size: 24px;
+  pointer-events: none;
+  z-index: 9999;
+  animation: cair 3s ease-in forwards;
+}
+@keyframes cair {
+  to { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+}
+
+/* ── NOTIF ── */
+.notif {
+  position: fixed;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-80px);
+  background: #2e7d32;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 30px;
+  font-size: 14px;
+  font-weight: bold;
+  z-index: 200;
+  transition: transform 0.35s ease;
+  white-space: nowrap;
+  max-width: 90vw;
+  text-align: center;
+}
+.notif.visivel { transform: translateX(-50%) translateY(0); }
+
+/* ── MODAL INSTRUÇÕES ── */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(92,74,61,0.55);
+  z-index: 300;
+  overflow-y: auto;
+  padding: 16px 16px 100px;
+}
+.modal-overlay.aberto { display: block; }
+.modal-box {
+  background: white;
+  border-radius: 16px;
+  max-width: 600px;
+  margin: 0 auto;
+  border: 3px solid var(--ouro);
+  overflow: hidden;
+}
+.modal-header {
+  background: linear-gradient(135deg, var(--ouro) 0%, var(--ouro-escuro) 100%);
+  color: white;
+  padding: 18px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.modal-header h2 { font-size: 18px; font-weight: bold; }
+.modal-fechar {
+  background: rgba(255,255,255,0.25);
+  border: none;
+  color: white;
+  font-size: 20px;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  line-height: 1;
+}
+.modal-fechar:hover { background: rgba(255,255,255,0.4); }
+.modal-corpo { padding: 20px; }
+
+.instrucao-bloco {
+  margin-bottom: 24px;
+  border: 2px solid var(--ouro);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.instrucao-bloco-titulo {
+  background: var(--ouro);
+  color: white;
+  padding: 10px 14px;
+  font-size: 14px;
+  font-weight: bold;
+}
+.instrucao-bloco-corpo {
+  padding: 14px;
+  font-size: 13px;
+  color: var(--texto-claro);
+  line-height: 1.7;
+  background: white;
+}
+.instrucao-bloco-corpo strong { color: var(--texto); }
+.instrucao-item { margin-bottom: 5px; }
+.instrucao-destaque {
+  margin-top: 10px;
+  background: #fff8f0;
+  border-left: 4px solid var(--ouro);
+  border-radius: 6px;
+  padding: 10px 12px;
+  font-size: 13px;
+  color: var(--texto-claro);
+  line-height: 1.6;
+}
+.instrucao-frase {
+  text-align: center;
+  font-style: italic;
+  color: var(--texto);
+  padding: 14px;
+  background: var(--bege);
+  border-radius: 8px;
+  font-size: 14px;
+  margin-bottom: 0;
+}
+
+/* ── PRINT ── */
+@media print {
+  .nav, .acoes-home, .btn, input { display: none !important; }
+  .secao { display: block !important; }
+  body { background: white; }
+}
+
+@media (max-width: 360px) {
+  .display-bingo .item { font-size: 28px; }
+  .rodada-tab { font-size: 10px; padding: 8px 4px; }
+}
+</style>
+</head>
+<body>
+
+<!-- NOTIFICAÇÃO -->
+<div class="notif" id="notif"></div>
+
+<!-- ════════════════════════════════ MODAL INSTRUÇÕES ════════════════════════════════ -->
+<div class="modal-overlay" id="modal-instrucoes" onclick="fecharInstrucoesOverlay(event)">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h2>📋 Instruções dos Jogos</h2>
+      <button class="modal-fechar" onclick="fecharInstrucoes()">✕</button>
+    </div>
+    <div class="modal-corpo">
+
+      <!-- ROTEIRO DO DIA -->
+      <div class="instrucao-bloco">
+        <div class="instrucao-bloco-titulo">🧭 Roteiro do Dia</div>
+        <div class="instrucao-bloco-corpo">
+          <div class="instrucao-item">1️⃣ <strong>Bingo da Casa Nova</strong> — aquece o grupo, fácil de começar</div>
+          <div class="instrucao-item">2️⃣ <strong>Advinha com a Dany</strong> — interação leve, conversa e risadas</div>
+          <div class="instrucao-item">3️⃣ <strong>Quiz</strong> — auge da animação, o jogo âncora!</div>
+          <div class="instrucao-destaque">⚠️ Se o tempo apertar: corte <strong>1 jogo inteiro</strong> sem culpa. O evento continua ótimo.</div>
+        </div>
+      </div>
+
+      <!-- BINGO -->
+      <div class="instrucao-bloco">
+        <div class="instrucao-bloco-titulo">🎰 Bingo Casa Nova</div>
+        <div class="instrucao-bloco-corpo">
+          <div class="instrucao-item">• Entregue 1 cartela (4×4) + feijão ou milho para cada convidado</div>
+          <div class="instrucao-item">• Explique: <em>"No lugar de números, sorteamos coisas e situações da casa"</em></div>
+          <div class="instrucao-item">• Sorteie e fale alto o item — as pessoas marcam na cartela</div>
+          <div class="instrucao-item">• Quem completar a <strong>cartela inteira</strong> grita BINGO!</div>
+          <div class="instrucao-destaque">
+            🏆 <strong>Prêmio:</strong> Chocolate ou vinho<br>
+            ⚠️ Se duas ganharem juntas → decide no carisma 😂<br>
+            👉 Vá com calma no sorteio para não acabar rápido!
+          </div>
+        </div>
+      </div>
+
+      <!-- ADVINHA -->
+      <div class="instrucao-bloco">
+        <div class="instrucao-bloco-titulo">🤔 Advinha com a Dany</div>
+        <div class="instrucao-bloco-corpo">
+          <div class="instrucao-item">• Leia a pergunta com as opções A, B ou C</div>
+          <div class="instrucao-item">• As pessoas respondem com o <strong>gesto corporal</strong>: A = ergue a mão 🙋, B = mão no ombro 👐, C = mão na cabeça 🙌</div>
+          <div class="instrucao-item">• Você revela a resposta e comenta — essa parte rende risadas! 💕</div>
+          <div class="instrucao-item">• Bloco 4 (últimas 3 perguntas): deixe livre, sem opções</div>
+          <div class="instrucao-destaque">
+            🎁 <strong>Mimo:</strong> Kit mini café + chá<br>
+            ⏱️ <strong>Ideal:</strong> 6 a 10 perguntas no máximo<br>
+            👉 Pode fazer sem pontuação — só comentário e conversa!
+          </div>
+        </div>
+      </div>
+
+      <!-- QUIZ -->
+      <div class="instrucao-bloco">
+        <div class="instrucao-bloco-titulo">🎤 Quiz Casa Nova</div>
+        <div class="instrucao-bloco-corpo">
+          <div class="instrucao-item">• Divida em 2 times (ou 4, se quiser mais animação)</div>
+          <div class="instrucao-item">• Explique: <em>"Vou fazer perguntas sobre vida em casa nova. Dá pra responder, passar ou repassar."</em></div>
+          <div class="instrucao-item">• Leia uma pergunta por vez — controle leve de pontos</div>
+          <div class="instrucao-item">• Interaja, comente, brinque! Vale mais a risada que a precisão 😄</div>
+          <div class="instrucao-destaque">
+            🎁 <strong>Mimo:</strong> Kit mini café + chá<br>
+            ⏱️ <strong>Ideal:</strong> 10 a 15 perguntas no máximo<br>
+            👉 Se sentir cansaço → pule direto para o <strong>Desafio Relâmpago (⚡ B6)</strong>!
+          </div>
+        </div>
+      </div>
+
+      <!-- LEMBRETES GERAIS -->
+      <div class="instrucao-bloco">
+        <div class="instrucao-bloco-titulo">🛎️ Lembretes Gerais</div>
+        <div class="instrucao-bloco-corpo">
+          <div class="instrucao-item">✅ Não anunciar quantos prêmios existem</div>
+          <div class="instrucao-item">✅ Sentir o clima do momento</div>
+          <div class="instrucao-item">✅ Não forçar brincadeira</div>
+          <div class="instrucao-item">✅ Rir junto e improvisar está permitido</div>
+          <div class="instrucao-item">✅ Se sobrar mimo → lucro 😄</div>
+        </div>
+      </div>
+
+      <div class="instrucao-frase">
+        "Não é sobre acertar regra.<br>É sobre conduzir com leveza." 💕
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════ HOME ════════════════════════════════ -->
+<div class="secao ativa" id="secao-home">
+  <div class="home-titulo">
+    <h1>🏡 Chá de Casa Nova</h1>
+    <div class="sub">Painel da Dany ✨</div>
+  </div>
+
+  <div class="jogos-grid">
+    <button class="jogo-btn" onclick="irPara('bingo')">
+      <span class="emoji">🎰</span>
+      <div class="info">
+        <h3>Bingo Casa Nova</h3>
+        <p>3 rodadas · 46 itens · feijão na cartela</p>
+      </div>
+      <span class="badge" id="badge-bingo">0/3</span>
+    </button>
+    <button class="jogo-btn" onclick="irPara('advinha')">
+      <span class="emoji">🤔</span>
+      <div class="info">
+        <h3>Advinha com a Dany</h3>
+        <p>15 perguntas · 3 opções · gestos corporais</p>
+      </div>
+      <span class="badge" id="badge-advinha">0 reg.</span>
+    </button>
+    <button class="jogo-btn" onclick="irPara('quiz')">
+      <span class="emoji">🎤</span>
+      <div class="info">
+        <h3>Quiz Casa Nova</h3>
+        <p>55 questões · 6 blocos · Gasparzinho 👻</p>
+      </div>
+      <span class="badge" id="badge-quiz">0 reg.</span>
+    </button>
+  </div>
+
+  <div class="acoes-home">
+    <button class="btn btn-secundario" onclick="backupJSON()">💾 Backup</button>
+    <button class="btn btn-cinza" onclick="resetarTudo()">🗑️ Resetar</button>
+  </div>
+
+  <button class="btn btn-primario" style="margin-top:12px;" onclick="abrirInstrucoes()">📋 Instruções dos Jogos</button>
+</div>
+
+<!-- ════════════════════════════════ BINGO ════════════════════════════════ -->
+<div class="secao" id="secao-bingo">
+  <div class="cabecalho">
+    <h1>🎰 Bingo Casa Nova</h1>
+    <p>Selecione a rodada e sorteie os itens</p>
+  </div>
+
+  <div class="rodada-tabs">
+    <button class="rodada-tab ativa" onclick="selecionarRodada(0)" id="tab-r0">🃏 Cartela Cheia</button>
+    <button class="rodada-tab" onclick="selecionarRodada(1)" id="tab-r1">🥶 Pé Frio</button>
+    <button class="rodada-tab" onclick="selecionarRodada(2)" id="tab-r2">🪨 5 Pedras</button>
+  </div>
+
+  <div class="display-bingo" id="display-bingo">
+    <div class="num" id="bingo-num">Pronto para sortear</div>
+    <div class="item" id="bingo-item">🎲</div>
+  </div>
+
+  <div class="bingo-controles">
+    <button class="btn btn-secundario" onclick="bingoAnterior()">⬅️</button>
+    <button class="btn btn-primario" onclick="bingoSortear()" style="flex:2;padding:13px;">🎲 Sortear</button>
+    <button class="btn btn-cinza" onclick="bingoResetar()">🔄</button>
+  </div>
+
+  <div class="bingo-stats">
+    <span>Sorteados: <strong id="bingo-count">0/46</strong></span>
+    <span>Restantes: <strong id="bingo-rest">46</strong></span>
+  </div>
+
+  <div class="historico-bingo">
+    <div class="historico-titulo">📋 Histórico</div>
+    <div id="bingo-historico"><div class="vazio">Nenhum item sorteado ainda</div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-titulo">🏆 Registrar Vencedor — <span id="bingo-rodada-nome">Cartela Cheia</span></div>
+    <div class="vencedor-registrado" id="bingo-vencedor-atual"></div>
+    <div class="registro-vencedor" id="bingo-registro">
+      <div class="label">Nome de quem ganhou:</div>
+      <div class="input-grupo">
+        <input class="input-nome" id="bingo-input-nome" type="text" placeholder="Nome do convidado..." autocomplete="off">
+        <button class="btn btn-pequeno" onclick="bingoRegistrar()">🏆</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════ ADVINHA ════════════════════════════════ -->
+<div class="secao" id="secao-advinha">
+  <div class="cabecalho">
+    <h1>🤔 Advinha com a Dany</h1>
+    <p>Gestos corporais para responder</p>
+  </div>
+
+  <!-- Legenda gestos -->
+  <div class="card" style="padding:12px;">
+    <div class="gestos-mini">
+      <div class="gesto-mini"><span class="gesto-icon">🙋</span><span class="gesto-letra">A)</span><br><span style="font-size:10px;">Ergue a mão</span></div>
+      <div class="gesto-mini"><span class="gesto-icon">👐</span><span class="gesto-letra">B)</span><br><span style="font-size:10px;">Mão no ombro</span></div>
+      <div class="gesto-mini"><span class="gesto-icon">🙌</span><span class="gesto-letra">C)</span><br><span style="font-size:10px;">Mão na cabeça</span></div>
+    </div>
+  </div>
+
+  <!-- Navegação -->
+  <div class="navegacao-perguntas">
+    <button class="btn btn-secundario" onclick="advinhaNavegarPergunta(-1)">⬅️</button>
+    <div class="progresso-texto" id="advinha-progresso">Pergunta 1 de 15</div>
+    <button class="btn btn-secundario" onclick="advinhaNavegarPergunta(1)">➡️</button>
+  </div>
+
+  <!-- Display pergunta -->
+  <div class="pergunta-display" id="advinha-display">
+    <!-- preenchido via JS -->
+  </div>
+
+  <!-- Registro -->
+  <div class="card">
+    <div class="card-titulo">🏆 Registrar Vencedor</div>
+    <div class="registro-vencedor">
+      <div class="label">Quem acertou:</div>
+      <div class="input-grupo">
+        <input class="input-nome" id="advinha-input-nome" type="text" placeholder="Nome do convidado..." autocomplete="off">
+        <button class="btn btn-pequeno" onclick="advinhaRegistrar()">🏆</button>
+      </div>
+    </div>
+    <div class="lista-vencedores">
+      <div class="lista-titulo">Vencedores registrados</div>
+      <div id="advinha-lista-vencedores"><div class="sem-vencedores">Nenhum vencedor ainda</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════ QUIZ ════════════════════════════════ -->
+<div class="secao" id="secao-quiz">
+  <div class="cabecalho">
+    <h1>🎤 Quiz Casa Nova</h1>
+    <p>Gasparzinho aprova 👻</p>
+  </div>
+
+  <!-- Seletor de bloco -->
+  <div class="bloco-selector" id="quiz-blocos">
+    <!-- gerado via JS -->
+  </div>
+
+  <!-- Navegação -->
+  <div class="navegacao-perguntas">
+    <button class="btn btn-secundario" onclick="quizNavegarPergunta(-1)">⬅️</button>
+    <div class="progresso-texto" id="quiz-progresso">Pergunta 1</div>
+    <button class="btn btn-secundario" onclick="quizNavegarPergunta(1)">➡️</button>
+  </div>
+
+  <!-- Display -->
+  <div class="pergunta-display" id="quiz-display">
+    <!-- preenchido via JS -->
+  </div>
+
+  <!-- Registro -->
+  <div class="card">
+    <div class="card-titulo">🏆 Registrar Vencedor</div>
+    <div class="registro-vencedor">
+      <div class="label">Quem acertou:</div>
+      <div class="input-grupo">
+        <input class="input-nome" id="quiz-input-nome" type="text" placeholder="Nome do convidado..." autocomplete="off">
+        <button class="btn btn-pequeno" onclick="quizRegistrar()">🏆</button>
+      </div>
+    </div>
+    <div class="lista-vencedores">
+      <div class="lista-titulo">Vencedores registrados</div>
+      <div id="quiz-lista-vencedores"><div class="sem-vencedores">Nenhum vencedor ainda</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════ RESULTADOS ════════════════════════════════ -->
+<div class="secao" id="secao-resultados">
+  <div class="cabecalho">
+    <h1>🏆 Resultados</h1>
+    <p>Placar final do Chá de Casa Nova</p>
+  </div>
+
+  <div class="celebrar-wrap">
+    <button class="btn btn-primario" style="font-size:18px;padding:16px;" onclick="celebrar()">🎉 Celebrar!</button>
+  </div>
+
+  <div style="margin-top:14px;" id="resultados-corpo">
+    <!-- gerado via JS -->
+  </div>
+
+  <div style="margin-top:10px;">
+    <button class="btn btn-secundario" style="width:100%;margin-bottom:8px;" onclick="window.print()">📄 Imprimir</button>
+    <button class="btn btn-cinza" style="width:100%;" onclick="backupJSON()">💾 Backup JSON</button>
+  </div>
+</div>
+
+<!-- ════════════════════════════════ NAV ════════════════════════════════ -->
+<nav class="nav">
+  <button class="nav-btn ativo" id="nav-home" onclick="irPara('home')">
+    <span class="icon">🏡</span>Home
+  </button>
+  <button class="nav-btn" id="nav-bingo" onclick="irPara('bingo')">
+    <span class="icon">🎰</span>Bingo
+  </button>
+  <button class="nav-btn" id="nav-advinha" onclick="irPara('advinha')">
+    <span class="icon">🤔</span>Advinha
+  </button>
+  <button class="nav-btn" id="nav-quiz" onclick="irPara('quiz')">
+    <span class="icon">🎤</span>Quiz
+  </button>
+  <button class="nav-btn" id="nav-resultados" onclick="irPara('resultados')">
+    <span class="icon">🏆</span>Result.
+  </button>
+  <a href="index.html" class="nav-btn" style="text-decoration:none;">
+    <span class="icon">🔙</span>Início
+  </a>
+</nav>
+
+<script>
+// ══════════════════════════════════════════════════════════════
+// DADOS
+// ══════════════════════════════════════════════════════════════
+
+const ITENS_BINGO = [
+  "Sofá","Cama","Travesseiro","Almofada","Tapete","Cortina",
+  "Espelho","Quadro","Porta-retrato","Relógio","Panela","Frigideira",
+  "Pano de prato","Pratos","Copos","Talheres","Geladeira","Fogão",
+  "Micro-ondas","Cafeteira","Toalha","Roupa de cama","Vassoura","Rodo",
+  "Balde","Planta","Lâmpada","Tomada","Extensão","Pia cheia",
+  "Roupa acumulada","Caixa ainda fechada","Procurar e não achar",
+  "Tomada longe da cama","Luz acesa sem ninguém","Café esquecido",
+  "Primeira visita sem avisar","Móvel montado errado","Planta quase morrendo",
+  "Chegar cansada e sentar","Casa cheia de risadas","Casa em silêncio",
+  "Abrir geladeira sem fome","Dia de limpeza","Casa bagunçada",
+  "Pensar: amo minha casa"
+];
+
+const RODADAS_BINGO = [
+  { id: 'r0', nome: 'Cartela Cheia', emoji: '🃏' },
+  { id: 'r1', nome: 'Pé Frio',       emoji: '🥶' },
+  { id: 'r2', nome: '5 Pedras',      emoji: '🪨' }
+];
+
+const PERGUNTAS_ADVINHA = [
+  // Bloco 1  (resp: índice da opção correta — 0=A, 1=B, 2=C — ou null se não definido)
+  { n:1,  bloco:'Bloco 1 – Intuição Doméstica', texto:'Qual será o cômodo mais usado da casa?',                tipo:'abc', ops:['Sala','Cozinha','Quarto'],                              resp: null },
+  { n:2,  bloco:'Bloco 1 – Intuição Doméstica', texto:'Onde a Dany vai passar mais tempo?',                   tipo:'abc', ops:['Sofá','Cama','Cozinha'],                                resp: null },
+  { n:3,  bloco:'Bloco 1 – Intuição Doméstica', texto:'Qual objeto tem mais chance de quebrar primeiro?',      tipo:'abc', ops:['Copo','Prato','Alguma coisa aleatória'],                 resp: null },
+  { n:4,  bloco:'Bloco 1 – Intuição Doméstica', texto:'A casa vai ficar organizada por quanto tempo?',         tipo:'abc', ops:['1 semana','3 dias','Depende do humor'],                  resp: null },
+  // Bloco 2
+  { n:5,  bloco:'Bloco 2 – Vida Real Oficial',  texto:'O que mais vai acumular rápido?',                      tipo:'abc', ops:['Louça','Roupa','Caixas'],                                resp: null },
+  { n:6,  bloco:'Bloco 2 – Vida Real Oficial',  texto:'Qual tarefa vai ser empurrada com a barriga?',         tipo:'abc', ops:['Limpeza pesada','Organizar armários','Lavar banheiro'],  resp: null },
+  { n:7,  bloco:'Bloco 2 – Vida Real Oficial',  texto:'O horário preferido de arrumar a casa será:',          tipo:'abc', ops:['Manhã','Noite','Nunca é o horário certo'],                resp: null },
+  { n:8,  bloco:'Bloco 2 – Vida Real Oficial',  texto:'Quantas vezes por dia a geladeira será aberta "sem fome"?', tipo:'abc', ops:['Poucas','Algumas','Várias vezes'],               resp: null },
+  // Bloco 3
+  { n:9,  bloco:'Bloco 3 – Dany, a Casa e Gasparzinho', texto:'Quem apaga a luz que ficou acesa?',             tipo:'abc', ops:['Dany','O vento','Gasparzinho'],                         resp: null },
+  { n:10, bloco:'Bloco 3 – Dany, a Casa e Gasparzinho', texto:'Barulho estranho à noite é:',                  tipo:'abc', ops:['Encanamento','Vizinho','Imaginação criativa'],           resp: null },
+  { n:11, bloco:'Bloco 3 – Dany, a Casa e Gasparzinho', texto:'Se algo cair sozinho, a reação será:',         tipo:'abc', ops:['Investigar','Fingir que não ouviu','Rezar e dormir'],   resp: null },
+  { n:12, bloco:'Bloco 3 – Dany, a Casa e Gasparzinho', texto:'Quem mora nessa casa além da Dany?',            tipo:'abc', ops:['Só ela','Ela e os pensamentos','Ela e Gasparzinho'],   resp: null },
+  // Bloco 4 – abertas
+  { n:13, bloco:'Bloco 4 – Final Leve e Afetivo', texto:'O que mais representa "estar em casa" pra Dany?',    tipo:'aberta', resp: null },
+  { n:14, bloco:'Bloco 4 – Final Leve e Afetivo', texto:'Qual vai ser o cantinho de refúgio?',                 tipo:'aberta', resp: null },
+  { n:15, bloco:'Bloco 4 – Final Leve e Afetivo', texto:'Qual detalhe vai fazer ela pensar: "agora sim"?',     tipo:'aberta', resp: null }
+];
+
+const BLOCOS_QUIZ = [
+  {
+    id:'b0', nome:'🏡 Bloco 1 – Vida Real',
+    perguntas:[
+      { t:'Qual é a primeira coisa que vira bagunça numa casa nova?',                    ops:['A sala de estar','A cozinha','O quarto','Tudo de uma vez'],              resp: null },
+      { t:'O que costuma acabar primeiro: gás, paciência ou papel higiênico?',           ops:['Gás','Paciência','Papel higiênico','A vontade de morar sozinha'],        resp: null },
+      { t:'Qual objeto some misteriosamente e reaparece dias depois?',                   ops:['Controle remoto','Chaves','Caneta','Depende do dia'],                    resp: null },
+      { t:'O sofá serve mais para sentar ou para deitar?',                               ops:['Sentar','Deitar','Cama alternativa','Guarda-roupa secundário'],          resp: null },
+      { t:'Qual tarefa doméstica sempre fica pra depois?',                               ops:['Lavar louça','Passar roupa','Limpar banheiro','Todas as acima'],        resp: null },
+      { t:'Qual é o horário oficial de limpar a casa?',                                  ops:['8 da manhã','Quando chega visita','Quando não aguenta mais','Que limpeza?'], resp: null },
+      { t:'Qual item você compra achando que vai usar muito… e nunca usa?',              ops:['Panela de pressão','Livro de receitas','Escova de limpar','Tudo que compra'], resp: null },
+      { t:'O que mais cansa ao chegar em casa?',                                         ops:['Trabalho do dia','Subir as escadas','Ver a bagunça','Decidir o que comer'], resp: null },
+      { t:'Qual cômodo mais acumula "coisas sem lugar"?',                                ops:['Quarto','Sala','Cozinha','A cadeira das roupas'],                       resp: null },
+      { t:'Qual é o maior inimigo da casa organizada?',                                  ops:['Preguiça','Falta de espaço','Gasparzinho','A vida mesmo'],              resp: null }
+    ]
+  },
+  {
+    id:'b1', nome:'👻 Bloco 2 – Paranormal?',
+    perguntas:[
+      { t:'Quem apaga a luz que você tem certeza que deixou acesa?',                     ops:['Você mesma (esqueceu)','Gasparzinho','O vizinho magicamente','Fantasma ecologista'], resp: null },
+      { t:'Barulho estranho à noite é: encanamento, vizinho ou Gasparzinho?',            ops:['Encanamento','Vizinho','Gasparzinho','Paranoia da madrugada'],          resp: null },
+      { t:'Qual objeto parece cair sozinho?',                                             ops:['Quadro','Espelho','Copo','Sua sanidade'],                               resp: null },
+      { t:'O que sempre faz barulho de madrugada?',                                      ops:['Geladeira','Encanamento','Vento','Seu coração acelerado'],              resp: null },
+      { t:'Você investiga o barulho ou finge que não ouviu?',                            ops:['Investiga','Finge dormir','Chama pelo WhatsApp','Reza'],                resp: null },
+      { t:'Qual lugar da casa mais dá a sensação de "tem alguém aqui"?',                 ops:['Banheiro','Cozinha à noite','Debaixo da cama','Armário'],               resp: null },
+      { t:'Qual item muda de lugar sozinho?',                                             ops:['Chinelo','Caneta','Carregador','Sua sanidade mental'],                  resp: null },
+      { t:'Ventilador desligado pode causar medo?',                                      ops:['Sim, porque faz barulho ao ligar','Sim, porque parece "vivo"','Sim, esqueceu de desligar','Não, é só um ventilador'], resp: null },
+      { t:'Qual é a reação automática ao ouvir um barulho à noite?',                    ops:['Fica imóvel','Cobre a cabeça','Agarra o celular','Grita'],              resp: null },
+      { t:'Quem mora na casa além de você?',                                              ops:['Gasparzinho','As aranhas','Ninguém','Gatos e espíritos'],              resp: null }
+    ]
+  },
+  {
+    id:'b2', nome:'🍽️ Bloco 3 – Cozinha',
+    perguntas:[
+      { t:'Abrir a geladeira sem fome acontece quantas vezes por dia?',                  ops:['1 a 3 vezes','5 a 10 vezes','Mais de 10 vezes','Perdi a conta'],        resp: null },
+      { t:'O que estraga primeiro na geladeira?',                                         ops:['Leite','Aquele pote misterioso','Verdura','Sua esperança de cozinhar'], resp: null },
+      { t:'Qual a refeição mais repetida numa casa solo?',                                ops:['Arroz com feijão','Macarrão','Ovo','Delivery'],                         resp: null },
+      { t:'O que você compra achando que vai cozinhar… e não cozinha?',                  ops:['Verdura','Carne','Ingredientes sofisticados','Tudo'],                   resp: null },
+      { t:'Qual item você sempre esquece no mercado?',                                    ops:['Leite','Pão','Aquilo que ia vender','De onde estacionou'],             resp: null },
+      { t:'Depois de quantos dias a pia começa a lotar?',                                 ops:['1 dia','2 dias','3 dias','Desde ontem'],                               resp: null },
+      { t:'O prato "de emergência" é qual?',                                              ops:['Miojo','Ovo frito','Pão com manteiga','Comer no prato anterior (sem lavar)'], resp: null },
+      { t:'Qual eletrodoméstico é o mais usado?',                                         ops:['Geladeira','Micro-ondas','Cafeteira','Fogão'],                         resp: null },
+      { t:'Qual utensílio você nunca sabe onde está?',                                    ops:['Colher','Faca','Garfo','Tudo quando precisa'],                         resp: null },
+      { t:'Cozinhar em casa é economia, terapia ou ilusão?',                              ops:['Economia','Terapia','Ilusão','Cansaço'],                               resp: null }
+    ]
+  },
+  {
+    id:'b3', nome:'🧹 Bloco 4 – Organização',
+    perguntas:[
+      { t:'Quantos dias uma caixa demora para ser desempacotada?',                        ops:['1 semana','1 mês','3 meses','Virou móvel decorativo'],                 resp: null },
+      { t:'Onde fica a famosa "cadeira das roupas"?',                                     ops:['Quarto','Sala','Ambos os lugares','Espalhada pela casa'],               resp: null },
+      { t:'Roupa limpa vai direto pro armário?',                                           ops:['Sim','Fica na cadeira','Na cama','Sai da máquina e volta'],            resp: null },
+      { t:'Qual lugar da casa ninguém vê, mas você sabe que existe?',                     ops:['Armário de coisas','Guarda-roupa secreto','Debaixo da cama','A porta fechada'], resp: null },
+      { t:'Qual objeto sempre fica fora do lugar?',                                        ops:['Chinelo','Capa de almofada','Espelho','Depende do humor'],             resp: null },
+      { t:'Quanto tempo a casa fica organizada depois da limpeza?',                       ops:['1 dia','1 hora','30 minutos','Até você sair do banheiro'],             resp: null },
+      { t:'O que você só organiza quando alguém vai visitar?',                            ops:['Sala','Cozinha','Quarto','Tudo'],                                       resp: null },
+      { t:'Limpeza geral acontece com ânimo, música ou força do ódio?',                  ops:['Ânimo','Música','Força do ódio','Nunca acontece'],                     resp: null },
+      { t:'Qual área da casa você finge que não existe?',                                 ops:['Embaixo da cama','Fundo do armário','Atrás da porta','Tudo que fecha'], resp: null },
+      { t:'Qual frase define a casa num dia normal?',                                     ops:['"Que bagunça!"','"Preciso organizar"','"Amanhã eu limpo"','"É um caos controlado"'], resp: null }
+    ]
+  },
+  {
+    id:'b4', nome:'✅ Bloco 5 – V ou M',
+    tipo:'vm',
+    perguntas:[
+      { t:'Morar sozinha deixa a casa mais bagunçada',                 resp: null },
+      { t:'Morar sozinha deixa a casa mais silenciosa',                resp: null },
+      { t:'A casa fica arrumada todos os dias',                        resp: null },
+      { t:'Luz acesa em cômodo vazio é inevitável',                    resp: null },
+      { t:'Planta sobrevive sem água',                                  resp: null },
+      { t:'Barulho estranho sempre dá medo',                           resp: null },
+      { t:'A casa reflete o humor do dia',                             resp: null },
+      { t:'Todo mundo conversa sozinho em casa',                       resp: null },
+      { t:'Dormir no sofá acontece',                                   resp: null },
+      { t:'A cama vira escritório às vezes',                           resp: null }
+    ]
+  },
+  {
+    id:'b5', nome:'⚡ Bloco Final – Desafio',
+    tipo:'desafio',
+    perguntas:[
+      { t:'Cite 3 sinais de casa bagunçada' },
+      { t:'Cite 3 coisas que sempre quebram numa casa' },
+      { t:'Cite 3 objetos que nunca estão no lugar' },
+      { t:'Cite 3 tarefas domésticas chatas' },
+      { t:'Cite 3 coisas que fazem pensar: "amo minha casa"' }
+    ]
+  }
+];
+
+// ══════════════════════════════════════════════════════════════
+// ESTADO
+// ══════════════════════════════════════════════════════════════
+
+let estado = {
+  bingo: {
+    rodadaAtual: 0,
+    sorteados: [],
+    indiceAtual: -1,
+    vencedores: [null, null, null]
+  },
+  advinha: {
+    perguntaAtual: 0,
+    vencedores: [],
+    opcaoSelecionada: null,
+    gabarito_revelado: false
+  },
+  quiz: {
+    blocoAtual: 0,
+    perguntaAtual: 0,
+    vencedores: [],
+    opcaoSelecionada: null,
+    gabarito_revelado: false
+  }
+};
+
+function salvar() {
+  localStorage.setItem('cha_casa_nova', JSON.stringify(estado));
+}
+
+function carregar() {
+  const raw = localStorage.getItem('cha_casa_nova');
+  if (raw) {
+    try {
+      const salvo = JSON.parse(raw);
+      estado = Object.assign(estado, salvo);
+      // garantir estruturas
+      if (!estado.bingo.vencedores) estado.bingo.vencedores = [null, null, null];
+      if (!estado.advinha.vencedores) estado.advinha.vencedores = [];
+      if (!estado.quiz.vencedores) estado.quiz.vencedores = [];
+    } catch(e) { /* ignora */ }
+  }
+}
+
+// ══════════════════════════════════════════════════════════════
+// NAVEGAÇÃO
+// ══════════════════════════════════════════════════════════════
+
+function irPara(id) {
+  document.querySelectorAll('.secao').forEach(s => s.classList.remove('ativa'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('ativo'));
+  document.getElementById('secao-' + id).classList.add('ativa');
+  document.getElementById('nav-' + id).classList.add('ativo');
+
+  if (id === 'resultados') renderResultados();
+  if (id === 'home') atualizarBadges();
+}
+
+// ══════════════════════════════════════════════════════════════
+// NOTIFICAÇÃO
+// ══════════════════════════════════════════════════════════════
+
+let notifTimer = null;
+function mostrarNotif(msg, cor) {
+  const el = document.getElementById('notif');
+  el.textContent = msg;
+  el.style.background = cor || '#2e7d32';
+  el.classList.add('visivel');
+  clearTimeout(notifTimer);
+  notifTimer = setTimeout(() => el.classList.remove('visivel'), 2800);
+}
+
+// ══════════════════════════════════════════════════════════════
+// HOME — badges
+// ══════════════════════════════════════════════════════════════
+
+function atualizarBadges() {
+  const bingoWins = estado.bingo.vencedores.filter(v => v).length;
+  document.getElementById('badge-bingo').textContent = bingoWins + '/3';
+  document.getElementById('badge-advinha').textContent = estado.advinha.vencedores.length + ' reg.';
+  document.getElementById('badge-quiz').textContent = estado.quiz.vencedores.length + ' reg.';
+}
+
+// ══════════════════════════════════════════════════════════════
+// BINGO
+// ══════════════════════════════════════════════════════════════
+
+function selecionarRodada(idx) {
+  estado.bingo.rodadaAtual = idx;
+  document.querySelectorAll('.rodada-tab').forEach((t,i) => t.classList.toggle('ativa', i === idx));
+  document.getElementById('bingo-rodada-nome').textContent = RODADAS_BINGO[idx].nome;
+  renderBingoVencedor();
+  salvar();
+}
+
+function renderBingo() {
+  const { sorteados, indiceAtual } = estado.bingo;
+  const display = document.getElementById('display-bingo');
+  const num = document.getElementById('bingo-num');
+  const item = document.getElementById('bingo-item');
+
+  if (indiceAtual >= 0 && indiceAtual < sorteados.length) {
+    num.textContent = `Item ${indiceAtual + 1} de ${sorteados.length}`;
+    item.textContent = sorteados[indiceAtual];
+    display.style.animation = 'none';
+    setTimeout(() => display.style.animation = 'slideIn 0.4s ease-out', 10);
+  } else {
+    num.textContent = 'Pronto para sortear';
+    item.textContent = '🎲';
+  }
+
+  document.getElementById('bingo-count').textContent = `${sorteados.length}/46`;
+  document.getElementById('bingo-rest').textContent = 46 - sorteados.length;
+  renderBingoHistorico();
+}
+
+function renderBingoHistorico() {
+  const { sorteados, indiceAtual } = estado.bingo;
+  const el = document.getElementById('bingo-historico');
+  if (sorteados.length === 0) {
+    el.innerHTML = '<div class="vazio">Nenhum item sorteado ainda</div>';
+    return;
+  }
+  el.innerHTML = sorteados.map((it, i) =>
+    `<div class="historico-item${i === indiceAtual ? ' destaque' : ''}">${i+1}. ${it}</div>`
+  ).join('');
+  el.scrollTop = el.scrollHeight;
+}
+
+function bingoSortear() {
+  const { sorteados } = estado.bingo;
+  const restantes = ITENS_BINGO.filter(i => !sorteados.includes(i));
+  if (restantes.length === 0) {
+    mostrarNotif('🎉 Todos os 46 itens foram sorteados!', '#B8956A');
+    return;
+  }
+  const sorteado = restantes[Math.floor(Math.random() * restantes.length)];
+  estado.bingo.sorteados.push(sorteado);
+  estado.bingo.indiceAtual = estado.bingo.sorteados.length - 1;
+  salvar();
+  renderBingo();
+}
+
+function bingoAnterior() {
+  if (estado.bingo.indiceAtual > 0) {
+    estado.bingo.indiceAtual--;
+    salvar();
+    renderBingo();
+  }
+}
+
+function bingoResetar() {
+  if (estado.bingo.sorteados.length === 0) return;
+  if (confirm('Resetar o sorteio desta rodada? Os itens serão zerados (vencedores ficam).')) {
+    estado.bingo.sorteados = [];
+    estado.bingo.indiceAtual = -1;
+    salvar();
+    renderBingo();
+    mostrarNotif('Sorteio zerado ♻️', '#8B7355');
+  }
+}
+
+function renderBingoVencedor() {
+  const idx = estado.bingo.rodadaAtual;
+  const v = estado.bingo.vencedores[idx];
+  const elV = document.getElementById('bingo-vencedor-atual');
+  const elR = document.getElementById('bingo-registro');
+  if (v) {
+    elV.innerHTML = `🏆 <strong>${v.nome}</strong> — ${RODADAS_BINGO[idx].nome}`;
+    elV.classList.add('visivel');
+    document.getElementById('bingo-input-nome').value = '';
+  } else {
+    elV.classList.remove('visivel');
+  }
+}
+
+function bingoRegistrar() {
+  const nome = document.getElementById('bingo-input-nome').value.trim();
+  if (!nome) { mostrarNotif('Digite o nome do vencedor!', '#c0392b'); return; }
+  const idx = estado.bingo.rodadaAtual;
+  if (estado.bingo.vencedores[idx] && !confirm(`Já existe vencedor: ${estado.bingo.vencedores[idx].nome}. Substituir?`)) return;
+  estado.bingo.vencedores[idx] = { nome, rodada: RODADAS_BINGO[idx].nome, ts: new Date().toLocaleTimeString('pt-BR') };
+  salvar();
+  renderBingoVencedor();
+  mostrarNotif(`🏆 ${nome} registrado!`);
+  atualizarBadges();
+}
+
+// ══════════════════════════════════════════════════════════════
+// ADVINHA
+// ══════════════════════════════════════════════════════════════
+
+function renderAdvinha() {
+  const idx = estado.advinha.perguntaAtual;
+  const p = PERGUNTAS_ADVINHA[idx];
+  const sel = estado.advinha.opcaoSelecionada;
+  const rev = estado.advinha.gabarito_revelado;
+
+  document.getElementById('advinha-progresso').textContent = `Pergunta ${idx+1} de ${PERGUNTAS_ADVINHA.length}`;
+
+  const display = document.getElementById('advinha-display');
+  let html = `<span class="${p.tipo === 'aberta' ? 'pergunta-aberta-tag' : 'pergunta-bloco-label'}">${p.bloco}</span>`;
+  html += `<div class="pergunta-numero">Pergunta ${p.n}</div>`;
+  html += `<div class="pergunta-texto">${p.texto}</div>`;
+
+  if (p.tipo === 'abc') {
+    const letras = ['A','B','C'];
+    const gestos = ['🙋','👐','🙌'];
+    html += '<div class="opcoes-lista">';
+    p.ops.forEach((op, i) => {
+      let cls = 'opcao-item';
+      if (rev && p.resp !== null) {
+        cls += i === p.resp ? ' correta' : ' errada';
+      } else if (sel === i) {
+        cls += ' selecionada';
+      }
+      html += `<button class="${cls}" onclick="advinhaSelecionar(${i})"><span class="letra">${letras[i]}) ${gestos[i]}</span>${op}</button>`;
+    });
+    html += '</div>';
+    html += `<div class="revelar-wrap">
+      <button class="btn-revelar" onclick="advinhaRevelar()" ${p.resp === null ? 'disabled title="Gabarito não definido"' : ''}>${rev ? '✅ Revelado' : '👁 Revelar Gabarito'}</button>
+      <button class="btn-limpar-sel" onclick="advinhaLimparSel()">↩ Limpar</button>
+    </div>`;
+  } else {
+    html += '<div style="color:var(--texto-claro);font-size:14px;font-style:italic;padding-top:6px;">💭 Resposta aberta — você julga a melhor resposta!</div>';
+  }
+
+  display.innerHTML = html;
+  renderAdvinhaVencedores();
+}
+
+function advinhaSelecionar(i) {
+  if (estado.advinha.gabarito_revelado) return;
+  estado.advinha.opcaoSelecionada = estado.advinha.opcaoSelecionada === i ? null : i;
+  renderAdvinha();
+}
+
+function advinhaRevelar() {
+  estado.advinha.gabarito_revelado = !estado.advinha.gabarito_revelado;
+  renderAdvinha();
+}
+
+function advinhaLimparSel() {
+  estado.advinha.opcaoSelecionada = null;
+  estado.advinha.gabarito_revelado = false;
+  renderAdvinha();
+}
+
+function advinhaNavegarPergunta(dir) {
+  const novo = estado.advinha.perguntaAtual + dir;
+  if (novo < 0 || novo >= PERGUNTAS_ADVINHA.length) return;
+  estado.advinha.perguntaAtual = novo;
+  estado.advinha.opcaoSelecionada = null;
+  estado.advinha.gabarito_revelado = false;
+  salvar();
+  renderAdvinha();
+}
+
+function advinhaRegistrar() {
+  const nome = document.getElementById('advinha-input-nome').value.trim();
+  if (!nome) { mostrarNotif('Digite o nome!', '#c0392b'); return; }
+  const idx = estado.advinha.perguntaAtual;
+  const p = PERGUNTAS_ADVINHA[idx];
+  estado.advinha.vencedores.push({ nome, pergunta: p.n, bloco: p.bloco, ts: new Date().toLocaleTimeString('pt-BR') });
+  document.getElementById('advinha-input-nome').value = '';
+  salvar();
+  renderAdvinhaVencedores();
+  mostrarNotif(`🏆 ${nome} registrado!`);
+  atualizarBadges();
+}
+
+function renderAdvinhaVencedores() {
+  const el = document.getElementById('advinha-lista-vencedores');
+  const lista = estado.advinha.vencedores;
+  if (lista.length === 0) {
+    el.innerHTML = '<div class="sem-vencedores">Nenhum vencedor ainda</div>';
+    return;
+  }
+  el.innerHTML = [...lista].reverse().map(v =>
+    `<div class="vencedor-item">
+      <span class="trofeu">🏆</span>
+      <div><div class="vencedor-nome">${v.nome}</div><div class="vencedor-info">P.${v.pergunta} · ${v.ts}</div></div>
+    </div>`
+  ).join('');
+}
+
+// ══════════════════════════════════════════════════════════════
+// QUIZ
+// ══════════════════════════════════════════════════════════════
+
+function renderQuizBlocos() {
+  const el = document.getElementById('quiz-blocos');
+  el.innerHTML = BLOCOS_QUIZ.map((b, i) =>
+    `<button class="bloco-btn${i === estado.quiz.blocoAtual ? ' ativo' : ''}" onclick="quizSelecionarBloco(${i})">${b.nome.split(' ')[0]} B${i+1}</button>`
+  ).join('');
+}
+
+function quizSelecionarBloco(idx) {
+  if (idx === estado.quiz.blocoAtual) return;
+  estado.quiz.blocoAtual = idx;
+  estado.quiz.perguntaAtual = 0;
+  estado.quiz.opcaoSelecionada = null;
+  estado.quiz.gabarito_revelado = false;
+  salvar();
+  renderQuizBlocos();
+  renderQuiz();
+}
+
+function renderQuiz() {
+  const bi = estado.quiz.blocoAtual;
+  const pi = estado.quiz.perguntaAtual;
+  const bloco = BLOCOS_QUIZ[bi];
+  const p = bloco.perguntas[pi];
+  const total = bloco.perguntas.length;
+  const sel = estado.quiz.opcaoSelecionada;
+  const rev = estado.quiz.gabarito_revelado;
+
+  document.getElementById('quiz-progresso').textContent = `Pergunta ${pi+1} de ${total} · ${bloco.nome}`;
+
+  const display = document.getElementById('quiz-display');
+  let html = `<span class="pergunta-bloco-label">${bloco.nome}</span>`;
+  html += `<div class="pergunta-numero">Pergunta ${pi+1}</div>`;
+  html += `<div class="pergunta-texto">${p.t}</div>`;
+
+  if (bloco.tipo === 'vm') {
+    const vmOps = ['V','M'];
+    const vmTextos = ['Verdade','Mentira'];
+    html += '<div class="opcoes-lista">';
+    vmOps.forEach((v, i) => {
+      let cls = 'opcao-item';
+      if (rev && p.resp !== null) {
+        cls += v === p.resp ? ' correta' : ' errada';
+      } else if (sel === v) {
+        cls += ' selecionada';
+      }
+      html += `<button class="${cls}" onclick="quizSelecionar('${v}')"><span class="letra">${v})</span>${vmTextos[i]}</button>`;
+    });
+    html += '</div>';
+    html += `<div class="revelar-wrap">
+      <button class="btn-revelar" onclick="quizRevelar()" ${p.resp === null ? 'disabled title="Gabarito não definido"' : ''}>${rev ? '✅ Revelado' : '👁 Revelar Gabarito'}</button>
+      <button class="btn-limpar-sel" onclick="quizLimparSel()">↩ Limpar</button>
+    </div>`;
+  } else if (bloco.tipo === 'desafio') {
+    html += '<div style="background:#fff8f0;border:2px dashed var(--ouro);border-radius:8px;padding:12px;font-size:14px;color:var(--texto-claro);font-style:italic;">⏱️ 10 segundos — você julga a resposta!</div>';
+  } else if (p.ops) {
+    html += '<div class="opcoes-lista">';
+    ['A','B','C','D'].forEach((l, i) => {
+      if (!p.ops[i]) return;
+      let cls = 'opcao-item';
+      if (rev && p.resp !== null) {
+        cls += i === p.resp ? ' correta' : ' errada';
+      } else if (sel === i) {
+        cls += ' selecionada';
+      }
+      html += `<button class="${cls}" onclick="quizSelecionar(${i})"><span class="letra">${l})</span>${p.ops[i]}</button>`;
+    });
+    html += '</div>';
+    html += `<div class="revelar-wrap">
+      <button class="btn-revelar" onclick="quizRevelar()" ${p.resp === null ? 'disabled title="Gabarito não definido"' : ''}>${rev ? '✅ Revelado' : '👁 Revelar Gabarito'}</button>
+      <button class="btn-limpar-sel" onclick="quizLimparSel()">↩ Limpar</button>
+    </div>`;
+  }
+
+  display.innerHTML = html;
+  renderQuizVencedores();
+}
+
+function quizSelecionar(v) {
+  if (estado.quiz.gabarito_revelado) return;
+  estado.quiz.opcaoSelecionada = estado.quiz.opcaoSelecionada === v ? null : v;
+  renderQuiz();
+}
+
+function quizRevelar() {
+  estado.quiz.gabarito_revelado = !estado.quiz.gabarito_revelado;
+  renderQuiz();
+}
+
+function quizLimparSel() {
+  estado.quiz.opcaoSelecionada = null;
+  estado.quiz.gabarito_revelado = false;
+  renderQuiz();
+}
+
+function quizNavegarPergunta(dir) {
+  const bloco = BLOCOS_QUIZ[estado.quiz.blocoAtual];
+  const novo = estado.quiz.perguntaAtual + dir;
+  if (novo < 0 || novo >= bloco.perguntas.length) return;
+  estado.quiz.perguntaAtual = novo;
+  estado.quiz.opcaoSelecionada = null;
+  estado.quiz.gabarito_revelado = false;
+  salvar();
+  renderQuiz();
+}
+
+function quizSelecionarBloco_reset() {
+  estado.quiz.opcaoSelecionada = null;
+  estado.quiz.gabarito_revelado = false;
+}
+
+function quizRegistrar() {
+  const nome = document.getElementById('quiz-input-nome').value.trim();
+  if (!nome) { mostrarNotif('Digite o nome!', '#c0392b'); return; }
+  const bi = estado.quiz.blocoAtual;
+  const pi = estado.quiz.perguntaAtual;
+  estado.quiz.vencedores.push({ nome, bloco: bi+1, pergunta: pi+1, ts: new Date().toLocaleTimeString('pt-BR') });
+  document.getElementById('quiz-input-nome').value = '';
+  salvar();
+  renderQuizVencedores();
+  mostrarNotif(`🏆 ${nome} registrado!`);
+  atualizarBadges();
+}
+
+function renderQuizVencedores() {
+  const el = document.getElementById('quiz-lista-vencedores');
+  const lista = estado.quiz.vencedores;
+  if (lista.length === 0) {
+    el.innerHTML = '<div class="sem-vencedores">Nenhum vencedor ainda</div>';
+    return;
+  }
+  el.innerHTML = [...lista].reverse().map(v =>
+    `<div class="vencedor-item">
+      <span class="trofeu">🏆</span>
+      <div><div class="vencedor-nome">${v.nome}</div><div class="vencedor-info">B${v.bloco} P${v.pergunta} · ${v.ts}</div></div>
+    </div>`
+  ).join('');
+}
+
+// ══════════════════════════════════════════════════════════════
+// RESULTADOS
+// ══════════════════════════════════════════════════════════════
+
+function renderResultados() {
+  const el = document.getElementById('resultados-corpo');
+  let html = '';
+
+  // ── BINGO ──
+  html += '<div class="resultado-secao"><div class="resultado-titulo">🎰 Bingo Casa Nova</div><div class="resultado-corpo">';
+  RODADAS_BINGO.forEach((r, i) => {
+    const v = estado.bingo.vencedores[i];
+    html += `<div class="vencedor-item">
+      <span class="trofeu">${r.emoji}</span>
+      <div>
+        <div class="vencedor-nome">${v ? v.nome : '<em style="color:#bbb">Sem vencedor</em>'}</div>
+        <div class="vencedor-info">${r.nome}</div>
+      </div>
+    </div>`;
+  });
+  html += '</div></div>';
+
+  // ── ADVINHA ──
+  html += '<div class="resultado-secao"><div class="resultado-titulo">🤔 Advinha com a Dany</div><div class="resultado-corpo">';
+  if (estado.advinha.vencedores.length === 0) {
+    html += '<div class="sem-vencedores">Nenhum vencedor registrado</div>';
+  } else {
+    estado.advinha.vencedores.forEach(v => {
+      html += `<div class="vencedor-item"><span class="trofeu">🏆</span><div><div class="vencedor-nome">${v.nome}</div><div class="vencedor-info">P.${v.pergunta} · ${v.ts}</div></div></div>`;
+    });
+  }
+  html += '</div></div>';
+
+  // ── QUIZ ──
+  html += '<div class="resultado-secao"><div class="resultado-titulo">🎤 Quiz Casa Nova</div><div class="resultado-corpo">';
+  if (estado.quiz.vencedores.length === 0) {
+    html += '<div class="sem-vencedores">Nenhum vencedor registrado</div>';
+  } else {
+    estado.quiz.vencedores.forEach(v => {
+      html += `<div class="vencedor-item"><span class="trofeu">🏆</span><div><div class="vencedor-nome">${v.nome}</div><div class="vencedor-info">B${v.bloco} P${v.pergunta} · ${v.ts}</div></div></div>`;
+    });
+  }
+  html += '</div></div>';
+
+  // ── RANKING ──
+  const contagem = {};
+  const adicionar = (nome) => { contagem[nome] = (contagem[nome]||0) + 1; };
+
+  estado.bingo.vencedores.forEach(v => v && adicionar(v.nome));
+  estado.advinha.vencedores.forEach(v => adicionar(v.nome));
+  estado.quiz.vencedores.forEach(v => adicionar(v.nome));
+
+  const ranking = Object.entries(contagem).sort((a,b) => b[1]-a[1]);
+  const medalhas = ['🥇','🥈','🥉'];
+
+  html += '<div class="resultado-secao"><div class="resultado-titulo">⭐ Ranking Geral</div><div class="resultado-corpo">';
+  if (ranking.length === 0) {
+    html += '<div class="sem-vencedores">Registre vencedores para ver o ranking</div>';
+  } else {
+    ranking.forEach(([nome, pts], i) => {
+      html += `<div class="ranking-item">
+        <span class="ranking-medal">${medalhas[i] || '🏅'}</span>
+        <div>
+          <div class="ranking-nome">${nome}</div>
+          <div class="ranking-pontos">${pts} vitória${pts>1?'s':''}</div>
+        </div>
+        <span class="ranking-vitoria">${'⭐'.repeat(Math.min(pts,5))}</span>
+      </div>`;
+    });
+  }
+  html += '</div></div>';
+
+  el.innerHTML = html;
+}
+
+// ══════════════════════════════════════════════════════════════
+// CELEBRAR
+// ══════════════════════════════════════════════════════════════
+
+function celebrar() {
+  const emojis = ['🎉','🎊','🏆','✨','💕','🏡','🌟','🥳'];
+  for (let i = 0; i < 40; i++) {
+    setTimeout(() => {
+      const c = document.createElement('div');
+      c.className = 'confete';
+      c.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+      c.style.left = Math.random() * 100 + 'vw';
+      c.style.animationDuration = (2 + Math.random() * 2) + 's';
+      c.style.fontSize = (16 + Math.random() * 16) + 'px';
+      document.body.appendChild(c);
+      setTimeout(() => c.remove(), 4000);
+    }, i * 60);
+  }
+}
+
+// ══════════════════════════════════════════════════════════════
+// BACKUP & RESET
+// ══════════════════════════════════════════════════════════════
+
+function backupJSON() {
+  const data = JSON.stringify(estado, null, 2);
+  const blob = new Blob([data], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `cha-casa-nova-${new Date().toISOString().slice(0,10)}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+  mostrarNotif('💾 Backup baixado!', '#B8956A');
+}
+
+function resetarTudo() {
+  if (!confirm('Resetar TUDO? Todos os vencedores e sorteios serão apagados.\n\nEssa ação não pode ser desfeita.')) return;
+  if (!confirm('Tem certeza mesmo? Confirme para apagar tudo.')) return;
+  localStorage.removeItem('cha_casa_nova');
+  estado = {
+    bingo: { rodadaAtual: 0, sorteados: [], indiceAtual: -1, vencedores: [null,null,null] },
+    advinha: { perguntaAtual: 0, vencedores: [] },
+    quiz: { blocoAtual: 0, perguntaAtual: 0, vencedores: [] }
+  };
+  salvar();
+  atualizarBadges();
+  renderBingo();
+  renderBingoVencedor();
+  renderAdvinha();
+  renderQuizBlocos();
+  renderQuiz();
+  mostrarNotif('🗑️ Tudo resetado', '#c0392b');
+}
+
+// ══════════════════════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════════════════════
+
+// ══════════════════════════════════════════════════════════════
+// MODAL INSTRUÇÕES
+// ══════════════════════════════════════════════════════════════
+
+function abrirInstrucoes() {
+  document.getElementById('modal-instrucoes').classList.add('aberto');
+  document.body.style.overflow = 'hidden';
+}
+
+function fecharInstrucoes() {
+  document.getElementById('modal-instrucoes').classList.remove('aberto');
+  document.body.style.overflow = '';
+}
+
+function fecharInstrucoesOverlay(e) {
+  if (e.target === document.getElementById('modal-instrucoes')) fecharInstrucoes();
+}
+
+// ══════════════════════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════════════════════
+
+carregar();
+renderBingo();
+renderBingoVencedor();
+selecionarRodada(estado.bingo.rodadaAtual || 0);
+renderAdvinha();
+renderQuizBlocos();
+renderQuiz();
+atualizarBadges();
+</script>
+</body>
+</html>

@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎰 Sorteio do Bingo - Casa Nova</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --cor-ouro: #B8956A;
+            --cor-bege: #F5F1E8;
+            --cor-texto: #5C4A3D;
+            --cor-texto-claro: #8B7355;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, var(--cor-bege) 0%, #f0ebe0 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            color: var(--cor-texto);
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(184, 149, 106, 0.2);
+            max-width: 600px;
+            width: 100%;
+            padding: 50px 40px;
+            border: 3px solid var(--cor-ouro);
+            text-align: center;
+        }
+
+        .header {
+            margin-bottom: 50px;
+        }
+
+        .titulo {
+            font-size: 36px;
+            color: var(--cor-ouro);
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .subtitulo {
+            font-size: 16px;
+            color: var(--cor-texto-claro);
+            font-style: italic;
+        }
+
+        .display-item {
+            background: linear-gradient(135deg, var(--cor-ouro) 0%, #a07d54 100%);
+            color: white;
+            padding: 60px 40px;
+            border-radius: 15px;
+            margin: 40px 0;
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 10px 30px rgba(184, 149, 106, 0.3);
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .item-numero {
+            font-size: 18px;
+            opacity: 0.9;
+            margin-bottom: 15px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .item-texto {
+            font-size: 48px;
+            font-weight: bold;
+            line-height: 1.3;
+            word-wrap: break-word;
+        }
+
+        .controles {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 30px 0;
+        }
+
+        .btn {
+            padding: 15px 40px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Georgia', serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-proximo {
+            background: var(--cor-ouro);
+            color: white;
+            border: 2px solid var(--cor-ouro);
+        }
+
+        .btn-proximo:hover {
+            background: #a07d54;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(184, 149, 106, 0.3);
+        }
+
+        .btn-sortear {
+            background: white;
+            color: var(--cor-ouro);
+            border: 2px solid var(--cor-ouro);
+        }
+
+        .btn-sortear:hover {
+            background: var(--cor-bege);
+            transform: translateY(-2px);
+        }
+
+        .btn-resetar {
+            background: #ddd;
+            color: var(--cor-texto);
+            border: 2px solid #ccc;
+        }
+
+        .btn-resetar:hover {
+            background: #ccc;
+            transform: translateY(-2px);
+        }
+
+        .estatisticas {
+            background: var(--cor-bege);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 30px;
+            border-left: 5px solid var(--cor-ouro);
+        }
+
+        .stat-item {
+            font-size: 14px;
+            color: var(--cor-texto-claro);
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .stat-numero {
+            font-weight: bold;
+            color: var(--cor-ouro);
+        }
+
+        .historico {
+            background: #f5f1e8;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            max-height: 150px;
+            overflow-y: auto;
+        }
+
+        .historico-titulo {
+            font-size: 12px;
+            font-weight: bold;
+            color: var(--cor-ouro);
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+
+        .historico-item {
+            font-size: 13px;
+            color: var(--cor-texto-claro);
+            padding: 5px;
+            background: white;
+            margin-bottom: 5px;
+            border-radius: 4px;
+            border-left: 3px solid var(--cor-ouro);
+            padding-left: 10px;
+        }
+
+        .vazio {
+            font-style: italic;
+            color: #ccc;
+            font-size: 12px;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 30px 20px;
+            }
+
+            .titulo {
+                font-size: 28px;
+            }
+
+            .item-texto {
+                font-size: 36px;
+            }
+
+            .btn {
+                padding: 12px 25px;
+                font-size: 14px;
+            }
+
+            .controles {
+                gap: 10px;
+            }
+        }
+
+        .info {
+            background: #fff8f0;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 13px;
+            color: var(--cor-texto-claro);
+            margin-bottom: 20px;
+            border-left: 4px solid var(--cor-ouro);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="titulo">🎰 SORTEIO DO BINGO</div>
+            <div class="subtitulo">Casa Nova - Pedrinhas do Jogo</div>
+        </div>
+
+        <div class="info">
+            💡 Use aqui para sortear aleatoriamente durante o jogo, ou imprima o PDF para recortar e colocar num saco!
+        </div>
+
+        <div class="display-item" id="displayItem">
+            <div class="item-numero" id="itemNumero">Clique para começar</div>
+            <div class="item-texto" id="itemTexto">👇</div>
+        </div>
+
+        <div class="controles">
+            <button class="btn btn-proximo" onclick="proximoItem()">Próximo →</button>
+            <button class="btn btn-sortear" onclick="sortearAleatorio()">🎲 Sortear</button>
+            <button class="btn btn-resetar" onclick="resetar()">Reiniciar</button>
+        </div>
+
+        <div class="estatisticas">
+            <div class="stat-item">
+                <span>Itens sorteados:</span>
+                <span class="stat-numero" id="totalSorteados">0/46</span>
+            </div>
+            <div class="stat-item">
+                <span>Itens restantes:</span>
+                <span class="stat-numero" id="totalRestantes">46</span>
+            </div>
+        </div>
+
+        <div class="historico">
+            <div class="historico-titulo">📋 Histórico de sorteios</div>
+            <div id="historicoList">
+                <div class="vazio">Nenhum item sorteado ainda</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const itens = [
+            "Sofá", "Cama", "Travesseiro", "Almofada", "Tapete", "Cortina",
+            "Espelho", "Quadro", "Porta-retrato", "Relógio", "Panela", "Frigideira",
+            "Pano de prato", "Pratos", "Copos", "Talheres", "Geladeira", "Fogão",
+            "Micro-ondas", "Cafeteira", "Toalha", "Roupa de cama", "Vassoura", "Rodo",
+            "Balde", "Planta", "Lâmpada", "Tomada", "Extensão", "Pia cheia",
+            "Roupa acumulada", "Caixa ainda fechada", "Procurar e não achar",
+            "Tomada longe da cama", "Luz acesa sem ninguém", "Café esquecido",
+            "Primeira visita sem avisar", "Móvel montado errado", "Planta quase morrendo",
+            "Chegar cansada e sentar", "Casa cheia de risadas", "Casa em silêncio",
+            "Abrir geladeira sem fome", "Dia de limpeza", "Casa bagunçada",
+            "Pensar: amo minha casa"
+        ];
+
+        let itensSorteados = [];
+        let indiceAtual = -1;
+
+        function atualizarDisplay() {
+            const displayItem = document.getElementById('displayItem');
+            const itemNumero = document.getElementById('itemNumero');
+            const itemTexto = document.getElementById('itemTexto');
+            const totalSorteados = document.getElementById('totalSorteados');
+            const totalRestantes = document.getElementById('totalRestantes');
+
+            if (indiceAtual >= 0 && indiceAtual < itensSorteados.length) {
+                itemNumero.textContent = `Item ${indiceAtual + 1} de ${itensSorteados.length}`;
+                itemTexto.textContent = itensSorteados[indiceAtual];
+                displayItem.style.animation = 'none';
+                setTimeout(() => {
+                    displayItem.style.animation = 'slideIn 0.5s ease-out';
+                }, 10);
+            }
+
+            totalSorteados.textContent = `${itensSorteados.length}/46`;
+            totalRestantes.textContent = itens.length - itensSorteados.length;
+
+            atualizarHistorico();
+        }
+
+        function proximoItem() {
+            if (itensSorteados.length === 0) {
+                alert('Clique em "Sortear" para começar!');
+                return;
+            }
+
+            if (indiceAtual < itensSorteados.length - 1) {
+                indiceAtual++;
+                atualizarDisplay();
+            } else {
+                alert('Você chegou ao final dos itens sorteados!');
+            }
+        }
+
+        function sortearAleatorio() {
+            const itensFaltantes = itens.filter(item => !itensSorteados.includes(item));
+
+            if (itensFaltantes.length === 0) {
+                alert('🎉 Todos os itens já foram sorteados!');
+                return;
+            }
+
+            const indiceAleatorio = Math.floor(Math.random() * itensFaltantes.length);
+            const itemSorteado = itensFaltantes[indiceAleatorio];
+
+            itensSorteados.push(itemSorteado);
+            indiceAtual = itensSorteados.length - 1;
+
+            atualizarDisplay();
+        }
+
+        function resetar() {
+            if (itensSorteados.length > 0) {
+                if (confirm('Tem certeza? Isso vai limpar todos os itens sorteados!')) {
+                    itensSorteados = [];
+                    indiceAtual = -1;
+                    document.getElementById('itemNumero').textContent = 'Clique para começar';
+                    document.getElementById('itemTexto').textContent = '👇';
+                    atualizarDisplay();
+                }
+            }
+        }
+
+        function atualizarHistorico() {
+            const historicoList = document.getElementById('historicoList');
+
+            if (itensSorteados.length === 0) {
+                historicoList.innerHTML = '<div class="vazio">Nenhum item sorteado ainda</div>';
+                return;
+            }
+
+            historicoList.innerHTML = itensSorteados
+                .map((item, index) => `<div class="historico-item">${index + 1}. ${item}</div>`)
+                .join('');
+
+            // Scroll para o último item
+            historicoList.scrollTop = historicoList.scrollHeight;
+        }
+
+        // Teclado
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') proximoItem();
+            if (e.key === ' ') sortearAleatorio();
+            if (e.key === 'r' || e.key === 'R') resetar();
+        });
+    </script>
+</body>
+</html>

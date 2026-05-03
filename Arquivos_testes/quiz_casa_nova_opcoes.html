@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎤 Quiz Casa Nova - Opções</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --cor-ouro: #B8956A;
+            --cor-bege: #F5F1E8;
+            --cor-texto: #5C4A3D;
+            --cor-texto-claro: #8B7355;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, var(--cor-bege) 0%, #f0ebe0 100%);
+            min-height: 100vh;
+            padding: 30px 20px;
+            color: var(--cor-texto);
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 10px 40px rgba(184, 149, 106, 0.15);
+            border: 2px solid var(--cor-ouro);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            border-bottom: 3px solid var(--cor-ouro);
+            padding-bottom: 20px;
+        }
+
+        .titulo-principal {
+            font-size: 36px;
+            color: var(--cor-ouro);
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .subtitulo {
+            font-size: 16px;
+            color: var(--cor-texto-claro);
+            font-style: italic;
+        }
+
+        .bloco {
+            margin-bottom: 50px;
+            page-break-inside: avoid;
+        }
+
+        .titulo-bloco {
+            font-size: 24px;
+            color: white;
+            background: var(--cor-ouro);
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .pergunta {
+            margin-bottom: 28px;
+            padding: 20px;
+            background: var(--cor-bege);
+            border-left: 5px solid var(--cor-ouro);
+            border-radius: 6px;
+        }
+
+        .numero-pergunta {
+            font-size: 18px;
+            font-weight: bold;
+            color: var(--cor-ouro);
+            margin-bottom: 8px;
+        }
+
+        .texto-pergunta {
+            font-size: 16px;
+            color: var(--cor-texto);
+            margin-bottom: 12px;
+            font-weight: 500;
+            line-height: 1.5;
+        }
+
+        .opcoes {
+            margin-left: 20px;
+        }
+
+        .opcao {
+            font-size: 14px;
+            color: var(--cor-texto);
+            margin-bottom: 6px;
+            line-height: 1.4;
+        }
+
+        .opcao-letra {
+            font-weight: bold;
+            color: var(--cor-ouro);
+            min-width: 30px;
+            display: inline-block;
+        }
+
+        .bloco-vf {
+            background: #fff8f0;
+            border-left: 5px solid #d4a574;
+        }
+
+        .bloco-desafio {
+            background: #f5f1e8;
+            border-left: 5px solid #8B7355;
+        }
+
+        .desafio {
+            margin-bottom: 20px;
+            padding: 20px;
+            background: white;
+            border: 2px dashed var(--cor-ouro);
+            border-radius: 6px;
+        }
+
+        .numero-desafio {
+            font-size: 18px;
+            font-weight: bold;
+            color: var(--cor-ouro);
+            margin-bottom: 8px;
+        }
+
+        .texto-desafio {
+            font-size: 16px;
+            color: var(--cor-texto);
+            font-weight: 500;
+        }
+
+        .instrucoes {
+            background: #fff8f0;
+            border: 2px solid var(--cor-ouro);
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 40px;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .instrucoes h3 {
+            color: var(--cor-ouro);
+            margin-bottom: 12px;
+            font-size: 16px;
+        }
+
+        .instrucoes p {
+            margin-bottom: 8px;
+            color: var(--cor-texto-claro);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 25px;
+            }
+
+            .titulo-principal {
+                font-size: 28px;
+            }
+
+            .titulo-bloco {
+                font-size: 20px;
+            }
+
+            .texto-pergunta {
+                font-size: 15px;
+            }
+
+            .opcao {
+                font-size: 13px;
+            }
+        }
+
+        .navegacao {
+            position: sticky;
+            bottom: 0;
+            background: white;
+            border-top: 2px solid var(--cor-ouro);
+            padding: 20px;
+            margin: 0 -40px -40px -40px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .btn-bloco {
+            padding: 10px 20px;
+            border: 2px solid var(--cor-ouro);
+            background: white;
+            color: var(--cor-ouro);
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            font-family: 'Georgia', serif;
+            transition: all 0.3s ease;
+        }
+
+        .btn-bloco:hover {
+            background: var(--cor-ouro);
+            color: white;
+        }
+
+        .total-perguntas {
+            text-align: center;
+            padding: 20px;
+            background: var(--cor-bege);
+            border-radius: 8px;
+            margin-top: 40px;
+            font-size: 14px;
+            color: var(--cor-texto-claro);
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- HEADER -->
+        <div class="header">
+            <div class="titulo-principal">🎤 QUIZ – CASA NOVA</div>
+            <div class="subtitulo">Edição Vida Solo (com Gasparzinho 👻)</div>
+        </div>
+
+        <!-- BLOCO 1 -->
+        <div class="bloco" id="bloco1">
+            <div class="titulo-bloco">🏡 BLOCO 1 – VIDA REAL DE QUEM MORA SOZINHA</div>
+            
+            <div class="pergunta">
+                <div class="numero-pergunta">1. Qual é a primeira coisa que vira bagunça numa casa nova?</div>
+                <div class="opcoes">
+                    <div class="opcao"><span class="opcao-letra">A)</span> A sala de estar</div>
+                    <div class="opcao"><span class="opcao-letra">B)</span> A cozinha</div>
+                    <div class="opcao"><span class="opcao-letra">C)</span> O quarto</div>
+                    <div class="opcao"><span class="opcao-letra">D)</span> Tudo de uma vez</div>
+                </div>
+            </div>
+
+            <div class="pergunta">
+                <div class="numero-pergunta">2. O que costuma acabar primeiro: gás, paciência ou papel higiênico?</div>
+                <div class="opcoes">
+                    <div class="opcao"><span class="opcao-letra">A)</span> Gás</div>
+                    <div class="opcao"><span class="opcao-letra">B)</span> Paciência</div>
+                    <div class="opcao"><span class="opcao-letra">C)</span> Papel higiênico</div>
+                    <div class="opcao"><span class="opcao-letra">D)</span> A vontade de morar sozinha</div>
+                </div>
+            </div>
+
+            <div class="pergunta">
+                <div class="numero-pergunta">3. Qual objeto some misteriosamente e reaparece dias depois?</div>
+                <div class="opcoes">
+                    <div class="opcao"><span class="opcao-letra">A)</span> Controle remoto</div>
+                    <div class="opcao"><span class="opcao-letra">B)</span> Chaves</div>
+                    <div class="opcao"><span class="opcao-letra">C)</span> Caneta</div>
+                    <div class="opcao"><span class="opcao-letra">D)</span> Depende do dia</div>
+                </div>
+            </div>
+
+            <div class="pergunta">
+                <div class="numero-pergunta">4. O sofá serve mais para sentar ou para deitar?</div>
+                <div class="opcoes">
+                    <div class="opcao"><span class="opcao-letra">A)</span> Sentar</div>
+                    <div class="opcao"><span class="opcao-letra">B)</span> Deitar</div>
+                    <div class="opcao"><span class="opcao-letra">C)</span> Cama alternativa</div>
+                    <div class="opcao"><span class="opcao-letra">D)</span> Guarda-roupa secundário</div>
+                </div>
+            </div>
+
+            <div class="pergunta">
+                <div class="numero-pergunta">5. Qual tarefa doméstica sempre fica pra depois?</div>
+                <div class="opcoes">
+                    <div class="opcao"><span class="opcao-letra">A)</span> Lavar louça</div>
+                    <div class="opcao"><span class="opcao-letra">B)</span> Passar roupa</div>
+                    <div class="opcao"><span class="opcao-letra">C)</span> Limpar banheiro</div>
+                    <div class="opcao"><span class="opcao-letra">D)</span> Todas as acima</div>
+                </div>
+            </div>
+
+            <div class="pergunta">
+                <div class="numero-pergunta">6. Qual é o horário oficial de limpar a casa?</div>
+                <div class="opcoes">
+                    <div class="opcao"><span class="opcao-letra">A)</span> 8 da manhã</div>
+                    <div class="opcao"><span class="opcao-letra">B)</span> Quando chega visita</div>
+                    <div class="opcao"><span class="opcao-letra">C)</span> Quando não aguenta mais</div>
+                    <div class="opcao"><span class="opcao-letra">D)</span> Que limpeza?</div>
+                </div>
+            </div>
+
+            <div class="pergunta">
+                <div class="numero-pergunta">7. Qual item você compra achando que vai usar muito… e nunca usa?</div>
+                <div class="opcoes">
+                    <div class="opcao"><span class="opcao-letra">A)</span> Panela de pressão</div>
+                    <div class="opcao"><span class="opcao-letra">B)</span> Livro de receitas</div>
+                    <div class="opcao"><span class="opcao-letra">C)</span> Escova de limpar</div>
+                    <div class="opcao"><span class="opcao-letra">D)</span> Tudo que compra</div>
+                </div>
+            </div>
+
+            <div class="pergunta">
+                <div class="numero-pergunta">8. O que mais cansa ao chegar em casa?</div>
+                <div class="opcoes">
+                    <div class="opcao"><span class="opcao-letra">A)</span> Trabalho do dia</div>
+                    <div class="opcao"><span class="opcao-letra">B)</span> Subir as escadas</div>
+                    <div class="opcao"><span class="opcao-letra">C)</span> Ver a bagunça</div>
+                    <div class="opcao"><span class="opcao-letra">D)</span> Decidir o que comer</div>
+                </div>
+            </div>
+
+            <div class="pergunta">
+                <div class="numero-pergunta">9. Qual cômodo mais acumula "coisas sem lugar"?</div>
+                <div class="opcoes">
+                    <div class="opcao"><span class="opcao-letra">A)</span> Quarto</div>
+                    <div class="opcao"><span class="opcao-letra">B)</span> Sala</div>
+                    <div class="opcao"><span class="opcao-letra">C)</span> Cozinha</div>
+                    <div class="opcao"><span class="opcao-letra">D)</span> A cadeira das roupas</div>
+                </div>
+            </div>
+
+            <div class="pergunta">
+                <div class="numero-pergunta">10. Qual é o maior inimigo da casa organizada?</div>
+                <div class="opcoes">
+                    <div class="opcao"><span class="opcao-letra">A)</span> Preguiça</div>
+                    <div class="opcao"><span class="opcao-letra">B)</span> Falta de espaço</div>
+                    <div class="opcao"><span class="opcao-letra">C)</span> Gasparzinho</div>
+                    <div class="opcao"><span class="opcao-letra">D)</span> A vida mesmo</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- BLOCO 2 -->
+        <div class="bloco" id="bloco2">
+            <div class="titulo-bloco">👻 BLOCO 2 – CASA NOVA OU FENÔMENO PARANORMAL?</div>
+            
+            <div class="pergunta">
+                <div class="numero-pergunta">1. Quem apaga a luz que você tem certeza que deixou acesa?</div>
+                <div class="opcoes">
+                    <div class="opcao"><span class="opcao-letra">A)</span> Você mesma (esqueceu)</div>
+                    <div class="opcao"><span class="opcao-letra">B)</span> Gasparzinho</div>
+                    <div class="opcao"><span class="opcao-letra">C)</span> O vizinho magicamente</div>
+                    <div class="opcao"><span class="opcao-letra">D)</span> Fantasma ecologista</div>
+                </div>
+            </div>
+
+            <div class="pergunta">
+                <div class="numero-pergunta">2. Barulho estranho à noite é: encanamento, vizinho ou Gasparzinho?</div>
+                <div class="opcoes">
+                    <div class="opcao"><span class="opcao-letra">A)</span> Encanamento</div>
+                    <div class="opcao"><span class="opcao-letra">B)</span> Vizinho</div>
+                    <div class="opcao"><span class="opcao-letra">C)</span> Gasparzinho</div>
+                    <div class="opcao"><span class="opcao-letra">D)</span> Paranoia da madrugada</div>
+                </div>
+            </div>
+
+            <div class="pergunta">
+                <div class="numero-pergunta">3. Qual objeto parece cair sozinho?</div>
+                <div class="opcoes">
+                    <div class="opcao"><span class="opcao-letra">A)</span> Quadro</div>
+                    <div class="opcao"><span class="opcao-letra">B)</span> Espelho</div>
+                    <div class="opcao"><span class="opcao-letra">C)</span> Copo</div>
+                    <div class="opcao"><span class="opcao-letra">D)</span> Sua sanidade</div>
+                </div>
+            </div>
+
+            <div class="pergunta">
+                <div class="numero-pergunta">4. O que sempre faz barulho de madrugada?</div>
+                <div class="opcoes">
+                    <div class="opcao"><span class="opcao-letra">A)</span> Geladeira</div>
+                    <div class="opcao"><span class="opcao-letra">B)</span> Encanamento</div>
+                    <div class="opcao"><span class="opcao-letra">C)</span> Vento</div>
+                    <div class="opcao"><span class="opcao-letra">D)</span> Seu coração acelerado</div>
+                </div>
+            </div>
+
+            <div class="pergunta">
+                <div class="numero-pergunta">5. Você investiga o barulho ou finge que não ouviu?</div>
+                <div class="opcoes">
+                    <div class="opcao"><span class="opcao-letra">A)</span> Investiga</div>
+                    <div class="opcao"><span class="opcao-letra">B)</span> Finge dormir</div>
+                    <div class="opcao"><span class="opcao-letra">C)</span> Chama pelo WhatsApp</div>
+                    <div class="opcao"><span class="opcao-letra">D)</span> Reza</div>
+                </div>
+            </div>
+
+            <div class="pergunta">
+                <div class="numero-pergunta">6. Qual lugar da casa mais dá a sensação de "tem alguém aqui"?</div>
+                <div class="opcoes">
+                    <div class="opcao"><span class="opcao-letra">A)</span> Banheiro</div>
+                    <div class="opcao"><span class="opcao-letra">B)</span> Cozinha à noite</div>
+                    <div class="opcao"><span class="opcao-letra">C)</span> Debaixo da cama</div>
+                    <div class="opcao"><span class="opcao-letra">D)</span> Armário</div>
+                </div>
+            </div>
+
+            <div class="pergunta">
+                <div class="numero-pergunta">7. Qual item muda de lugar sozinho?</div>
+                <div class="opcoes">
+                    <div class="opcao"><span class="opcao-letra">A)</span> Chinelo</div>
+                    <div class="opcao"><span class="opcao-letra">B)</span> Caneta</div>
+                    <div class="opcao"><span class="opcao-letra">C)</span> Carregador</div>
+                    <div class="opcao"><span class="opcao-letra">D)</span> Sua sanidade mental</div>
+                </div>
+            </div>
+
+            <div class="pergunta">
+                <div class="numero-pergunta">8. Ventilador desligado pode causar medo?</div>
+                <div class="opcoes">
+                    <div class="opcao"><span class="opcao-letra">A)</span> Sim, porque faz barulho ao ligar</div>
+                    <div class="opcao"><span class="opcao-letra">B)</span> Sim, porque parece estar "vivo"</div>
+                    <div class="opcao"><span class="opcao-letra">C)</span> Sim, porque esqueceu de desligar</div>
+                    <div class="opcao"><span class="opcao-letra">D)</span> Não, é só um ventilador</div>
+                </div>
+            </div>
+
+            <div class="pergunta">
+                <div class="numero-pergunta">9. Qual é a reação automática ao ouvir um barulho à noite?</div>
+                <div class="opcoes">
+                    <div class="opcao"><span class="opcao-letra">A)</span> Fica imóvel</div>
+                    <div class="opcao"><span class="opcao-letra">B)</span> Cobre a cabeça</div>
+                    <div class="opcao"><span class="opcao-letra">C)</span> Agarra o celular</div>
+                    <div class="opcao"><span class="opcao-letra">D)</span> Grita</div>
+                </div>
+            </div>
+
+            <div class="pergunta">
+                <div class="numero-pergunta">10. Quem mora na casa além de você?</div>
+                <div class="opcoes">
+                    <div class="opcao"><span class="opcao-letra">A)</span> Gasparzinho</div>
+                    <div class="opcao"><span class="opcao-letra">B)</span> As aranhas</div>
+                    <div class="opcao"><span class="opcao-letra">C)</span> Ninguém</div>
+                    <div class="opcao"><span class="opcao-letra">D)</span> Gatos e espíritos</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- BLOCO 3 -->
+        <div class="bloco" id="bloco3">
+            <div class="titulo-bloco">🍽️ BLOCO 3 – COZINHA DA VIDA ADULTA REAL</div>
+            
+            <div class="pergunta">
+                <div class="numero-pergunta">1. Abrir a geladeira sem fome acontece quantas vezes por dia?</div>
+                <div class="opcoes">
+                    <div class="opcao"><span class="opcao-letra">A)</span> 1 a 3 vezes</div>
+                    <div class="opcao"><span class="opcao-letra">B)</span> 5 a 10 vezes</div>
+                    <div class="opcao"><span class="opcao-letra">C)</span> Mais de 10 vezes</div>
+                    <div class="opcao"><span class="opcao-letra">D)</span> Perdi a conta</div>
+                </div>
+            </div>
+
+            <div class="pergunta">
+                <div class="numero-pergunta">2. O que estraga primeiro na geladeira?</div>
+                <div class="opcoes">
+                    <div class="opcao"><span class="opcao-letra">A)</span> Leite</div>
+                    <div class="opcao"><span class="opcao-letra">B)</span> Aquele pote misterioso</div>
+                    <div class="opcao"><span class="opcao-letra">C)</span> Verdura</div>
+                    <div class="opcao"><span class="opcao-letra">D)</span> Sua esperança de cozinhar</div>
+                </div>
+            </div>
+
+            <div class="pergunta">
+                <div class="numero-pergunta">3. Qual a refeição mais repetida numa casa solo?</div>
+                <div class="opcoes">
+                    <div class="opcao"><span class="opcao-letra">A)</span> Arroz com feijão</div>
+                    <div class="opcao"><span class="opcao-letra">B)</span> Macarrão</div>
+                    <div class="opcao"><span class="opcao-letra">C)</span> Ovo</div>
+                    <div class="opcao"><span class="opcao-letra">D)</span> Delivery</div>
+                </div>
+            </div>
+
+            <div class="pergunta">
+                <div class="numero-pergunta">4. O que você compra achando que vai cozinhar… e não cozinha?</div>
+                <div class="opcoes">
+                    <div class="opcao"><span class="opcao-letra">A)</span> Verdura</div>
+                    <div class="opcao"><span class="opcao-letra">B)</span> Carne</div>
+                    <div class="opcao"><span class="opcao-letra">C)</span> Ingredientes sofisticados</div>
+                    <div class="opcao"><span class="opcao-letra">D)</span> Tudo</div>
+                </div>
+            </div>
+
+            <div class="pergunta">
+                <div class="numero-pergunta">5. Qual item você sempre esquece no mercado?</div>
+                <div class="opcoes">
+                    <div class="opcao"><span class="opcao-letra">A)</span> Leite</div>
+                    <div class="opcao"><span class="opcao-letra">B)</span> Pão</div>
+                    <div class="opcao"><span class="opcao-letra">C)</span> Aquilo que ia vender</div>
+                    <div class="opcao"><span class="opcao-letra">D)</span> De onde estacionou</div>
+                </div>
+            </div>
+
+            <div class="pergunta">
+                <div class="numero-pergunta">6. Depois de quantos dias a pia começa a lotar?</div>
+                <div class="opcoes">
+                    <div class="opcao"><span class="opcao-letra">A)</span> 1 dia</div>
+                    <div class="opcao"><span class="opcao-letra">B)</span> 2 dias</div>
+                    <div class="opcao"><span class="opcao-letra">C)</span> 3 dias</div>
+                    <div class="opcao"><span class="opcao-letra">D)</span> Desde ontem</div>
+                </div>
+            </div>
+
+            <div class="pergunta">
+                <div class="numero-pergunta">7. O prato "de emergência" é qual?</div>
+                <div class="opcoes">
+                    <div class="opcao"><span class="opcao-letra">A)</span> Miojo</div>
+                    <div class="opcao"><span class="opcao-letra">B)</span> Ovo frito</div>
+                    <div class="opcao"><span class="opcao-letra">C)</span> Pão com manteiga</div>
+                    <div class="opcao"><span class="opcao-letra">D)</span> Comer no prato anterior (sem lavar)</div>
+                </div>
+            </div>
+
+            <div class="pergunta">
+                <div class="numero-pergunta">8. Qual eletrodoméstico é o mais usado?</div>
+                <div class="opcoes">
+                    <div class="opcao"><span class="opcao-letra">A)</span> Geladeira</div>
+                    <div class="opcao"><span class="opcao-letra">B)</span> Micro-ondas</div>
+                    <div class="opcao"><span class="opcao-letra">C)</span> Cafeteira</div>
+                    <div class="opcao"><span class="opcao-letra">D)</span> Fogão</div>
+                </div>
+            </div>
+
+            <div class="pergunta">
+                <div class="numero-pergunta">9. Qual utensílio você nunca sabe onde está?</div>
+                <div class="opcoes">
+                    <div class="opcao"><span class="opcao-letra">A)</span> Colher</div>
+                    <div class="opcao"><span class="opcao-letra">B)</span> Faca</div>
+                    <div class="opcao"><span class="opcao-letra">C)</span> Garfo</div>
+                    <div class="opcao"><span class="opcao-letra">D)</span> Tudo quando precisa</div>
+                </div>
+            </div>
+
+            <div class="pergunta">
+                <div class="numero-pergunta">10. Cozinhar em casa é economia, terapia ou ilusão?</div>
+                <div class="opcoes">
+                    <div class="opcao"><span class="opcao-letra">A)</span> Economia</div>
+                    <div class="opcao"><span class="opcao-letra">B)</span> Terapia</div>
+                    <div class="opcao"><span class="opcao-letra">C)</span> Ilusão</div>
+                    <div class="opcao"><span class="opcao-letra">D)</span> Cansaço</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- BLOCO 4 -->
+        <div class="bloco" id="bloco4">
+            <div class="titulo-bloco">🧹 BLOCO 4 – ORGANIZAÇÃO (OU A FALTA DELA)</div>
+            
+            <div class="pergunta">
+                <div class="numero-pergunta">1. Quantos dias uma caixa demora para ser desempacotada?</div>
+                <div class="opcoes">
+                    <div class="opcao"><span class="opcao-letra">A)</span> 1 semana</div>
+                    <div class="opcao"><span class="opcao-letra">B)</span> 1 mês</div>
+                    <div class="opcao"><span class="opcao-letra">C)</span> 3 meses</div>
+                    <div class="opcao"><span class="opcao-letra">D)</span> Virou móvel decorativo</div>
+                </div>
+            </div>
+
+            <div class="pergunta">
+                <div class="numero-pergunta">2. Onde fica a famosa "cadeira das roupas"?</div>
+                <div class="opcoes">
+                    <div class="opcao"><span class="opcao-letra">A)</span> Quarto</div>
+                    <div class="opcao"><span class="opcao-letra">B)</span> Sala</div>
+                    <div class="opcao"><span class="opcao-letra">C)</span> Ambos os lugares</div>
+                    <div class="opcao"><span class="opcao-letra">D)</span> Espalhada pela casa</div>
+                </div>
+            </div>
+
+            <div class="pergunta">
+                <div class="numero-pergunta">3. Roupa limpa vai direto pro armário?</div>
+                <div class="opcoes">
+                    <div class="opcao"><span class="opcao-letra">A)</span> Sim</div>
+                    <div class="opcao"><span class="opcao-letra">B)</span> Fica na cadeira</div>
+                    <div class="opcao"><span class="opcao-letra">C)</span> Na cama</div>
+                    <div class="opcao"><span class="opcao-letra">D)</span> Sai da máquina e volta</div>
+                </div>
+            </div>
+
+            <div class="pergunta">
+                <div class="numero-pergunta">4. Qual lugar da casa ninguém vê, mas você sabe que existe?</div>
+                <div class="opcoes">
+                    <div class="opcao"><span class="opcao-letra">A)</span> Armário de coisas</div>
+                    <div class="opcao"><span class="opcao-letra">B)</span> Guarda-roupa secreto</div>
+                    <div class="opcao"><span class="opcao-letra">C)</span> Debaixo da cama</div>
+                    <div class="opcao"><span class="opcao-letra">D)</span> A porta fechada</div>
+                </div>
+            </div>
+
+            <div class="pergunta">
+                <div class="numero-pergunta">5. Qual objeto sempre fica fora do lugar?</div>
+                <div class="opcoes">
+                    <div class="opcao"><span class="opcao-letra">A)</span> Chinelo</div>
+                    <div class="opcao"><span class="opcao-letra">B)</span> Capa de almofada</div>
+                    <div class="opcao"><span class="opcao-letra">C)</span> Espelho</div>
+                    <div class="opcao"><span class="opcao-letra">D)</span> Depende do humor</div>
+                </div>
+            </div>
+
+            <div class="pergunta">
+                <div class="numero-pergunta">6. Quanto tempo a casa fica organizada depois da limpeza?</div>
+                <div class="opcoes">
+                    <div class="opcao"><span class="opcao-letra">A)</span> 1 dia</div>
+                    <div class="opcao"><span class="opcao-letra">B)</span> 1 hora</div>
+                    <div class="opcao"><span class="opcao-letra">C)</span> 30 minutos</div>
+                    <div class="opcao"><span class="opcao-letra">D)</span> Até você sair do banheiro</div>
+                </div>
+            </div>
+
+            <div class="pergunta">
+                <div class="numero-pergunta">7. O que você só organiza quando alguém vai visitar?</div>
+                <div class="opcoes">
+                    <div class="opcao"><span class="opcao-letra">A)</span> Sala</div>
+                    <div class="opcao"><span class="opcao-letra">B)</span> Cozinha</div>
+                    <div class="opcao"><span class="opcao-letra">C)</span> Quarto</div>
+                    <div class="opcao"><span class="opcao-letra">D)</span> Tudo</div>
+                </div>
+            </div>
+
+            <div class="pergunta">
+                <div class="numero-pergunta">8. Limpeza geral acontece com ânimo, música ou força do ódio?</div>
+                <div class="opcoes">
+                    <div class="opcao"><span class="opcao-letra">A)</span> Ânimo</div>
+                    <div class="opcao"><span class="opcao-letra">B)</span> Música</div>
+                    <div class="opcao"><span class="opcao-letra">C)</span> Força do ódio</div>
+                    <div class="opcao"><span class="opcao-letra">D)</span> Nunca acontece</div>
+                </div>
+            </div>
+
+            <div class="pergunta">
+                <div class="numero-pergunta">9. Qual área da casa você finge que não existe?</div>
+                <div class="opcoes">
+                    <div class="opcao"><span class="opcao-letra">A)</span> Embaixo da cama</div>
+                    <div class="opcao"><span class="opcao-letra">B)</span> Fundo do armário</div>
+                    <div class="opcao"><span class="opcao-letra">C)</span> Atrás da porta</div>
+                    <div class="opcao"><span class="opcao-letra">D)</span> Tudo que fecha</div>
+                </div>
+            </div>
+
+            <div class="pergunta">
+                <div class="numero-pergunta">10. Qual frase define a casa num dia normal?</div>
+                <div class="opcoes">
+                    <div class="opcao"><span class="opcao-letra">A)</span> "Que bagunça!"</div>
+                    <div class="opcao"><span class="opcao-letra">B)</span> "Preciso organizar"</div>
+                    <div class="opcao"><span class="opcao-letra">C)</span> "Amanhã eu limpo"</div>
+                    <div class="opcao"><span class="opcao-letra">D)</span> "É um caos controlado"</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- BLOCO 5 -->
+        <div class="bloco" id="bloco5">
+            <div class="titulo-bloco">✅ BLOCO 5 – VERDADE OU MENTIRA</div>
+            
+            <div style="background: #fff8f0; padding: 15px; border-radius: 6px; margin-bottom: 20px; border-left: 5px solid var(--cor-ouro);">
+                <strong style="color: var(--cor-ouro);">Responder apenas: V (Verdade) ou M (Mentira)</strong>
+            </div>
+
+            <div class="pergunta bloco-vf">
+                <div class="numero-pergunta">1. Morar sozinha deixa a casa mais bagunçada</div>
+                <div style="color: var(--cor-texto-claro); font-size: 14px; margin-top: 8px;">Responda: <strong>V ou M</strong></div>
+            </div>
+
+            <div class="pergunta bloco-vf">
+                <div class="numero-pergunta">2. Morar sozinha deixa a casa mais silenciosa</div>
+                <div style="color: var(--cor-texto-claro); font-size: 14px; margin-top: 8px;">Responda: <strong>V ou M</strong></div>
+            </div>
+
+            <div class="pergunta bloco-vf">
+                <div class="numero-pergunta">3. A casa fica arrumada todos os dias</div>
+                <div style="color: var(--cor-texto-claro); font-size: 14px; margin-top: 8px;">Responda: <strong>V ou M</strong></div>
+            </div>
+
+            <div class="pergunta bloco-vf">
+                <div class="numero-pergunta">4. Luz acesa em cômodo vazio é inevitável</div>
+                <div style="color: var(--cor-texto-claro); font-size: 14px; margin-top: 8px;">Responda: <strong>V ou M</strong></div>
+            </div>
+
+            <div class="pergunta bloco-vf">
+                <div class="numero-pergunta">5. Planta sobrevive sem água</div>
+                <div style="color: var(--cor-texto-claro); font-size: 14px; margin-top: 8px;">Responda: <strong>V ou M</strong></div>
+            </div>
+
+            <div class="pergunta bloco-vf">
+                <div class="numero-pergunta">6. Barulho estranho sempre dá medo</div>
+                <div style="color: var(--cor-texto-claro); font-size: 14px; margin-top: 8px;">Responda: <strong>V ou M</strong></div>
+            </div>
+
+            <div class="pergunta bloco-vf">
+                <div class="numero-pergunta">7. A casa reflete o humor do dia</div>
+                <div style="color: var(--cor-texto-claro); font-size: 14px; margin-top: 8px;">Responda: <strong>V ou M</strong></div>
+            </div>
+
+            <div class="pergunta bloco-vf">
+                <div class="numero-pergunta">8. Todo mundo conversa sozinho em casa</div>
+                <div style="color: var(--cor-texto-claro); font-size: 14px; margin-top: 8px;">Responda: <strong>V ou M</strong></div>
+            </div>
+
+            <div class="pergunta bloco-vf">
+                <div class="numero-pergunta">9. Dormir no sofá acontece</div>
+                <div style="color: var(--cor-texto-claro); font-size: 14px; margin-top: 8px;">Responda: <strong>V ou M</strong></div>
+            </div>
+
+            <div class="pergunta bloco-vf">
+                <div class="numero-pergunta">10. A cama vira escritório às vezes</div>
+                <div style="color: var(--cor-texto-claro); font-size: 14px; margin-top: 8px;">Responda: <strong>V ou M</strong></div>
+            </div>
+        </div>
+
+        <!-- DESAFIO RELÂMPAGO -->
+        <div class="bloco" id="desafio">
+            <div class="titulo-bloco">⚡ BLOCO FINAL – DESAFIO RELÂMPAGO</div>
+            
+            <div style="background: #f5f1e8; padding: 15px; border-radius: 6px; margin-bottom: 20px; border-left: 5px solid #8B7355;">
+                <strong style="color: #8B7355;">⏱️ 10 segundos – não pode passar nem repassar</strong>
+            </div>
+
+            <div class="desafio">
+                <div class="numero-desafio">1. Cite 3 sinais de casa bagunçada</div>
+                <div class="texto-desafio">Resposta aberta - você julga</div>
+            </div>
+
+            <div class="desafio">
+                <div class="numero-desafio">2. Cite 3 coisas que sempre quebram numa casa</div>
+                <div class="texto-desafio">Resposta aberta - você julga</div>
+            </div>
+
+            <div class="desafio">
+                <div class="numero-desafio">3. Cite 3 objetos que nunca estão no lugar</div>
+                <div class="texto-desafio">Resposta aberta - você julga</div>
+            </div>
+
+            <div class="desafio">
+                <div class="numero-desafio">4. Cite 3 tarefas domésticas chatas</div>
+                <div class="texto-desafio">Resposta aberta - você julga</div>
+            </div>
+
+            <div class="desafio">
+                <div class="numero-desafio">5. Cite 3 coisas que fazem pensar: "amo minha casa"</div>
+                <div class="texto-desafio">Resposta aberta - você julga</div>
+            </div>
+        </div>
+
+        <!-- INSTRUÇÕES FINAIS -->
+        <div class="instrucoes">
+            <h3>📋 INSTRUÇÕES PARA ENVIAR O GABARITO</h3>
+            <p><strong>Para cada pergunta dos BLOCOS 1-4:</strong> Indique qual é a opção correta (A, B, C ou D)</p>
+            <p><strong>Para o BLOCO 5 (Verdade ou Mentira):</strong> Indique V (Verdade) ou M (Mentira)</p>
+            <p><strong>Para o DESAFIO RELÂMPAGO:</strong> Você será o juiz durante o jogo (resposta aberta)</p>
+            <p style="margin-top: 15px; font-weight: bold;">Exemplo do formato esperado:</p>
+            <p style="background: white; padding: 10px; border-radius: 4px; margin-top: 10px; font-family: monospace; font-size: 12px;">
+                Bloco 1 - Pergunta 1: B<br>
+                Bloco 1 - Pergunta 2: A<br>
+                Bloco 1 - Pergunta 3: C<br>
+                (e assim por diante...)
+            </p>
+        </div>
+
+        <!-- TOTAL DE PERGUNTAS -->
+        <div class="total-perguntas">
+            📊 TOTAL: 40 perguntas (Blocos 1-4) + 10 Verdade ou Falso (Bloco 5) + 5 Desafios = 55 questões
+        </div>
+    </div>
+</body>
+</html>

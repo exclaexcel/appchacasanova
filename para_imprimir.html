@@ -1,0 +1,1437 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🏡 Para Imprimir — Chá de Casa Nova</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --ouro: #B8956A;
+  --ouro-escuro: #a07d54;
+  --bege: #F5F1E8;
+  --texto: #5C4A3D;
+  --texto-claro: #8B7355;
+}
+
+body {
+  font-family: 'Georgia', serif;
+  color: var(--texto);
+  background: #f5f0e8;
+  padding: 20px;
+}
+
+/* ── BOTÃO IMPRIMIR (some na impressão) ── */
+.btn-imprimir {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: var(--ouro);
+  color: white;
+  border: none;
+  border-radius: 50px;
+  padding: 14px 24px;
+  font-family: 'Georgia', serif;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 6px 20px rgba(184,149,106,0.4);
+  z-index: 100;
+  transition: all 0.2s;
+}
+.btn-imprimir:hover { background: var(--ouro-escuro); transform: translateY(-2px); }
+
+/* ── PÁGINA A4 ── */
+.pagina {
+  background: white;
+  max-width: 210mm;
+  margin: 0 auto 20px;
+  padding: 20mm 18mm;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+  border-radius: 4px;
+  page-break-after: always;
+}
+.pagina:last-of-type { page-break-after: auto; }
+
+/* ── CAPA ── */
+.capa {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 250mm;
+  text-align: center;
+  border: 4px solid var(--ouro);
+  border-radius: 12px;
+  padding: 40px;
+}
+.capa-emoji { font-size: 64px; margin-bottom: 20px; }
+.capa h1 { font-size: 32px; color: var(--ouro); margin-bottom: 8px; line-height: 1.2; }
+.capa .sub { font-size: 16px; color: var(--texto-claro); font-style: italic; margin-bottom: 32px; }
+.capa-divisor { width: 80px; height: 3px; background: var(--ouro); margin: 0 auto 32px; border-radius: 2px; }
+
+.indice { text-align: left; width: 100%; max-width: 380px; }
+.indice h3 { font-size: 14px; color: var(--ouro); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 14px; text-align: center; }
+.indice-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  background: var(--bege);
+  border-radius: 8px;
+  margin-bottom: 8px;
+  border-left: 4px solid var(--ouro);
+}
+.indice-item .num { font-size: 18px; }
+.indice-item .desc { font-size: 13px; color: var(--texto); line-height: 1.4; }
+.indice-item .desc strong { color: var(--ouro-escuro); }
+
+.aviso-pdf {
+  margin-top: 24px;
+  padding: 14px 18px;
+  background: #fff8f0;
+  border: 2px solid var(--ouro);
+  border-radius: 8px;
+  font-size: 13px;
+  color: var(--texto-claro);
+  text-align: center;
+  line-height: 1.6;
+  width: 100%;
+  max-width: 380px;
+}
+.aviso-pdf strong { color: var(--ouro-escuro); }
+
+/* ── CABEÇALHO DE SEÇÃO ── */
+.secao-header {
+  border-bottom: 3px solid var(--ouro);
+  padding-bottom: 14px;
+  margin-bottom: 22px;
+}
+.secao-header h2 { font-size: 24px; color: var(--ouro); margin-bottom: 4px; }
+.secao-header p { font-size: 13px; color: var(--texto-claro); font-style: italic; }
+
+/* ── BLOCO DE INSTRUÇÃO ── */
+.instrucao-bloco {
+  border: 1.5px solid var(--ouro);
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 16px;
+  page-break-inside: avoid;
+}
+.instrucao-bloco-titulo {
+  background: var(--ouro);
+  color: white;
+  padding: 9px 14px;
+  font-size: 14px;
+  font-weight: bold;
+}
+.instrucao-bloco-corpo {
+  padding: 12px 14px;
+  font-size: 13px;
+  color: var(--texto-claro);
+  line-height: 1.7;
+}
+.instrucao-bloco-corpo strong { color: var(--texto); }
+.instrucao-item { margin-bottom: 4px; }
+.instrucao-destaque {
+  margin-top: 10px;
+  background: #fff8f0;
+  border-left: 4px solid var(--ouro);
+  border-radius: 4px;
+  padding: 9px 12px;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.roteiro-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+.roteiro-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 12px;
+  background: var(--bege);
+  border-radius: 6px;
+}
+.roteiro-item .num { font-size: 20px; line-height: 1; }
+.roteiro-item .info strong { font-size: 14px; color: var(--texto); display: block; }
+.roteiro-item .info span { font-size: 12px; color: var(--texto-claro); }
+
+.frase-final {
+  text-align: center;
+  font-style: italic;
+  color: var(--texto);
+  background: var(--bege);
+  padding: 14px;
+  border-radius: 8px;
+  font-size: 14px;
+  margin-top: 16px;
+  border: 1.5px solid var(--ouro);
+}
+
+/* ── PERGUNTAS ── */
+.bloco-titulo {
+  background: var(--ouro);
+  color: white;
+  padding: 10px 16px;
+  font-size: 15px;
+  font-weight: bold;
+  border-radius: 6px;
+  margin-bottom: 14px;
+  margin-top: 20px;
+  page-break-after: avoid;
+}
+.bloco-titulo:first-of-type { margin-top: 0; }
+
+.pergunta {
+  margin-bottom: 14px;
+  padding: 12px 14px;
+  background: var(--bege);
+  border-left: 4px solid var(--ouro);
+  border-radius: 0 6px 6px 0;
+  page-break-inside: avoid;
+}
+.pergunta .num-p {
+  font-size: 12px;
+  font-weight: bold;
+  color: var(--ouro);
+  margin-bottom: 5px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.pergunta .texto-p {
+  font-size: 14px;
+  font-weight: bold;
+  color: var(--texto);
+  margin-bottom: 8px;
+  line-height: 1.4;
+}
+.opcoes-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px 16px;
+}
+.opcao {
+  font-size: 13px;
+  color: var(--texto-claro);
+  line-height: 1.4;
+  display: flex;
+  gap: 6px;
+}
+.opcao .letra { font-weight: bold; color: var(--ouro); min-width: 18px; }
+
+.gabarito-linha {
+  margin-top: 8px;
+  font-size: 11px;
+  color: #bbb;
+  border-top: 1px dashed #ddd;
+  padding-top: 6px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.gabarito-linha span { white-space: nowrap; }
+.gabarito-linha .linha { flex: 1; border-bottom: 1px solid #ddd; }
+
+/* Verdade ou Mentira */
+.pergunta-vm {
+  margin-bottom: 10px;
+  padding: 10px 14px;
+  background: #fff8f0;
+  border-left: 4px solid #d4a574;
+  border-radius: 0 6px 6px 0;
+  page-break-inside: avoid;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.pergunta-vm .texto-vm { font-size: 14px; color: var(--texto); flex: 1; }
+.vm-opcoes { display: flex; gap: 10px; white-space: nowrap; }
+.vm-opcao { font-size: 13px; color: var(--texto-claro); }
+.vm-opcao .letra { font-weight: bold; color: var(--ouro-escuro); }
+
+/* Desafio */
+.desafio-item {
+  margin-bottom: 14px;
+  padding: 12px 14px;
+  background: white;
+  border: 2px dashed var(--ouro);
+  border-radius: 6px;
+  page-break-inside: avoid;
+}
+.desafio-item .num-d { font-size: 14px; font-weight: bold; color: var(--ouro); margin-bottom: 6px; }
+.desafio-item .texto-d { font-size: 14px; color: var(--texto); }
+.desafio-linhas { margin-top: 10px; }
+.desafio-linhas div { border-bottom: 1px solid #e0d8ce; margin-bottom: 10px; height: 10px; }
+
+/* Gestos Advinha */
+.gestos-print {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 18px;
+  justify-content: center;
+}
+.gesto-print {
+  flex: 1;
+  max-width: 120px;
+  border: 1.5px solid var(--ouro);
+  border-radius: 8px;
+  padding: 12px 8px;
+  text-align: center;
+}
+.gesto-print .gi { font-size: 32px; display: block; margin-bottom: 4px; }
+.gesto-print .gl { font-size: 16px; font-weight: bold; color: var(--ouro); }
+.gesto-print .gd { font-size: 12px; color: var(--texto-claro); margin-top: 2px; }
+
+/* ── PRINT ── */
+@page { size: A4; margin: 0; }
+@media print {
+  body { background: white; padding: 0; }
+  .btn-imprimir, .btn-recriar { display: none; }
+  .pagina {
+    box-shadow: none;
+    border-radius: 0;
+    margin: 0;
+    padding: 15mm 16mm;
+    max-width: 100%;
+    height: auto;
+  }
+  .pagina-bingo {
+    box-shadow: none;
+    margin: 0;
+    width: 100%;
+    height: auto;
+    overflow: visible;
+    padding: 10mm;
+  }
+  .cartela-celula:nth-child(odd) { background: white !important; }
+  .cartela-celula:nth-child(even) { background: #fdfaf5 !important; }
+  .pedrinha:nth-child(even) { background: #fdfaf6 !important; }
+  #bingo-cartelas-app,
+  #bingo-pedrinhas-app { display: contents; }
+}
+
+/* ── BINGO PAGES ── */
+.pagina-bingo {
+  width: 210mm;
+  height: 296mm;
+  background: white;
+  margin: 0 auto 20px;
+  padding: 10mm 10mm;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.15);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  page-break-after: always;
+}
+
+/* Cartela */
+.cartela {
+  border: 2.5px solid var(--ouro);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(184,149,106,0.2);
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+}
+.cartela-header {
+  background: linear-gradient(135deg, var(--ouro) 0%, var(--ouro-escuro) 100%);
+  padding: 8px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+}
+.header-esq { display: flex; align-items: center; gap: 6px; }
+.header-emoji { font-size: 20px; }
+.header-titulo { color: white; font-weight: bold; letter-spacing: 1.5px; text-transform: uppercase; font-size: 13px; }
+.header-sub { color: rgba(255,255,255,0.8); font-size: 9px; font-style: italic; }
+.header-num {
+  background: rgba(255,255,255,0.2);
+  color: white;
+  border: 1.5px solid rgba(255,255,255,0.4);
+  border-radius: 20px;
+  padding: 3px 10px;
+  font-size: 11px;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+.cartela-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(4, 26mm);
+  background: #d4aa82;
+  height: 104mm;
+  flex-shrink: 0;
+}
+.cartela-celula {
+  background: white;
+  border: 0.8px solid #e8ddd0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 6px 4px;
+}
+.cartela-celula:nth-child(even) { background: #fdfaf5; }
+.celula-emoji { font-size: 20px; margin-bottom: 3px; line-height: 1; }
+.celula-texto { font-size: 10px; font-weight: 600; color: var(--texto); line-height: 1.2; }
+.cartela-footer {
+  background: var(--bege);
+  padding: 5px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1.5px solid #d4aa82;
+  flex-shrink: 0;
+}
+.footer-instrucao { font-size: 9px; color: var(--texto-claro); font-style: italic; }
+.footer-decs { font-size: 12px; letter-spacing: 2px; }
+
+/* Recorte */
+.recorte {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 0;
+  flex-shrink: 0;
+}
+.recorte-linha { flex: 1; border-top: 1.5px dashed #c8b89a; }
+.recorte-texto { font-size: 10px; color: var(--texto-claro); font-style: italic; letter-spacing: 0.5px; white-space: nowrap; }
+
+/* Botão recriar cartelas */
+.btn-recriar {
+  position: fixed;
+  bottom: 24px;
+  left: 24px;
+  background: white;
+  color: var(--ouro);
+  border: 2px solid var(--ouro);
+  border-radius: 50px;
+  padding: 13px 22px;
+  font-family: 'Georgia', serif;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  z-index: 100;
+  transition: all 0.2s;
+}
+.btn-recriar:hover { background: var(--bege); }
+
+/* Pedrinhas */
+.pagina-header-bingo {
+  text-align: center;
+  margin-bottom: 6mm;
+  padding-bottom: 5mm;
+  border-bottom: 2px solid var(--ouro);
+}
+.pagina-header-bingo .titulo { font-size: 20px; color: var(--ouro-escuro); font-weight: bold; letter-spacing: 2px; text-transform: uppercase; }
+.pagina-header-bingo .sub { font-size: 11px; color: var(--texto-claro); font-style: italic; margin-top: 3px; }
+.pagina-header-bingo .instrucao { font-size: 10px; color: var(--texto-claro); margin-top: 5px; background: var(--bege); display: inline-block; padding: 3px 12px; border-radius: 20px; border: 1px solid #d4aa82; }
+.grade-pedrinhas {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  flex: 1;
+}
+.pedrinha {
+  border: 1px dashed #c8b89a;
+  padding: 3px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: white;
+}
+.pedrinha:nth-child(even) { background: #fdfaf6; }
+.pedrinha-inner {
+  border: 1.5px solid #d4aa82;
+  border-radius: 8px;
+  width: 100%;
+  height: 100%;
+  min-height: 18mm;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 3px;
+  background: linear-gradient(160deg, #ffffff 60%, #fff8f0 100%);
+  position: relative;
+}
+.pedrinha-numero { font-size: 8px; color: var(--ouro); font-weight: bold; margin-bottom: 2px; }
+.pedrinha-detalhe { font-size: 13px; opacity: 0.8; }
+.pedrinha-divisor { width: 16px; height: 1px; background: linear-gradient(90deg, transparent, #d4aa82, transparent); margin: 2px auto; }
+.pedrinha-texto { font-size: 9.5px; font-weight: bold; color: var(--texto); line-height: 1.2; word-break: break-word; }
+.pagina-footer-bingo {
+  text-align: center;
+  font-size: 9px;
+  color: var(--texto-claro);
+  border-top: 1px solid var(--bege);
+  padding-top: 3mm;
+  margin-top: 3mm;
+  font-style: italic;
+  display: flex;
+  justify-content: space-between;
+  flex-shrink: 0;
+}
+</style>
+</head>
+<body>
+
+<button class="btn-imprimir" onclick="window.print()">🖨️ Imprimir</button>
+
+<!-- ══════════════════════════ CAPA ══════════════════════════ -->
+<div class="pagina">
+  <div class="capa">
+    <div class="capa-emoji">🏡</div>
+    <h1>Chá de Casa Nova</h1>
+    <div class="sub">Material de apoio — Dany ✨</div>
+    <div class="capa-divisor"></div>
+
+    <div class="indice">
+      <h3>O que está neste documento</h3>
+
+      <div class="indice-item">
+        <span class="num">🧭</span>
+        <div class="desc"><strong>Seção 1 — Instruções & Roteiro</strong><br>Roteiro do dia, como conduzir cada jogo, lembretes</div>
+      </div>
+      <div class="indice-item">
+        <span class="num">🤔</span>
+        <div class="desc"><strong>Seção 2 — Advinha com a Dany</strong><br>15 perguntas com opções A, B, C e espaço para gabarito</div>
+      </div>
+      <div class="indice-item">
+        <span class="num">🎤</span>
+        <div class="desc"><strong>Seção 3 — Quiz Casa Nova</strong><br>55 questões · 6 blocos · Gasparzinho 👻</div>
+      </div>
+
+      <div class="indice-item">
+        <span class="num">🎰</span>
+        <div class="desc"><strong>Seção 4 — Cartelas do Bingo</strong><br>25 cartelas 4×4 únicas · 2 por folha A4 · recorte na linha</div>
+      </div>
+      <div class="indice-item">
+        <span class="num">✂️</span>
+        <div class="desc"><strong>Seção 5 — Pedrinhas do Sorteio</strong><br>46 pedrinhas para recortar e colocar no potinho</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════ SEÇÃO 1 — INSTRUÇÕES ══════════════════════════ -->
+<div class="pagina">
+  <div class="secao-header">
+    <h2>🧭 Seção 1 — Instruções & Roteiro</h2>
+    <p>Leia antes da festa. Pode marcar, anotar e dobrar à vontade.</p>
+  </div>
+
+  <!-- Roteiro -->
+  <div class="instrucao-bloco">
+    <div class="instrucao-bloco-titulo">🧭 Roteiro do Dia — Ordem Recomendada</div>
+    <div class="instrucao-bloco-corpo">
+      <div class="roteiro-grid">
+        <div class="roteiro-item">
+          <span class="num">1️⃣</span>
+          <div class="info"><strong>🎰 Bingo da Casa Nova</strong><span>Fácil de começar, aquece o grupo</span></div>
+        </div>
+        <div class="roteiro-item">
+          <span class="num">2️⃣</span>
+          <div class="info"><strong>🤔 Advinha com a Dany</strong><span>Interação leve, conversa e risadas</span></div>
+        </div>
+        <div class="roteiro-item">
+          <span class="num">3️⃣</span>
+          <div class="info"><strong>🎤 Quiz Casa Nova</strong><span>Auge da animação — o jogo âncora!</span></div>
+        </div>
+      </div>
+      <div class="instrucao-destaque">⚠️ Se o tempo apertar: corte <strong>1 jogo inteiro</strong> sem culpa. O evento continua ótimo.</div>
+    </div>
+  </div>
+
+  <!-- Bingo -->
+  <div class="instrucao-bloco">
+    <div class="instrucao-bloco-titulo">🎰 Bingo Casa Nova — Como Conduzir</div>
+    <div class="instrucao-bloco-corpo">
+      <div class="instrucao-item">• Entregue 1 cartela (4×4) + feijão ou milho para cada convidado</div>
+      <div class="instrucao-item">• Explique: <em>"No lugar de números, vamos sortear coisas e situações da casa"</em></div>
+      <div class="instrucao-item">• Sorteie e fale alto o item — as pessoas marcam na cartela</div>
+      <div class="instrucao-item">• Quem completar a <strong>cartela inteira</strong> grita BINGO!</div>
+      <div class="instrucao-item">• Se duas ganharem juntas → decide no carisma 😂</div>
+      <div class="instrucao-destaque">🏆 <strong>Prêmio:</strong> Chocolate ou vinho &nbsp;|&nbsp; 👉 Vá com calma no sorteio para não acabar rápido!</div>
+    </div>
+  </div>
+
+  <!-- Advinha -->
+  <div class="instrucao-bloco">
+    <div class="instrucao-bloco-titulo">🤔 Advinha com a Dany — Como Conduzir</div>
+    <div class="instrucao-bloco-corpo">
+      <div class="instrucao-item">• Leia a pergunta com as opções A, B ou C</div>
+      <div class="instrucao-item">• As pessoas respondem com o <strong>gesto corporal</strong>: A = ergue a mão 🙋 &nbsp; B = mão no ombro 👐 &nbsp; C = mão na cabeça 🙌</div>
+      <div class="instrucao-item">• Você revela a resposta e comenta — essa parte rende risadas! 💕</div>
+      <div class="instrucao-item">• Últimas 3 perguntas (Bloco 4): deixe livre, sem opções, só conversa</div>
+      <div class="instrucao-destaque">🎁 <strong>Mimo:</strong> Kit mini café + chá &nbsp;|&nbsp; ⏱️ <strong>Ideal:</strong> 6 a 10 perguntas &nbsp;|&nbsp; 👉 Pode fazer sem pontuação!</div>
+    </div>
+  </div>
+
+  <!-- Quiz -->
+  <div class="instrucao-bloco">
+    <div class="instrucao-bloco-titulo">🎤 Quiz Casa Nova — Como Conduzir</div>
+    <div class="instrucao-bloco-corpo">
+      <div class="instrucao-item">• Divida em 2 times (ou 4, se quiser mais animação)</div>
+      <div class="instrucao-item">• Explique: <em>"Perguntas sobre vida em casa nova. Dá pra responder, passar ou repassar."</em></div>
+      <div class="instrucao-item">• Leia uma pergunta por vez — controle leve de pontos</div>
+      <div class="instrucao-item">• Interaja, comente, brinque! Vale mais a risada que a precisão 😄</div>
+      <div class="instrucao-destaque">🎁 <strong>Mimo:</strong> Kit mini café + chá &nbsp;|&nbsp; ⏱️ <strong>Ideal:</strong> 10 a 15 perguntas &nbsp;|&nbsp; 👉 Se cansar → pule para o Desafio Relâmpago ⚡</div>
+    </div>
+  </div>
+
+  <!-- Lembretes -->
+  <div class="instrucao-bloco">
+    <div class="instrucao-bloco-titulo">🛎️ Lembretes Gerais</div>
+    <div class="instrucao-bloco-corpo">
+      <div class="instrucao-item">✅ Não anunciar quantos prêmios existem &nbsp;&nbsp; ✅ Sentir o clima do momento</div>
+      <div class="instrucao-item">✅ Não forçar brincadeira &nbsp;&nbsp; ✅ Rir junto — improvisar está permitido</div>
+      <div class="instrucao-item">✅ Se sobrar mimo → lucro 😄</div>
+    </div>
+  </div>
+
+  <div class="frase-final">"Não é sobre acertar regra. É sobre conduzir com leveza." 💕</div>
+</div>
+
+<!-- ══════════════════════════ SEÇÃO 2 — ADVINHA ══════════════════════════ -->
+<div class="pagina">
+  <div class="secao-header">
+    <h2>🤔 Seção 2 — Advinha com a Dany</h2>
+    <p>Quiz personalizado da Casa Nova · Gestos corporais para responder</p>
+  </div>
+
+  <div class="gestos-print">
+    <div class="gesto-print"><span class="gi">🙋</span><span class="gl">A)</span><div class="gd">Ergue a mão</div></div>
+    <div class="gesto-print"><span class="gi">👐</span><span class="gl">B)</span><div class="gd">Mão no ombro</div></div>
+    <div class="gesto-print"><span class="gi">🙌</span><span class="gl">C)</span><div class="gd">Mão na cabeça</div></div>
+  </div>
+
+  <div class="bloco-titulo">🔹 Bloco 1 — Intuição Doméstica</div>
+
+  <div class="pergunta">
+    <div class="num-p">Pergunta 1</div>
+    <div class="texto-p">Qual será o cômodo mais usado da casa?</div>
+    <div class="opcoes-grid">
+      <div class="opcao"><span class="letra">A)</span> Sala</div>
+      <div class="opcao"><span class="letra">B)</span> Cozinha</div>
+      <div class="opcao"><span class="letra">C)</span> Quarto</div>
+    </div>
+    <div class="gabarito-linha"><span>Resposta:</span><div class="linha"></div></div>
+  </div>
+
+  <div class="pergunta">
+    <div class="num-p">Pergunta 2</div>
+    <div class="texto-p">Onde a Dany vai passar mais tempo?</div>
+    <div class="opcoes-grid">
+      <div class="opcao"><span class="letra">A)</span> Sofá</div>
+      <div class="opcao"><span class="letra">B)</span> Cama</div>
+      <div class="opcao"><span class="letra">C)</span> Cozinha</div>
+    </div>
+    <div class="gabarito-linha"><span>Resposta:</span><div class="linha"></div></div>
+  </div>
+
+  <div class="pergunta">
+    <div class="num-p">Pergunta 3</div>
+    <div class="texto-p">Qual objeto tem mais chance de quebrar primeiro?</div>
+    <div class="opcoes-grid">
+      <div class="opcao"><span class="letra">A)</span> Copo</div>
+      <div class="opcao"><span class="letra">B)</span> Prato</div>
+      <div class="opcao"><span class="letra">C)</span> Alguma coisa aleatória</div>
+    </div>
+    <div class="gabarito-linha"><span>Resposta:</span><div class="linha"></div></div>
+  </div>
+
+  <div class="pergunta">
+    <div class="num-p">Pergunta 4</div>
+    <div class="texto-p">A casa vai ficar organizada por quanto tempo?</div>
+    <div class="opcoes-grid">
+      <div class="opcao"><span class="letra">A)</span> 1 semana</div>
+      <div class="opcao"><span class="letra">B)</span> 3 dias</div>
+      <div class="opcao"><span class="letra">C)</span> Depende do humor</div>
+    </div>
+    <div class="gabarito-linha"><span>Resposta:</span><div class="linha"></div></div>
+  </div>
+
+  <div class="bloco-titulo">🔹 Bloco 2 — Vida Real Oficial</div>
+
+  <div class="pergunta">
+    <div class="num-p">Pergunta 5</div>
+    <div class="texto-p">O que mais vai acumular rápido?</div>
+    <div class="opcoes-grid">
+      <div class="opcao"><span class="letra">A)</span> Louça</div>
+      <div class="opcao"><span class="letra">B)</span> Roupa</div>
+      <div class="opcao"><span class="letra">C)</span> Caixas</div>
+    </div>
+    <div class="gabarito-linha"><span>Resposta:</span><div class="linha"></div></div>
+  </div>
+
+  <div class="pergunta">
+    <div class="num-p">Pergunta 6</div>
+    <div class="texto-p">Qual tarefa vai ser empurrada com a barriga?</div>
+    <div class="opcoes-grid">
+      <div class="opcao"><span class="letra">A)</span> Limpeza pesada</div>
+      <div class="opcao"><span class="letra">B)</span> Organizar armários</div>
+      <div class="opcao"><span class="letra">C)</span> Lavar banheiro</div>
+    </div>
+    <div class="gabarito-linha"><span>Resposta:</span><div class="linha"></div></div>
+  </div>
+
+  <div class="pergunta">
+    <div class="num-p">Pergunta 7</div>
+    <div class="texto-p">O horário preferido de arrumar a casa será:</div>
+    <div class="opcoes-grid">
+      <div class="opcao"><span class="letra">A)</span> Manhã</div>
+      <div class="opcao"><span class="letra">B)</span> Noite</div>
+      <div class="opcao"><span class="letra">C)</span> Nunca é o horário certo</div>
+    </div>
+    <div class="gabarito-linha"><span>Resposta:</span><div class="linha"></div></div>
+  </div>
+
+  <div class="pergunta">
+    <div class="num-p">Pergunta 8</div>
+    <div class="texto-p">Quantas vezes por dia a geladeira será aberta "sem fome"?</div>
+    <div class="opcoes-grid">
+      <div class="opcao"><span class="letra">A)</span> Poucas</div>
+      <div class="opcao"><span class="letra">B)</span> Algumas</div>
+      <div class="opcao"><span class="letra">C)</span> Várias vezes</div>
+    </div>
+    <div class="gabarito-linha"><span>Resposta:</span><div class="linha"></div></div>
+  </div>
+
+  <div class="bloco-titulo">👻 Bloco 3 — Dany, a Casa e Gasparzinho</div>
+
+  <div class="pergunta">
+    <div class="num-p">Pergunta 9</div>
+    <div class="texto-p">Quem apaga a luz que ficou acesa?</div>
+    <div class="opcoes-grid">
+      <div class="opcao"><span class="letra">A)</span> Dany</div>
+      <div class="opcao"><span class="letra">B)</span> O vento</div>
+      <div class="opcao"><span class="letra">C)</span> Gasparzinho</div>
+    </div>
+    <div class="gabarito-linha"><span>Resposta:</span><div class="linha"></div></div>
+  </div>
+
+  <div class="pergunta">
+    <div class="num-p">Pergunta 10</div>
+    <div class="texto-p">Barulho estranho à noite é:</div>
+    <div class="opcoes-grid">
+      <div class="opcao"><span class="letra">A)</span> Encanamento</div>
+      <div class="opcao"><span class="letra">B)</span> Vizinho</div>
+      <div class="opcao"><span class="letra">C)</span> Imaginação criativa</div>
+    </div>
+    <div class="gabarito-linha"><span>Resposta:</span><div class="linha"></div></div>
+  </div>
+
+  <div class="pergunta">
+    <div class="num-p">Pergunta 11</div>
+    <div class="texto-p">Se algo cair sozinho, a reação será:</div>
+    <div class="opcoes-grid">
+      <div class="opcao"><span class="letra">A)</span> Investigar</div>
+      <div class="opcao"><span class="letra">B)</span> Fingir que não ouviu</div>
+      <div class="opcao"><span class="letra">C)</span> Rezar e dormir</div>
+    </div>
+    <div class="gabarito-linha"><span>Resposta:</span><div class="linha"></div></div>
+  </div>
+
+  <div class="pergunta">
+    <div class="num-p">Pergunta 12</div>
+    <div class="texto-p">Quem mora nessa casa além da Dany?</div>
+    <div class="opcoes-grid">
+      <div class="opcao"><span class="letra">A)</span> Só ela</div>
+      <div class="opcao"><span class="letra">B)</span> Ela e os pensamentos</div>
+      <div class="opcao"><span class="letra">C)</span> Ela e Gasparzinho</div>
+    </div>
+    <div class="gabarito-linha"><span>Resposta:</span><div class="linha"></div></div>
+  </div>
+
+  <div class="bloco-titulo">🔹 Bloco 4 — Final Leve e Afetivo (respostas abertas — você julga!)</div>
+
+  <div class="pergunta">
+    <div class="num-p">Pergunta 13 · Resposta aberta</div>
+    <div class="texto-p">O que mais representa "estar em casa" pra Dany?</div>
+    <div class="gabarito-linha"><span>Melhor resposta:</span><div class="linha"></div></div>
+  </div>
+
+  <div class="pergunta">
+    <div class="num-p">Pergunta 14 · Resposta aberta</div>
+    <div class="texto-p">Qual vai ser o cantinho de refúgio?</div>
+    <div class="gabarito-linha"><span>Melhor resposta:</span><div class="linha"></div></div>
+  </div>
+
+  <div class="pergunta">
+    <div class="num-p">Pergunta 15 · Resposta aberta</div>
+    <div class="texto-p">Qual detalhe vai fazer ela pensar: "agora sim"?</div>
+    <div class="gabarito-linha"><span>Melhor resposta:</span><div class="linha"></div></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════ SEÇÃO 3 — QUIZ ══════════════════════════ -->
+<div class="pagina" style="page-break-inside: auto;">
+  <div class="secao-header">
+    <h2>🎤 Seção 3 — Quiz Casa Nova</h2>
+    <p>Edição Vida Solo (com Gasparzinho 👻) · Blocos 1 a 4 — opções A, B, C, D</p>
+  </div>
+
+  <div class="bloco-titulo">🏡 Bloco 1 — Vida Real de Quem Mora Sozinha</div>
+
+  <div class="pergunta">
+    <div class="num-p">Q1</div>
+    <div class="texto-p">Qual é a primeira coisa que vira bagunça numa casa nova?</div>
+    <div class="opcoes-grid">
+      <div class="opcao"><span class="letra">A)</span> A sala de estar</div>
+      <div class="opcao"><span class="letra">B)</span> A cozinha</div>
+      <div class="opcao"><span class="letra">C)</span> O quarto</div>
+      <div class="opcao"><span class="letra">D)</span> Tudo de uma vez</div>
+    </div>
+  </div>
+
+  <div class="pergunta">
+    <div class="num-p">Q2</div>
+    <div class="texto-p">O que costuma acabar primeiro: gás, paciência ou papel higiênico?</div>
+    <div class="opcoes-grid">
+      <div class="opcao"><span class="letra">A)</span> Gás</div>
+      <div class="opcao"><span class="letra">B)</span> Paciência</div>
+      <div class="opcao"><span class="letra">C)</span> Papel higiênico</div>
+      <div class="opcao"><span class="letra">D)</span> A vontade de morar sozinha</div>
+    </div>
+  </div>
+
+  <div class="pergunta">
+    <div class="num-p">Q3</div>
+    <div class="texto-p">Qual objeto some misteriosamente e reaparece dias depois?</div>
+    <div class="opcoes-grid">
+      <div class="opcao"><span class="letra">A)</span> Controle remoto</div>
+      <div class="opcao"><span class="letra">B)</span> Chaves</div>
+      <div class="opcao"><span class="letra">C)</span> Caneta</div>
+      <div class="opcao"><span class="letra">D)</span> Depende do dia</div>
+    </div>
+  </div>
+
+  <div class="pergunta">
+    <div class="num-p">Q4</div>
+    <div class="texto-p">O sofá serve mais para sentar ou para deitar?</div>
+    <div class="opcoes-grid">
+      <div class="opcao"><span class="letra">A)</span> Sentar</div>
+      <div class="opcao"><span class="letra">B)</span> Deitar</div>
+      <div class="opcao"><span class="letra">C)</span> Cama alternativa</div>
+      <div class="opcao"><span class="letra">D)</span> Guarda-roupa secundário</div>
+    </div>
+  </div>
+
+  <div class="pergunta">
+    <div class="num-p">Q5</div>
+    <div class="texto-p">Qual tarefa doméstica sempre fica pra depois?</div>
+    <div class="opcoes-grid">
+      <div class="opcao"><span class="letra">A)</span> Lavar louça</div>
+      <div class="opcao"><span class="letra">B)</span> Passar roupa</div>
+      <div class="opcao"><span class="letra">C)</span> Limpar banheiro</div>
+      <div class="opcao"><span class="letra">D)</span> Todas as acima</div>
+    </div>
+  </div>
+
+  <div class="pergunta">
+    <div class="num-p">Q6</div>
+    <div class="texto-p">Qual é o horário oficial de limpar a casa?</div>
+    <div class="opcoes-grid">
+      <div class="opcao"><span class="letra">A)</span> 8 da manhã</div>
+      <div class="opcao"><span class="letra">B)</span> Quando chega visita</div>
+      <div class="opcao"><span class="letra">C)</span> Quando não aguenta mais</div>
+      <div class="opcao"><span class="letra">D)</span> Que limpeza?</div>
+    </div>
+  </div>
+
+  <div class="pergunta">
+    <div class="num-p">Q7</div>
+    <div class="texto-p">Qual item você compra achando que vai usar muito… e nunca usa?</div>
+    <div class="opcoes-grid">
+      <div class="opcao"><span class="letra">A)</span> Panela de pressão</div>
+      <div class="opcao"><span class="letra">B)</span> Livro de receitas</div>
+      <div class="opcao"><span class="letra">C)</span> Escova de limpar</div>
+      <div class="opcao"><span class="letra">D)</span> Tudo que compra</div>
+    </div>
+  </div>
+
+  <div class="pergunta">
+    <div class="num-p">Q8</div>
+    <div class="texto-p">O que mais cansa ao chegar em casa?</div>
+    <div class="opcoes-grid">
+      <div class="opcao"><span class="letra">A)</span> Trabalho do dia</div>
+      <div class="opcao"><span class="letra">B)</span> Subir as escadas</div>
+      <div class="opcao"><span class="letra">C)</span> Ver a bagunça</div>
+      <div class="opcao"><span class="letra">D)</span> Decidir o que comer</div>
+    </div>
+  </div>
+
+  <div class="pergunta">
+    <div class="num-p">Q9</div>
+    <div class="texto-p">Qual cômodo mais acumula "coisas sem lugar"?</div>
+    <div class="opcoes-grid">
+      <div class="opcao"><span class="letra">A)</span> Quarto</div>
+      <div class="opcao"><span class="letra">B)</span> Sala</div>
+      <div class="opcao"><span class="letra">C)</span> Cozinha</div>
+      <div class="opcao"><span class="letra">D)</span> A cadeira das roupas</div>
+    </div>
+  </div>
+
+  <div class="pergunta">
+    <div class="num-p">Q10</div>
+    <div class="texto-p">Qual é o maior inimigo da casa organizada?</div>
+    <div class="opcoes-grid">
+      <div class="opcao"><span class="letra">A)</span> Preguiça</div>
+      <div class="opcao"><span class="letra">B)</span> Falta de espaço</div>
+      <div class="opcao"><span class="letra">C)</span> Gasparzinho</div>
+      <div class="opcao"><span class="letra">D)</span> A vida mesmo</div>
+    </div>
+  </div>
+
+  <div class="bloco-titulo">👻 Bloco 2 — Casa Nova ou Fenômeno Paranormal?</div>
+
+  <div class="pergunta">
+    <div class="num-p">Q11</div>
+    <div class="texto-p">Quem apaga a luz que você tem certeza que deixou acesa?</div>
+    <div class="opcoes-grid">
+      <div class="opcao"><span class="letra">A)</span> Você mesma (esqueceu)</div>
+      <div class="opcao"><span class="letra">B)</span> Gasparzinho</div>
+      <div class="opcao"><span class="letra">C)</span> O vizinho magicamente</div>
+      <div class="opcao"><span class="letra">D)</span> Fantasma ecologista</div>
+    </div>
+  </div>
+
+  <div class="pergunta">
+    <div class="num-p">Q12</div>
+    <div class="texto-p">Barulho estranho à noite é: encanamento, vizinho ou Gasparzinho?</div>
+    <div class="opcoes-grid">
+      <div class="opcao"><span class="letra">A)</span> Encanamento</div>
+      <div class="opcao"><span class="letra">B)</span> Vizinho</div>
+      <div class="opcao"><span class="letra">C)</span> Gasparzinho</div>
+      <div class="opcao"><span class="letra">D)</span> Paranoia da madrugada</div>
+    </div>
+  </div>
+
+  <div class="pergunta">
+    <div class="num-p">Q13</div>
+    <div class="texto-p">Qual objeto parece cair sozinho?</div>
+    <div class="opcoes-grid">
+      <div class="opcao"><span class="letra">A)</span> Quadro</div>
+      <div class="opcao"><span class="letra">B)</span> Espelho</div>
+      <div class="opcao"><span class="letra">C)</span> Copo</div>
+      <div class="opcao"><span class="letra">D)</span> Sua sanidade</div>
+    </div>
+  </div>
+
+  <div class="pergunta">
+    <div class="num-p">Q14</div>
+    <div class="texto-p">O que sempre faz barulho de madrugada?</div>
+    <div class="opcoes-grid">
+      <div class="opcao"><span class="letra">A)</span> Geladeira</div>
+      <div class="opcao"><span class="letra">B)</span> Encanamento</div>
+      <div class="opcao"><span class="letra">C)</span> Vento</div>
+      <div class="opcao"><span class="letra">D)</span> Seu coração acelerado</div>
+    </div>
+  </div>
+
+  <div class="pergunta">
+    <div class="num-p">Q15</div>
+    <div class="texto-p">Você investiga o barulho ou finge que não ouviu?</div>
+    <div class="opcoes-grid">
+      <div class="opcao"><span class="letra">A)</span> Investiga</div>
+      <div class="opcao"><span class="letra">B)</span> Finge dormir</div>
+      <div class="opcao"><span class="letra">C)</span> Chama pelo WhatsApp</div>
+      <div class="opcao"><span class="letra">D)</span> Reza</div>
+    </div>
+  </div>
+
+  <div class="pergunta">
+    <div class="num-p">Q16</div>
+    <div class="texto-p">Qual lugar da casa mais dá a sensação de "tem alguém aqui"?</div>
+    <div class="opcoes-grid">
+      <div class="opcao"><span class="letra">A)</span> Banheiro</div>
+      <div class="opcao"><span class="letra">B)</span> Cozinha à noite</div>
+      <div class="opcao"><span class="letra">C)</span> Debaixo da cama</div>
+      <div class="opcao"><span class="letra">D)</span> Armário</div>
+    </div>
+  </div>
+
+  <div class="pergunta">
+    <div class="num-p">Q17</div>
+    <div class="texto-p">Qual item muda de lugar sozinho?</div>
+    <div class="opcoes-grid">
+      <div class="opcao"><span class="letra">A)</span> Chinelo</div>
+      <div class="opcao"><span class="letra">B)</span> Caneta</div>
+      <div class="opcao"><span class="letra">C)</span> Carregador</div>
+      <div class="opcao"><span class="letra">D)</span> Sua sanidade mental</div>
+    </div>
+  </div>
+
+  <div class="pergunta">
+    <div class="num-p">Q18</div>
+    <div class="texto-p">Ventilador desligado pode causar medo?</div>
+    <div class="opcoes-grid">
+      <div class="opcao"><span class="letra">A)</span> Sim, faz barulho ao ligar</div>
+      <div class="opcao"><span class="letra">B)</span> Sim, parece "vivo"</div>
+      <div class="opcao"><span class="letra">C)</span> Sim, esqueceu de desligar</div>
+      <div class="opcao"><span class="letra">D)</span> Não, é só um ventilador</div>
+    </div>
+  </div>
+
+  <div class="pergunta">
+    <div class="num-p">Q19</div>
+    <div class="texto-p">Qual é a reação automática ao ouvir um barulho à noite?</div>
+    <div class="opcoes-grid">
+      <div class="opcao"><span class="letra">A)</span> Fica imóvel</div>
+      <div class="opcao"><span class="letra">B)</span> Cobre a cabeça</div>
+      <div class="opcao"><span class="letra">C)</span> Agarra o celular</div>
+      <div class="opcao"><span class="letra">D)</span> Grita</div>
+    </div>
+  </div>
+
+  <div class="pergunta">
+    <div class="num-p">Q20</div>
+    <div class="texto-p">Quem mora na casa além de você?</div>
+    <div class="opcoes-grid">
+      <div class="opcao"><span class="letra">A)</span> Gasparzinho</div>
+      <div class="opcao"><span class="letra">B)</span> As aranhas</div>
+      <div class="opcao"><span class="letra">C)</span> Ninguém</div>
+      <div class="opcao"><span class="letra">D)</span> Gatos e espíritos</div>
+    </div>
+  </div>
+
+  <div class="bloco-titulo">🍽️ Bloco 3 — Cozinha da Vida Adulta Real</div>
+
+  <div class="pergunta">
+    <div class="num-p">Q21</div>
+    <div class="texto-p">Abrir a geladeira sem fome acontece quantas vezes por dia?</div>
+    <div class="opcoes-grid">
+      <div class="opcao"><span class="letra">A)</span> 1 a 3 vezes</div>
+      <div class="opcao"><span class="letra">B)</span> 5 a 10 vezes</div>
+      <div class="opcao"><span class="letra">C)</span> Mais de 10 vezes</div>
+      <div class="opcao"><span class="letra">D)</span> Perdi a conta</div>
+    </div>
+  </div>
+
+  <div class="pergunta">
+    <div class="num-p">Q22</div>
+    <div class="texto-p">O que estraga primeiro na geladeira?</div>
+    <div class="opcoes-grid">
+      <div class="opcao"><span class="letra">A)</span> Leite</div>
+      <div class="opcao"><span class="letra">B)</span> Aquele pote misterioso</div>
+      <div class="opcao"><span class="letra">C)</span> Verdura</div>
+      <div class="opcao"><span class="letra">D)</span> Sua esperança de cozinhar</div>
+    </div>
+  </div>
+
+  <div class="pergunta">
+    <div class="num-p">Q23</div>
+    <div class="texto-p">Qual a refeição mais repetida numa casa solo?</div>
+    <div class="opcoes-grid">
+      <div class="opcao"><span class="letra">A)</span> Arroz com feijão</div>
+      <div class="opcao"><span class="letra">B)</span> Macarrão</div>
+      <div class="opcao"><span class="letra">C)</span> Ovo</div>
+      <div class="opcao"><span class="letra">D)</span> Delivery</div>
+    </div>
+  </div>
+
+  <div class="pergunta">
+    <div class="num-p">Q24</div>
+    <div class="texto-p">O que você compra achando que vai cozinhar… e não cozinha?</div>
+    <div class="opcoes-grid">
+      <div class="opcao"><span class="letra">A)</span> Verdura</div>
+      <div class="opcao"><span class="letra">B)</span> Carne</div>
+      <div class="opcao"><span class="letra">C)</span> Ingredientes sofisticados</div>
+      <div class="opcao"><span class="letra">D)</span> Tudo</div>
+    </div>
+  </div>
+
+  <div class="pergunta">
+    <div class="num-p">Q25</div>
+    <div class="texto-p">Qual item você sempre esquece no mercado?</div>
+    <div class="opcoes-grid">
+      <div class="opcao"><span class="letra">A)</span> Leite</div>
+      <div class="opcao"><span class="letra">B)</span> Pão</div>
+      <div class="opcao"><span class="letra">C)</span> Aquilo que ia vender</div>
+      <div class="opcao"><span class="letra">D)</span> De onde estacionou</div>
+    </div>
+  </div>
+
+  <div class="pergunta">
+    <div class="num-p">Q26</div>
+    <div class="texto-p">Depois de quantos dias a pia começa a lotar?</div>
+    <div class="opcoes-grid">
+      <div class="opcao"><span class="letra">A)</span> 1 dia</div>
+      <div class="opcao"><span class="letra">B)</span> 2 dias</div>
+      <div class="opcao"><span class="letra">C)</span> 3 dias</div>
+      <div class="opcao"><span class="letra">D)</span> Desde ontem</div>
+    </div>
+  </div>
+
+  <div class="pergunta">
+    <div class="num-p">Q27</div>
+    <div class="texto-p">O prato "de emergência" é qual?</div>
+    <div class="opcoes-grid">
+      <div class="opcao"><span class="letra">A)</span> Miojo</div>
+      <div class="opcao"><span class="letra">B)</span> Ovo frito</div>
+      <div class="opcao"><span class="letra">C)</span> Pão com manteiga</div>
+      <div class="opcao"><span class="letra">D)</span> Comer no prato anterior</div>
+    </div>
+  </div>
+
+  <div class="pergunta">
+    <div class="num-p">Q28</div>
+    <div class="texto-p">Qual eletrodoméstico é o mais usado?</div>
+    <div class="opcoes-grid">
+      <div class="opcao"><span class="letra">A)</span> Geladeira</div>
+      <div class="opcao"><span class="letra">B)</span> Micro-ondas</div>
+      <div class="opcao"><span class="letra">C)</span> Cafeteira</div>
+      <div class="opcao"><span class="letra">D)</span> Fogão</div>
+    </div>
+  </div>
+
+  <div class="pergunta">
+    <div class="num-p">Q29</div>
+    <div class="texto-p">Qual utensílio você nunca sabe onde está?</div>
+    <div class="opcoes-grid">
+      <div class="opcao"><span class="letra">A)</span> Colher</div>
+      <div class="opcao"><span class="letra">B)</span> Faca</div>
+      <div class="opcao"><span class="letra">C)</span> Garfo</div>
+      <div class="opcao"><span class="letra">D)</span> Tudo quando precisa</div>
+    </div>
+  </div>
+
+  <div class="pergunta">
+    <div class="num-p">Q30</div>
+    <div class="texto-p">Cozinhar em casa é economia, terapia ou ilusão?</div>
+    <div class="opcoes-grid">
+      <div class="opcao"><span class="letra">A)</span> Economia</div>
+      <div class="opcao"><span class="letra">B)</span> Terapia</div>
+      <div class="opcao"><span class="letra">C)</span> Ilusão</div>
+      <div class="opcao"><span class="letra">D)</span> Cansaço</div>
+    </div>
+  </div>
+
+  <div class="bloco-titulo">🧹 Bloco 4 — Organização (ou a Falta Dela)</div>
+
+  <div class="pergunta">
+    <div class="num-p">Q31</div>
+    <div class="texto-p">Quantos dias uma caixa demora para ser desempacotada?</div>
+    <div class="opcoes-grid">
+      <div class="opcao"><span class="letra">A)</span> 1 semana</div>
+      <div class="opcao"><span class="letra">B)</span> 1 mês</div>
+      <div class="opcao"><span class="letra">C)</span> 3 meses</div>
+      <div class="opcao"><span class="letra">D)</span> Virou móvel decorativo</div>
+    </div>
+  </div>
+
+  <div class="pergunta">
+    <div class="num-p">Q32</div>
+    <div class="texto-p">Onde fica a famosa "cadeira das roupas"?</div>
+    <div class="opcoes-grid">
+      <div class="opcao"><span class="letra">A)</span> Quarto</div>
+      <div class="opcao"><span class="letra">B)</span> Sala</div>
+      <div class="opcao"><span class="letra">C)</span> Ambos os lugares</div>
+      <div class="opcao"><span class="letra">D)</span> Espalhada pela casa</div>
+    </div>
+  </div>
+
+  <div class="pergunta">
+    <div class="num-p">Q33</div>
+    <div class="texto-p">Roupa limpa vai direto pro armário?</div>
+    <div class="opcoes-grid">
+      <div class="opcao"><span class="letra">A)</span> Sim</div>
+      <div class="opcao"><span class="letra">B)</span> Fica na cadeira</div>
+      <div class="opcao"><span class="letra">C)</span> Na cama</div>
+      <div class="opcao"><span class="letra">D)</span> Sai da máquina e volta</div>
+    </div>
+  </div>
+
+  <div class="pergunta">
+    <div class="num-p">Q34</div>
+    <div class="texto-p">Qual lugar da casa ninguém vê, mas você sabe que existe?</div>
+    <div class="opcoes-grid">
+      <div class="opcao"><span class="letra">A)</span> Armário de coisas</div>
+      <div class="opcao"><span class="letra">B)</span> Guarda-roupa secreto</div>
+      <div class="opcao"><span class="letra">C)</span> Debaixo da cama</div>
+      <div class="opcao"><span class="letra">D)</span> A porta fechada</div>
+    </div>
+  </div>
+
+  <div class="pergunta">
+    <div class="num-p">Q35</div>
+    <div class="texto-p">Qual objeto sempre fica fora do lugar?</div>
+    <div class="opcoes-grid">
+      <div class="opcao"><span class="letra">A)</span> Chinelo</div>
+      <div class="opcao"><span class="letra">B)</span> Capa de almofada</div>
+      <div class="opcao"><span class="letra">C)</span> Espelho</div>
+      <div class="opcao"><span class="letra">D)</span> Depende do humor</div>
+    </div>
+  </div>
+
+  <div class="pergunta">
+    <div class="num-p">Q36</div>
+    <div class="texto-p">Quanto tempo a casa fica organizada depois da limpeza?</div>
+    <div class="opcoes-grid">
+      <div class="opcao"><span class="letra">A)</span> 1 dia</div>
+      <div class="opcao"><span class="letra">B)</span> 1 hora</div>
+      <div class="opcao"><span class="letra">C)</span> 30 minutos</div>
+      <div class="opcao"><span class="letra">D)</span> Até você sair do banheiro</div>
+    </div>
+  </div>
+
+  <div class="pergunta">
+    <div class="num-p">Q37</div>
+    <div class="texto-p">O que você só organiza quando alguém vai visitar?</div>
+    <div class="opcoes-grid">
+      <div class="opcao"><span class="letra">A)</span> Sala</div>
+      <div class="opcao"><span class="letra">B)</span> Cozinha</div>
+      <div class="opcao"><span class="letra">C)</span> Quarto</div>
+      <div class="opcao"><span class="letra">D)</span> Tudo</div>
+    </div>
+  </div>
+
+  <div class="pergunta">
+    <div class="num-p">Q38</div>
+    <div class="texto-p">Limpeza geral acontece com ânimo, música ou força do ódio?</div>
+    <div class="opcoes-grid">
+      <div class="opcao"><span class="letra">A)</span> Ânimo</div>
+      <div class="opcao"><span class="letra">B)</span> Música</div>
+      <div class="opcao"><span class="letra">C)</span> Força do ódio</div>
+      <div class="opcao"><span class="letra">D)</span> Nunca acontece</div>
+    </div>
+  </div>
+
+  <div class="pergunta">
+    <div class="num-p">Q39</div>
+    <div class="texto-p">Qual área da casa você finge que não existe?</div>
+    <div class="opcoes-grid">
+      <div class="opcao"><span class="letra">A)</span> Embaixo da cama</div>
+      <div class="opcao"><span class="letra">B)</span> Fundo do armário</div>
+      <div class="opcao"><span class="letra">C)</span> Atrás da porta</div>
+      <div class="opcao"><span class="letra">D)</span> Tudo que fecha</div>
+    </div>
+  </div>
+
+  <div class="pergunta">
+    <div class="num-p">Q40</div>
+    <div class="texto-p">Qual frase define a casa num dia normal?</div>
+    <div class="opcoes-grid">
+      <div class="opcao"><span class="letra">A)</span> "Que bagunça!"</div>
+      <div class="opcao"><span class="letra">B)</span> "Preciso organizar"</div>
+      <div class="opcao"><span class="letra">C)</span> "Amanhã eu limpo"</div>
+      <div class="opcao"><span class="letra">D)</span> "É um caos controlado"</div>
+    </div>
+  </div>
+
+  <div class="bloco-titulo">✅ Bloco 5 — Verdade ou Mentira &nbsp;<span style="font-size:13px;font-weight:normal;">(responder V ou M)</span></div>
+
+  <div class="pergunta-vm"><div class="texto-vm">Q41 — Morar sozinha deixa a casa mais bagunçada</div><div class="vm-opcoes"><div class="vm-opcao"><span class="letra">V</span> Verdade</div><div class="vm-opcao"><span class="letra">M</span> Mentira</div></div></div>
+  <div class="pergunta-vm"><div class="texto-vm">Q42 — Morar sozinha deixa a casa mais silenciosa</div><div class="vm-opcoes"><div class="vm-opcao"><span class="letra">V</span> Verdade</div><div class="vm-opcao"><span class="letra">M</span> Mentira</div></div></div>
+  <div class="pergunta-vm"><div class="texto-vm">Q43 — A casa fica arrumada todos os dias</div><div class="vm-opcoes"><div class="vm-opcao"><span class="letra">V</span> Verdade</div><div class="vm-opcao"><span class="letra">M</span> Mentira</div></div></div>
+  <div class="pergunta-vm"><div class="texto-vm">Q44 — Luz acesa em cômodo vazio é inevitável</div><div class="vm-opcoes"><div class="vm-opcao"><span class="letra">V</span> Verdade</div><div class="vm-opcao"><span class="letra">M</span> Mentira</div></div></div>
+  <div class="pergunta-vm"><div class="texto-vm">Q45 — Planta sobrevive sem água</div><div class="vm-opcoes"><div class="vm-opcao"><span class="letra">V</span> Verdade</div><div class="vm-opcao"><span class="letra">M</span> Mentira</div></div></div>
+  <div class="pergunta-vm"><div class="texto-vm">Q46 — Barulho estranho sempre dá medo</div><div class="vm-opcoes"><div class="vm-opcao"><span class="letra">V</span> Verdade</div><div class="vm-opcao"><span class="letra">M</span> Mentira</div></div></div>
+  <div class="pergunta-vm"><div class="texto-vm">Q47 — A casa reflete o humor do dia</div><div class="vm-opcoes"><div class="vm-opcao"><span class="letra">V</span> Verdade</div><div class="vm-opcao"><span class="letra">M</span> Mentira</div></div></div>
+  <div class="pergunta-vm"><div class="texto-vm">Q48 — Todo mundo conversa sozinho em casa</div><div class="vm-opcoes"><div class="vm-opcao"><span class="letra">V</span> Verdade</div><div class="vm-opcao"><span class="letra">M</span> Mentira</div></div></div>
+  <div class="pergunta-vm"><div class="texto-vm">Q49 — Dormir no sofá acontece</div><div class="vm-opcoes"><div class="vm-opcao"><span class="letra">V</span> Verdade</div><div class="vm-opcao"><span class="letra">M</span> Mentira</div></div></div>
+  <div class="pergunta-vm"><div class="texto-vm">Q50 — A cama vira escritório às vezes</div><div class="vm-opcoes"><div class="vm-opcao"><span class="letra">V</span> Verdade</div><div class="vm-opcao"><span class="letra">M</span> Mentira</div></div></div>
+
+  <div class="bloco-titulo">⚡ Bloco Final — Desafio Relâmpago &nbsp;<span style="font-size:13px;font-weight:normal;">⏱️ 10 segundos · você é a juíza!</span></div>
+
+  <div class="desafio-item">
+    <div class="num-d">Desafio 1 — Cite 3 sinais de casa bagunçada</div>
+    <div class="desafio-linhas"><div></div><div></div><div></div></div>
+  </div>
+
+  <div class="desafio-item">
+    <div class="num-d">Desafio 2 — Cite 3 coisas que sempre quebram numa casa</div>
+    <div class="desafio-linhas"><div></div><div></div><div></div></div>
+  </div>
+
+  <div class="desafio-item">
+    <div class="num-d">Desafio 3 — Cite 3 objetos que nunca estão no lugar</div>
+    <div class="desafio-linhas"><div></div><div></div><div></div></div>
+  </div>
+
+  <div class="desafio-item">
+    <div class="num-d">Desafio 4 — Cite 3 tarefas domésticas chatas</div>
+    <div class="desafio-linhas"><div></div><div></div><div></div></div>
+  </div>
+
+  <div class="desafio-item">
+    <div class="num-d">Desafio 5 — Cite 3 coisas que fazem pensar: "amo minha casa"</div>
+    <div class="desafio-linhas"><div></div><div></div><div></div></div>
+  </div>
+
+  <div class="frase-final" style="margin-top:24px;">
+    🏡 Boa festa, Dany! Que seja leve, gostosa e cheia de risadas. 💕
+  </div>
+</div>
+
+<!-- ══════════════════════════ SEÇÃO 4 — CARTELAS DO BINGO ══════════════════════════ -->
+<div id="bingo-cartelas-app"></div>
+
+<!-- ══════════════════════════ SEÇÃO 5 — PEDRINHAS DO SORTEIO ══════════════════════════ -->
+<div id="bingo-pedrinhas-app"></div>
+
+<button class="btn-recriar" onclick="gerarEDesenharCartelas()">🔀 Novas cartelas</button>
+
+<script>
+const ITENS = [
+  { texto: "Sofá",               emoji: "🛋️" },
+  { texto: "Cama",               emoji: "🛏️" },
+  { texto: "Travesseiro",        emoji: "😴" },
+  { texto: "Almofada",           emoji: "🌸" },
+  { texto: "Tapete",             emoji: "🟫" },
+  { texto: "Cortina",            emoji: "🪟" },
+  { texto: "Espelho",            emoji: "🪞" },
+  { texto: "Quadro",             emoji: "🖼️" },
+  { texto: "Porta-retrato",      emoji: "💛" },
+  { texto: "Relógio",            emoji: "🕰️" },
+  { texto: "Panela",             emoji: "🍲" },
+  { texto: "Frigideira",         emoji: "🍳" },
+  { texto: "Pano de prato",      emoji: "🧺" },
+  { texto: "Pratos",             emoji: "🍽️" },
+  { texto: "Copos",              emoji: "🥛" },
+  { texto: "Talheres",           emoji: "🍴" },
+  { texto: "Geladeira",          emoji: "🧊" },
+  { texto: "Fogão",              emoji: "🔥" },
+  { texto: "Micro-ondas",        emoji: "📦" },
+  { texto: "Cafeteira",          emoji: "☕" },
+  { texto: "Toalha",             emoji: "🛁" },
+  { texto: "Roupa de cama",      emoji: "🌙" },
+  { texto: "Vassoura",           emoji: "🧹" },
+  { texto: "Rodo",               emoji: "💧" },
+  { texto: "Balde",              emoji: "🪣" },
+  { texto: "Planta",             emoji: "🌿" },
+  { texto: "Lâmpada",            emoji: "💡" },
+  { texto: "Tomada",             emoji: "🔌" },
+  { texto: "Extensão",           emoji: "🔌" },
+  { texto: "Pia cheia",          emoji: "🚿" },
+  { texto: "Roupa acumulada",    emoji: "👕" },
+  { texto: "Caixa fechada",      emoji: "📦" },
+  { texto: "Procurar e não achar", emoji: "🔍" },
+  { texto: "Tomada longe da cama", emoji: "😤" },
+  { texto: "Luz acesa",          emoji: "💡" },
+  { texto: "Café esquecido",     emoji: "☕" },
+  { texto: "Visita sem avisar",  emoji: "🚪" },
+  { texto: "Móvel torto",        emoji: "😅" },
+  { texto: "Planta morrendo",    emoji: "🥀" },
+  { texto: "Chegar e sentar",    emoji: "😌" },
+  { texto: "Casa de risadas",    emoji: "😂" },
+  { texto: "Casa em silêncio",   emoji: "🤫" },
+  { texto: "Geladeira sem fome", emoji: "🤔" },
+  { texto: "Dia de limpeza",     emoji: "🧽" },
+  { texto: "Casa bagunçada",     emoji: "🌀" },
+  { texto: "Amo minha casa",     emoji: "💕" },
+];
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function gerarCartela(num) {
+  const itens = shuffle(ITENS).slice(0, 16);
+  const celulas = itens.map(item =>
+    `<div class="cartela-celula">
+      <div class="celula-emoji">${item.emoji}</div>
+      <div class="celula-texto">${item.texto}</div>
+    </div>`
+  ).join('');
+  return `
+    <div class="cartela">
+      <div class="cartela-header">
+        <div class="header-esq">
+          <span class="header-emoji">🏡</span>
+          <div>
+            <div class="header-titulo">Bingo Casa Nova</div>
+            <div class="header-sub">Marque com feijãozinho · Chá de Casa Nova da Dany ✨</div>
+          </div>
+        </div>
+        <div class="header-num">Nº ${String(num).padStart(2,'0')}</div>
+      </div>
+      <div class="cartela-grid">${celulas}</div>
+      <div class="cartela-footer">
+        <span class="footer-instrucao">✨ Chá de Casa Nova da Dany</span>
+        <span class="footer-decs">🏡 🌟 💕</span>
+      </div>
+    </div>`;
+}
+
+const SEPARADOR = `
+  <div class="recorte">
+    <div class="recorte-linha"></div>
+    <span class="recorte-texto">✂️ recorte aqui</span>
+    <div class="recorte-linha"></div>
+  </div>`;
+
+function gerarEDesenharCartelas() {
+  const app = document.getElementById('bingo-cartelas-app');
+  app.innerHTML = '';
+  for (let p = 0; p < 13; p++) {
+    const n1 = p * 2 + 1;
+    const n2 = p * 2 + 2;
+    const pagina = document.createElement('div');
+    pagina.className = 'pagina-bingo';
+    const segunda = n2 <= 25 ? SEPARADOR + gerarCartela(n2) : '';
+    pagina.innerHTML = gerarCartela(n1) + segunda;
+    app.appendChild(pagina);
+  }
+}
+
+function renderPedrinhas() {
+  const app = document.getElementById('bingo-pedrinhas-app');
+  app.innerHTML = '';
+  const porPagina = 48;
+  const paginas = Math.ceil(ITENS.length / porPagina);
+  for (let p = 0; p < paginas; p++) {
+    const inicio = p * porPagina;
+    const lote = ITENS.slice(inicio, inicio + porPagina);
+    const isUltima = p === paginas - 1;
+    const pedrinhasHTML = lote.map((item, i) => {
+      const num = inicio + i + 1;
+      return `
+        <div class="pedrinha">
+          <div class="pedrinha-inner">
+            <div class="pedrinha-numero">· ${String(num).padStart(2,'0')} ·</div>
+            <div class="pedrinha-detalhe">${item.emoji}</div>
+            <div class="pedrinha-divisor"></div>
+            <div class="pedrinha-texto">${item.texto}</div>
+          </div>
+        </div>`;
+    }).join('');
+    app.innerHTML += `
+      <div class="pagina-bingo" style="padding: 10mm 10mm 6mm;">
+        <div class="pagina-header-bingo">
+          <div class="titulo">🏡 Bingo Casa Nova — Pedrinhas</div>
+          <div class="sub">Pedrinhas do Sorteio · Chá de Casa Nova da Dany ✨</div>
+          <div class="instrucao">✂️ Recorte cada pedrinha e coloque num potinho para sortear durante o jogo</div>
+        </div>
+        <div class="grade-pedrinhas">${pedrinhasHTML}</div>
+        <div class="pagina-footer-bingo">
+          <span>🌟 Chá de Casa Nova</span>
+          <span>${isUltima ? `${ITENS.length} itens no total` : `Itens ${inicio + 1}–${inicio + lote.length} de ${ITENS.length}`}</span>
+          <span>💕 Casa da Dany</span>
+        </div>
+      </div>`;
+  }
+}
+
+gerarEDesenharCartelas();
+renderPedrinhas();
+</script>
+
+</body>
+</html>

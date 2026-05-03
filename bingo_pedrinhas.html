@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>🏡 Bingo Casa Nova — Pedrinhas</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --ouro: #B8956A;
+  --ouro-escuro: #9a7550;
+  --ouro-claro: #d4aa82;
+  --bege: #F5F1E8;
+  --bege-escuro: #ede5d4;
+  --terracota: #C97B5A;
+  --texto: #5C4A3D;
+  --texto-claro: #8B7355;
+}
+
+body {
+  font-family: 'Georgia', serif;
+  background: #e8e0d0;
+  color: var(--texto);
+  padding: 20px;
+}
+
+/* ── BOTÃO IMPRIMIR ── */
+.btn-imprimir {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: linear-gradient(135deg, var(--ouro) 0%, var(--ouro-escuro) 100%);
+  color: white;
+  border: none;
+  border-radius: 50px;
+  padding: 14px 26px;
+  font-family: 'Georgia', serif;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 6px 24px rgba(184,149,106,0.5);
+  z-index: 100;
+  transition: all 0.2s;
+}
+.btn-imprimir:hover { transform: translateY(-2px); }
+
+/* ── PÁGINA A4 ── */
+.pagina {
+  width: 210mm;
+  min-height: 297mm;
+  background: white;
+  margin: 0 auto 20px;
+  padding: 12mm 10mm 10mm;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.15);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Marca d'água de fundo */
+.pagina::before {
+  content: '🏡';
+  position: absolute;
+  font-size: 220px;
+  opacity: 0.025;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+/* ── CABEÇALHO DA PÁGINA ── */
+.pagina-header {
+  text-align: center;
+  margin-bottom: 8mm;
+  padding-bottom: 6mm;
+  border-bottom: 2px solid var(--ouro);
+  position: relative;
+}
+.pagina-header::after {
+  content: '';
+  display: block;
+  width: 60px;
+  height: 2px;
+  background: var(--terracota);
+  margin: 3px auto 0;
+  border-radius: 2px;
+}
+.pagina-titulo {
+  font-size: 22px;
+  color: var(--ouro-escuro);
+  font-weight: bold;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+.pagina-sub {
+  font-size: 11px;
+  color: var(--texto-claro);
+  font-style: italic;
+  margin-top: 3px;
+  letter-spacing: 0.5px;
+}
+.pagina-instrucao {
+  font-size: 10px;
+  color: var(--texto-claro);
+  margin-top: 5px;
+  background: var(--bege);
+  display: inline-block;
+  padding: 3px 12px;
+  border-radius: 20px;
+  border: 1px solid var(--ouro-claro);
+}
+
+/* ── GRADE DE PEDRINHAS ── */
+.grade {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0;
+}
+
+/* ── PEDRINHA ── */
+.pedrinha {
+  border: 1px dashed #c8b89a;
+  padding: 7px 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-height: 36mm;
+  position: relative;
+  background: white;
+  transition: background 0.15s;
+}
+
+/* Alternância de fundo sutil */
+.pedrinha:nth-child(even) { background: #fdfaf6; }
+
+/* Conteúdo interno com borda decorativa */
+.pedrinha-inner {
+  border: 1.5px solid var(--ouro-claro);
+  border-radius: 8px;
+  width: 100%;
+  height: 100%;
+  min-height: 32mm;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 6px;
+  background: linear-gradient(160deg, #ffffff 60%, #fff8f0 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Detalhe decorativo no canto */
+.pedrinha-inner::before {
+  content: '🏡';
+  position: absolute;
+  top: 4px;
+  right: 5px;
+  font-size: 10px;
+  opacity: 0.4;
+}
+
+.pedrinha-numero {
+  font-size: 9px;
+  color: var(--ouro);
+  font-weight: bold;
+  letter-spacing: 0.5px;
+  margin-bottom: 5px;
+  text-transform: uppercase;
+}
+
+.pedrinha-texto {
+  font-size: 11.5px;
+  font-weight: bold;
+  color: var(--texto);
+  line-height: 1.3;
+  word-break: break-word;
+}
+
+/* Linha divisória decorativa */
+.pedrinha-divisor {
+  width: 24px;
+  height: 1.5px;
+  background: linear-gradient(90deg, transparent, var(--ouro-claro), transparent);
+  margin: 4px auto;
+  border-radius: 2px;
+}
+
+.pedrinha-detalhe {
+  font-size: 14px;
+  opacity: 0.7;
+}
+
+/* ── RODAPÉ ── */
+.pagina-footer {
+  position: absolute;
+  bottom: 6mm;
+  left: 10mm;
+  right: 10mm;
+  text-align: center;
+  font-size: 9px;
+  color: var(--texto-claro);
+  border-top: 1px solid var(--bege-escuro);
+  padding-top: 4mm;
+  font-style: italic;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* ── PRINT ── */
+@media print {
+  body { background: white; padding: 0; }
+  .btn-imprimir { display: none; }
+  .pagina {
+    box-shadow: none;
+    margin: 0;
+    padding: 10mm 8mm 14mm;
+    page-break-after: always;
+    width: 100%;
+    min-height: auto;
+  }
+  .pagina:last-child { page-break-after: auto; }
+  .pedrinha { border-color: #bbb; }
+  .pedrinha:nth-child(even) { background: #fdfaf6 !important; }
+}
+
+@media screen and (max-width: 230mm) {
+  .pagina { width: 100%; }
+  .grade { grid-template-columns: repeat(3, 1fr); }
+}
+</style>
+</head>
+<body>
+
+<a href="index.html" class="btn-imprimir" style="text-decoration:none;">🔙 Início</a>
+<button class="btn-imprimir" onclick="window.print()">🖨️ Imprimir pedrinhas</button>
+
+<div id="app"></div>
+
+<script>
+const ITENS = [
+  { texto: "Sofá",              emoji: "🛋️" },
+  { texto: "Cama",              emoji: "🛏️" },
+  { texto: "Travesseiro",       emoji: "😴" },
+  { texto: "Almofada",          emoji: "🌸" },
+  { texto: "Tapete",            emoji: "🟫" },
+  { texto: "Cortina",           emoji: "🪟" },
+  { texto: "Espelho",           emoji: "🪞" },
+  { texto: "Quadro",            emoji: "🖼️" },
+  { texto: "Porta-retrato",     emoji: "💛" },
+  { texto: "Relógio",           emoji: "🕰️" },
+  { texto: "Panela",            emoji: "🍲" },
+  { texto: "Frigideira",        emoji: "🍳" },
+  { texto: "Pano de prato",     emoji: "🧺" },
+  { texto: "Pratos",            emoji: "🍽️" },
+  { texto: "Copos",             emoji: "🥛" },
+  { texto: "Talheres",          emoji: "🍴" },
+  { texto: "Geladeira",         emoji: "🧊" },
+  { texto: "Fogão",             emoji: "🔥" },
+  { texto: "Micro-ondas",       emoji: "📦" },
+  { texto: "Cafeteira",         emoji: "☕" },
+  { texto: "Toalha",            emoji: "🛁" },
+  { texto: "Roupa de cama",     emoji: "🌙" },
+  { texto: "Vassoura",          emoji: "🧹" },
+  { texto: "Rodo",              emoji: "💧" },
+  { texto: "Balde",             emoji: "🪣" },
+  { texto: "Planta",            emoji: "🌿" },
+  { texto: "Lâmpada",           emoji: "💡" },
+  { texto: "Tomada",            emoji: "🔌" },
+  { texto: "Extensão",          emoji: "🔌" },
+  { texto: "Pia cheia",         emoji: "🚿" },
+  { texto: "Roupa acumulada",   emoji: "👕" },
+  { texto: "Caixa fechada",     emoji: "📦" },
+  { texto: "Procurar e não achar", emoji: "🔍" },
+  { texto: "Tomada longe da cama", emoji: "😤" },
+  { texto: "Luz acesa",         emoji: "💡" },
+  { texto: "Café esquecido",    emoji: "☕" },
+  { texto: "Visita sem avisar", emoji: "🚪" },
+  { texto: "Móvel torto",       emoji: "😅" },
+  { texto: "Planta morrendo",   emoji: "🥀" },
+  { texto: "Chegar e sentar",   emoji: "😌" },
+  { texto: "Casa de risadas",   emoji: "😂" },
+  { texto: "Casa em silêncio",  emoji: "🤫" },
+  { texto: "Geladeira sem fome", emoji: "🤔" },
+  { texto: "Dia de limpeza",    emoji: "🧽" },
+  { texto: "Casa bagunçada",    emoji: "🌀" },
+  { texto: "Amo minha casa",    emoji: "💕" },
+];
+
+function renderPedrinhas() {
+  const app = document.getElementById('app');
+
+  // 46 itens, 5 por linha = ~10 linhas por página ≈ 2 páginas (25+21)
+  const porPagina = 25;
+  const paginas = Math.ceil(ITENS.length / porPagina);
+
+  for (let p = 0; p < paginas; p++) {
+    const inicio = p * porPagina;
+    const lote = ITENS.slice(inicio, inicio + porPagina);
+    const isUltima = p === paginas - 1;
+
+    const pedrinhasHTML = lote.map((item, i) => {
+      const num = inicio + i + 1;
+      return `
+        <div class="pedrinha">
+          <div class="pedrinha-inner">
+            <div class="pedrinha-numero">· ${String(num).padStart(2,'0')} ·</div>
+            <div class="pedrinha-detalhe">${item.emoji}</div>
+            <div class="pedrinha-divisor"></div>
+            <div class="pedrinha-texto">${item.texto}</div>
+          </div>
+        </div>`;
+    }).join('');
+
+    app.innerHTML += `
+      <div class="pagina">
+        <div class="pagina-header">
+          <div class="pagina-titulo">🏡 Bingo Casa Nova</div>
+          <div class="pagina-sub">Pedrinhas do Sorteio · Chá de Casa Nova da Dany ✨</div>
+          <div class="pagina-instrucao">✂️ Recorte cada pedrinha e coloque num potinho para sortear durante o jogo</div>
+        </div>
+        <div class="grade">${pedrinhasHTML}</div>
+        <div class="pagina-footer">
+          <span>🌟 Chá de Casa Nova</span>
+          <span>${isUltima ? `${ITENS.length} itens no total` : `Itens ${inicio + 1}–${inicio + lote.length} de ${ITENS.length}`}</span>
+          <span>💕 Casa da Dany</span>
+        </div>
+      </div>`;
+  }
+}
+
+renderPedrinhas();
+</script>
+</body>
+</html>

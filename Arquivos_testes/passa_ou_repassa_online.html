@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎤 Passa ou Repassa - Casa Nova</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --cor-ouro: #B8956A;
+            --cor-bege: #F5F1E8;
+            --cor-texto: #5C4A3D;
+            --cor-texto-claro: #8B7355;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, var(--cor-bege) 0%, #f0ebe0 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            color: var(--cor-texto);
+        }
+
+        .container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(184, 149, 106, 0.15);
+            max-width: 700px;
+            width: 100%;
+            padding: 40px 30px;
+            border: 2px solid var(--cor-ouro);
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            border-bottom: 2px solid var(--cor-ouro);
+            padding-bottom: 20px;
+        }
+
+        .titulo-principal {
+            font-size: 32px;
+            color: var(--cor-ouro);
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .subtitulo {
+            font-size: 14px;
+            color: var(--cor-texto-claro);
+        }
+
+        .bloco-selector {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .bloco-btn {
+            padding: 8px 16px;
+            border: 2px solid var(--cor-ouro);
+            background: white;
+            color: var(--cor-texto);
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            font-family: 'Georgia', serif;
+        }
+
+        .bloco-btn:hover {
+            background: var(--cor-bege);
+            transform: translateY(-2px);
+        }
+
+        .bloco-btn.ativo {
+            background: var(--cor-ouro);
+            color: white;
+            box-shadow: 0 4px 12px rgba(184, 149, 106, 0.3);
+        }
+
+        .pergunta-container {
+            background: var(--cor-bege);
+            border-radius: 8px;
+            padding: 30px;
+            margin: 20px 0;
+            min-height: 150px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .bloco-nome {
+            font-size: 14px;
+            color: var(--cor-ouro);
+            font-weight: bold;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .pergunta-numero {
+            font-size: 18px;
+            color: var(--cor-texto-claro);
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .pergunta-texto {
+            font-size: 22px;
+            color: var(--cor-texto);
+            line-height: 1.6;
+            font-weight: 500;
+        }
+
+        .controles {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Georgia', serif;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-anterior {
+            background: white;
+            color: var(--cor-ouro);
+            border: 2px solid var(--cor-ouro);
+        }
+
+        .btn-anterior:hover {
+            background: var(--cor-bege);
+            transform: translateY(-2px);
+        }
+
+        .btn-proxima {
+            background: var(--cor-ouro);
+            color: white;
+            border: 2px solid var(--cor-ouro);
+        }
+
+        .btn-proxima:hover {
+            background: #a07d54;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(184, 149, 106, 0.3);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .progresso {
+            text-align: center;
+            font-size: 12px;
+            color: var(--cor-texto-claro);
+            margin-top: 20px;
+        }
+
+        .info-bloco {
+            background: var(--cor-bege);
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            color: var(--cor-texto-claro);
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 25px 20px;
+            }
+
+            .titulo-principal {
+                font-size: 24px;
+            }
+
+            .pergunta-texto {
+                font-size: 18px;
+            }
+
+            .pergunta-container {
+                padding: 20px;
+                min-height: 120px;
+            }
+
+            .bloco-selector {
+                gap: 8px;
+            }
+
+            .bloco-btn {
+                padding: 6px 12px;
+                font-size: 11px;
+            }
+        }
+
+        .emoji {
+            font-size: 24px;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="titulo-principal">🎤 PASSA OU REPASSA</div>
+            <div class="subtitulo">Edição Vida Solo (com Gasparzinho 👻)</div>
+        </div>
+
+        <div class="bloco-selector" id="blocoSelector"></div>
+
+        <div class="pergunta-container">
+            <div class="bloco-nome" id="blocoNome"></div>
+            <div class="pergunta-numero" id="perguntaNumero"></div>
+            <div class="pergunta-texto" id="perguntaTexto"></div>
+            <div class="info-bloco" id="infoBloco"></div>
+        </div>
+
+        <div class="controles">
+            <button class="btn btn-anterior" id="btnAnterior" onclick="perguntaAnterior()">← Anterior</button>
+            <button class="btn btn-proxima" id="btnProxima" onclick="proximaPergunta()">Próxima →</button>
+        </div>
+
+        <div class="progresso" id="progresso"></div>
+    </div>
+
+    <script>
+        const blocos = [
+            {
+                nome: '🏡 VIDA REAL DE QUEM MORA SOZINHA',
+                emoji: '🏡',
+                perguntas: [
+                    "Qual é a primeira coisa que vira bagunça numa casa nova?",
+                    "O que costuma acabar primeiro: gás, paciência ou papel higiênico?",
+                    "Qual objeto some misteriosamente e reaparece dias depois?",
+                    "O sofá serve mais para sentar ou para deitar?",
+                    "Qual tarefa doméstica sempre fica pra depois?",
+                    "Qual é o horário oficial de limpar a casa?",
+                    "Qual item você compra achando que vai usar muito… e nunca usa?",
+                    "O que mais cansa ao chegar em casa?",
+                    "Qual cômodo mais acumula 'coisas sem lugar'?",
+                    "Qual é o maior inimigo da casa organizada?"
+                ]
+            },
+            {
+                nome: '👻 CASA NOVA OU FENÔMENO PARANORMAL?',
+                emoji: '👻',
+                perguntas: [
+                    "Quem apaga a luz que você tem certeza que deixou acesa?",
+                    "Barulho estranho à noite é: encanamento, vizinho ou Gasparzinho?",
+                    "Qual objeto parece cair sozinho?",
+                    "O que sempre faz barulho de madrugada?",
+                    "Você investiga o barulho ou finge que não ouviu?",
+                    "Qual lugar da casa mais dá a sensação de 'tem alguém aqui'?",
+                    "Qual item muda de lugar sozinho?",
+                    "Ventilador desligado pode causar medo?",
+                    "Qual é a reação automática ao ouvir um barulho à noite?",
+                    "Quem mora na casa além de você?"
+                ]
+            },
+            {
+                nome: '🍽️ COZINHA DA VIDA ADULTA REAL',
+                emoji: '🍽️',
+                perguntas: [
+                    "Abrir a geladeira sem fome acontece quantas vezes por dia?",
+                    "O que estraga primeiro na geladeira?",
+                    "Qual a refeição mais repetida numa casa solo?",
+                    "O que você compra achando que vai cozinhar… e não cozinha?",
+                    "Qual item você sempre esquece no mercado?",
+                    "Depois de quantos dias a pia começa a lotar?",
+                    "O prato 'de emergência' é qual?",
+                    "Qual eletrodoméstico é o mais usado?",
+                    "Qual utensílio você nunca sabe onde está?",
+                    "Cozinhar em casa é economia, terapia ou ilusão?"
+                ]
+            },
+            {
+                nome: '🧹 ORGANIZAÇÃO (OU A FALTA DELA)',
+                emoji: '🧹',
+                perguntas: [
+                    "Quantos dias uma caixa demora para ser desempacotada?",
+                    "Onde fica a famosa 'cadeira das roupas'?",
+                    "Roupa limpa vai direto pro armário?",
+                    "Qual lugar da casa ninguém vê, mas você sabe que existe?",
+                    "Qual objeto sempre fica fora do lugar?",
+                    "Quanto tempo a casa fica organizada depois da limpeza?",
+                    "O que você só organiza quando alguém vai visitar?",
+                    "Limpeza geral acontece com ânimo, música ou força do ódio?",
+                    "Qual área da casa você finge que não existe?",
+                    "Qual frase define a casa num dia normal?"
+                ]
+            },
+            {
+                nome: '✅ VERDADE OU MENTIRA',
+                emoji: '✅',
+                perguntas: [
+                    "Morar sozinha deixa a casa mais bagunçada",
+                    "Morar sozinha deixa a casa mais silenciosa",
+                    "A casa fica arrumada todos os dias",
+                    "Luz acesa em cômodo vazio é inevitável",
+                    "Planta sobrevive sem água",
+                    "Barulho estranho sempre dá medo",
+                    "A casa reflete o humor do dia",
+                    "Todo mundo conversa sozinho em casa",
+                    "Dormir no sofá acontece",
+                    "A cama vira escritório às vezes"
+                ]
+            },
+            {
+                nome: '⚡ DESAFIO RELÂMPAGO',
+                emoji: '⚡',
+                perguntas: [
+                    "Cite 3 sinais de casa bagunçada",
+                    "Cite 3 coisas que sempre quebram numa casa",
+                    "Cite 3 objetos que nunca estão no lugar",
+                    "Cite 3 tarefas domésticas chatas",
+                    "Cite 3 coisas que fazem pensar: 'amo minha casa'"
+                ]
+            }
+        ];
+
+        let blocoAtual = 0;
+        let perguntaAtual = 0;
+
+        function inicializar() {
+            criarBotoesBlocos();
+            mostrarPergunta();
+        }
+
+        function criarBotoesBlocos() {
+            const selector = document.getElementById('blocoSelector');
+            blocos.forEach((bloco, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'bloco-btn' + (index === 0 ? ' ativo' : '');
+                btn.textContent = bloco.emoji + ' ' + (index + 1);
+                btn.onclick = () => mudarBloco(index);
+                selector.appendChild(btn);
+            });
+        }
+
+        function mudarBloco(index) {
+            blocoAtual = index;
+            perguntaAtual = 0;
+            atualizarBotoesBlocos();
+            mostrarPergunta();
+        }
+
+        function atualizarBotoesBlocos() {
+            document.querySelectorAll('.bloco-btn').forEach((btn, index) => {
+                btn.classList.toggle('ativo', index === blocoAtual);
+            });
+        }
+
+        function mostrarPergunta() {
+            const bloco = blocos[blocoAtual];
+            const pergunta = bloco.perguntas[perguntaAtual];
+            
+            document.getElementById('blocoNome').textContent = bloco.nome;
+            document.getElementById('perguntaNumero').textContent = `Pergunta ${perguntaAtual + 1} de ${bloco.perguntas.length}`;
+            document.getElementById('perguntaTexto').textContent = pergunta;
+            
+            document.getElementById('btnAnterior').disabled = perguntaAtual === 0;
+            document.getElementById('btnProxima').disabled = perguntaAtual === bloco.perguntas.length - 1;
+            
+            atualizarProgresso();
+        }
+
+        function atualizarProgresso() {
+            const totalPerguntas = blocos.reduce((acc, b) => acc + b.perguntas.length, 0);
+            const perguntasAteSgora = blocos.slice(0, blocoAtual).reduce((acc, b) => acc + b.perguntas.length, 0) + perguntaAtual + 1;
+            
+            document.getElementById('progresso').textContent = `Pergunta ${perguntasAteSgora} de ${totalPerguntas}`;
+        }
+
+        function proximaPergunta() {
+            if (perguntaAtual < blocos[blocoAtual].perguntas.length - 1) {
+                perguntaAtual++;
+                mostrarPergunta();
+            }
+        }
+
+        function perguntaAnterior() {
+            if (perguntaAtual > 0) {
+                perguntaAtual--;
+                mostrarPergunta();
+            }
+        }
+
+        // Teclado
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') proximaPergunta();
+            if (e.key === 'ArrowLeft') perguntaAnterior();
+        });
+
+        inicializar();
+    </script>
+</body>
+</html>

@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chá de Casa Nova — Dany</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ouro: #B8956A;
+      --ouro-escuro: #a07d54;
+      --bege: #F5F1E8;
+      --bege-escuro: #f0ebe0;
+      --texto: #5C4A3D;
+      --texto-claro: #8C7B6B;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: var(--bege);
+      font-family: 'Georgia', serif;
+      padding: 2rem 1.5rem;
+    }
+
+    /* ── TELA PÚBLICA ── */
+    #tela-publica { width: 100%; max-width: 360px; text-align: center; }
+
+    #tela-publica h1 { font-size: 2rem; color: var(--texto); margin-bottom: 0.4rem; }
+    #tela-publica p  { color: var(--texto-claro); font-size: 1rem; font-style: italic; margin-bottom: 2rem; }
+
+    /* ── TELA ADMIN ── */
+    #tela-admin { display: none; width: 100%; max-width: 380px; }
+
+    .admin-header {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+    .admin-header h1 { font-size: 1.6rem; color: var(--texto); }
+    .admin-header p  { font-size: 0.9rem; color: var(--texto-claro); font-style: italic; margin-top: 0.3rem; }
+
+    .ferramentas { display: flex; flex-direction: column; gap: 0.85rem; }
+
+    .ferramenta {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem 1.2rem;
+      background: white;
+      border: 2px solid var(--ouro);
+      border-radius: 14px;
+      text-decoration: none;
+      color: var(--texto);
+      transition: background 0.15s, transform 0.1s;
+    }
+    .ferramenta:active { transform: scale(0.97); }
+    .ferramenta:hover  { background: #fff8f0; }
+
+    .ferramenta .icon { font-size: 2rem; flex-shrink: 0; }
+    .ferramenta .info h3 { font-size: 1rem; font-weight: bold; color: var(--texto); }
+    .ferramenta .info p  { font-size: 0.78rem; color: var(--texto-claro); margin-top: 2px; }
+
+    .ferramenta.destaque {
+      background: var(--ouro);
+      border-color: var(--ouro-escuro);
+    }
+    .ferramenta.destaque .info h3,
+    .ferramenta.destaque .info p { color: white; }
+
+    .sair-btn {
+      margin-top: 1.2rem;
+      width: 100%;
+      padding: 0.75rem;
+      background: none;
+      border: 2px solid #ccc;
+      border-radius: 10px;
+      color: var(--texto-claro);
+      font-family: 'Georgia', serif;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: border-color 0.15s;
+    }
+    .sair-btn:hover { border-color: var(--ouro); color: var(--texto); }
+
+    /* ── BOTÕES COMPARTILHADOS ── */
+    .btn {
+      display: block;
+      width: 100%;
+      padding: 1.1rem 1.5rem;
+      border-radius: 14px;
+      border: none;
+      text-decoration: none;
+      text-align: center;
+      font-family: 'Georgia', serif;
+      font-size: 1.05rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: transform 0.1s, background 0.15s;
+      margin-bottom: 0.85rem;
+    }
+    .btn:active { transform: scale(0.97); }
+
+    .btn-guest {
+      background: var(--ouro);
+      color: #fff;
+      box-shadow: 0 4px 16px rgba(184,149,106,0.35);
+    }
+    .btn-guest:hover { background: var(--ouro-escuro); }
+
+    .btn-admin {
+      background: white;
+      color: var(--ouro);
+      border: 2px solid var(--ouro);
+    }
+    .btn-admin:hover { background: #fff8f0; }
+
+    .emoji-label { font-size: 1.3rem; display: block; margin-bottom: 0.25rem; }
+  </style>
+</head>
+<body>
+
+  <!-- TELA PÚBLICA -->
+  <div id="tela-publica">
+    <h1>🏡 Chá de Casa Nova</h1>
+    <p>Bem-vindos à festa da Dany!</p>
+
+    <a href="kahoot-guest.html" class="btn btn-guest">
+      <span class="emoji-label">🎮</span>
+      Entrar no Jogo
+    </a>
+
+    <button class="btn btn-admin" onclick="entrarAdmin()">
+      <span class="emoji-label">🎛️</span>
+      Painel da Anfitriã
+    </button>
+  </div>
+
+  <!-- TELA ADMIN -->
+  <div id="tela-admin">
+    <div class="admin-header">
+      <h1>✨ Olá, Dany!</h1>
+      <p>Suas ferramentas da festa</p>
+    </div>
+
+    <div class="ferramentas">
+
+      <a href="painel_controle.html" class="ferramenta destaque">
+        <span class="icon">🏡</span>
+        <div class="info">
+          <h3>Painel de Controle</h3>
+          <p>Bingo · Advinha · Quiz — tudo em um lugar</p>
+        </div>
+      </a>
+
+      <a href="kahoot-admin.html" class="ferramenta">
+        <span class="icon">🎛️</span>
+        <div class="info">
+          <h3>Kahoot — Admin</h3>
+          <p>Controle o quiz em tempo real pelo Firebase</p>
+        </div>
+      </a>
+
+      <a href="kahoot-guest.html" class="ferramenta">
+        <span class="icon">🎮</span>
+        <div class="info">
+          <h3>Kahoot — Convidado</h3>
+          <p>Jogar junto com os convidados</p>
+        </div>
+      </a>
+
+      <a href="bingo_cartelas.html" class="ferramenta">
+        <span class="icon">🎰</span>
+        <div class="info">
+          <h3>Bingo — Cartelas</h3>
+          <p>Gerar e imprimir as cartelas</p>
+        </div>
+      </a>
+
+      <a href="bingo_pedrinhas.html" class="ferramenta">
+        <span class="icon">🪨</span>
+        <div class="info">
+          <h3>Bingo — Pedrinhas</h3>
+          <p>Folha das pedrinhas para sorteio</p>
+        </div>
+      </a>
+
+    </div>
+
+    <button class="sair-btn" onclick="sair()">Sair do painel</button>
+  </div>
+
+  <script>
+    const SENHA = 'D@NIELYCP19';
+
+    function entrarAdmin() {
+      const senha = prompt('🔒 Senha da anfitriã:');
+      if (senha === SENHA) {
+        document.getElementById('tela-publica').style.display = 'none';
+        document.getElementById('tela-admin').style.display = 'block';
+        sessionStorage.setItem('admin_ok', '1');
+      } else if (senha !== null) {
+        alert('Senha incorreta. Só a Dany entra aqui! 😄');
+      }
+    }
+
+    function sair() {
+      sessionStorage.removeItem('admin_ok');
+      document.getElementById('tela-publica').style.display = '';
+      document.getElementById('tela-admin').style.display = 'none';
+    }
+
+    // Se já autenticou nessa sessão, abre direto
+    if (sessionStorage.getItem('admin_ok')) {
+      document.getElementById('tela-publica').style.display = 'none';
+      document.getElementById('tela-admin').style.display = 'block';
+    }
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📊 Resultados - Chá de Casa Nova</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --cor-ouro: #B8956A;
+            --cor-bege: #F5F1E8;
+            --cor-texto: #5C4A3D;
+            --cor-texto-claro: #8B7355;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, var(--cor-bege) 0%, #f0ebe0 100%);
+            min-height: 100vh;
+            padding: 0;
+            color: var(--cor-texto);
+        }
+
+        /* ABAS NO TOPO */
+        .abas-container {
+            background: white;
+            border-bottom: 3px solid var(--cor-ouro);
+            display: flex;
+            justify-content: center;
+            gap: 0;
+            padding: 0;
+            position: sticky;
+            top: 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            flex-wrap: wrap;
+        }
+
+        .aba {
+            padding: 15px 25px;
+            border: none;
+            background: var(--cor-bege);
+            color: var(--cor-texto);
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            font-family: 'Georgia', serif;
+            transition: all 0.3s ease;
+            border-bottom: 4px solid transparent;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .aba:hover {
+            background: #f0ebe0;
+        }
+
+        .aba.ativa {
+            background: var(--cor-ouro);
+            color: white;
+            border-bottom: 4px solid #8B7355;
+        }
+
+        /* CONTEÚDO PRINCIPAL */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 30px;
+        }
+
+        .voltar {
+            color: var(--cor-ouro);
+            font-size: 14px;
+            cursor: pointer;
+            margin-bottom: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+
+        .voltar:hover {
+            transform: translateX(-5px);
+        }
+
+        .titulo-pagina {
+            font-size: 32px;
+            color: var(--cor-ouro);
+            text-align: center;
+            margin-bottom: 40px;
+            font-weight: bold;
+        }
+
+        .emoji-grande {
+            font-size: 60px;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        /* BLOCOS DE RESULTADOS */
+        .bloco-resultado {
+            background: white;
+            border: 2px solid var(--cor-ouro);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 15px rgba(184, 149, 106, 0.15);
+        }
+
+        .bloco-titulo {
+            font-size: 24px;
+            color: white;
+            background: var(--cor-ouro);
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin: -30px -30px 25px -30px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .resultado-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background: var(--cor-bege);
+            margin-bottom: 15px;
+            border-radius: 8px;
+            border-left: 5px solid var(--cor-ouro);
+            font-size: 18px;
+        }
+
+        .resultado-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .resultado-label {
+            font-weight: bold;
+            color: var(--cor-texto);
+        }
+
+        .resultado-nome {
+            font-size: 20px;
+            color: var(--cor-ouro);
+            font-weight: bold;
+        }
+
+        .resultado-pontos {
+            font-size: 14px;
+            color: var(--cor-texto-claro);
+            margin-top: 5px;
+        }
+
+        /* BINGO - 3 RODADAS */
+        .bingo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .rodada-bingo {
+            background: var(--cor-bege);
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 5px solid var(--cor-ouro);
+            text-align: center;
+        }
+
+        .rodada-titulo {
+            font-size: 14px;
+            color: var(--cor-texto-claro);
+            text-transform: uppercase;
+            font-weight: bold;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+
+        .rodada-ganhador {
+            font-size: 22px;
+            color: var(--cor-ouro);
+            font-weight: bold;
+        }
+
+        .rodada-vazio {
+            font-size: 18px;
+            color: #ddd;
+            font-style: italic;
+        }
+
+        /* BOTÕES */
+        .botoes {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 15px 40px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Georgia', serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-celebrar {
+            background: var(--cor-ouro);
+            color: white;
+            border: 2px solid var(--cor-ouro);
+        }
+
+        .btn-celebrar:hover {
+            background: #a07d54;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(184, 149, 106, 0.3);
+        }
+
+        .btn-download {
+            background: white;
+            color: var(--cor-ouro);
+            border: 2px solid var(--cor-ouro);
+        }
+
+        .btn-download:hover {
+            background: var(--cor-bege);
+            transform: translateY(-3px);
+        }
+
+        .btn-backup {
+            background: #ddd;
+            color: var(--cor-texto);
+            border: 2px solid #ccc;
+        }
+
+        .btn-backup:hover {
+            background: #ccc;
+            transform: translateY(-3px);
+        }
+
+        /* RANKING GERAL */
+        .ranking-geral {
+            background: linear-gradient(135deg, var(--cor-ouro) 0%, #a07d54 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 12px;
+            margin-top: 40px;
+            text-align: center;
+        }
+
+        .ranking-titulo {
+            font-size: 22px;
+            margin-bottom: 25px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .ranking-podio {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 25px;
+            flex-wrap: wrap;
+        }
+
+        .podio-item {
+            text-align: center;
+        }
+
+        .podio-medalha {
+            font-size: 60px;
+            margin-bottom: 10px;
+        }
+
+        .podio-nome {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .podio-posicao {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .confete {
+            position: fixed;
+            pointer-events: none;
+            animation: cair 3s ease-in forwards;
+        }
+
+        @keyframes cair {
+            to {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px 15px;
+            }
+
+            .titulo-pagina {
+                font-size: 24px;
+            }
+
+            .bloco-resultado {
+                padding: 20px;
+            }
+
+            .bloco-titulo {
+                font-size: 18px;
+                margin: -20px -20px 15px -20px;
+            }
+
+            .resultado-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .aba {
+                padding: 12px 15px;
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- ABAS -->
+    <div class="abas-container">
+        <button class="aba">🏠 HOME</button>
+        <button class="aba">🎲 BINGO</button>
+        <button class="aba">👻 ADVINHA</button>
+        <button class="aba">🎤 QUIZ</button>
+        <button class="aba ativa">📊 RESULTADOS</button>
+    </div>
+
+    <!-- CONTEÚDO -->
+    <div class="container">
+        <a href="#" class="voltar">← Voltar</a>
+
+        <div class="titulo-pagina">🏆 PLACAR FINAL DO CHÁ 🏆</div>
+
+        <!-- BINGO -->
+        <div class="bloco-resultado">
+            <div class="bloco-titulo">🎲 BINGO CASA NOVA</div>
+            <div class="bingo-grid">
+                <div class="rodada-bingo">
+                    <div class="rodada-titulo">🥇 Rodada 1</div>
+                    <div class="rodada-titulo-subtitulo">Cartela Cheia</div>
+                    <div class="rodada-ganhador">MARIA</div>
+                </div>
+                <div class="rodada-bingo">
+                    <div class="rodada-titulo">🥈 Rodada 2</div>
+                    <div class="rodada-titulo-subtitulo">Pé Frio</div>
+                    <div class="rodada-ganhador">JOÃO</div>
+                </div>
+                <div class="rodada-bingo">
+                    <div class="rodada-titulo">🥉 Rodada 3</div>
+                    <div class="rodada-titulo-subtitulo">5 Pedras</div>
+                    <div class="rodada-ganhador">ANA</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ADVINHA COM A DANY -->
+        <div class="bloco-resultado">
+            <div class="bloco-titulo">👻 ADVINHA COM A DANY</div>
+            <div class="resultado-item">
+                <span class="resultado-label">🥇 Ganhadora:</span>
+                <div style="text-align: right;">
+                    <div class="resultado-nome">MARIA</div>
+                    <div class="resultado-pontos">7 acertos em 15 perguntas</div>
+                </div>
+            </div>
+            <div class="resultado-item">
+                <span class="resultado-label">🥈 Segundo lugar:</span>
+                <div style="text-align: right;">
+                    <div class="resultado-nome">SARA</div>
+                    <div class="resultado-pontos">5 acertos em 15 perguntas</div>
+                </div>
+            </div>
+            <div class="resultado-item">
+                <span class="resultado-label">🥉 Terceiro lugar:</span>
+                <div style="text-align: right;">
+                    <div class="resultado-nome">JOÃO</div>
+                    <div class="resultado-pontos">4 acertos em 15 perguntas</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- QUIZ CASA NOVA -->
+        <div class="bloco-resultado">
+            <div class="bloco-titulo">🎤 QUIZ CASA NOVA</div>
+            <div class="resultado-item">
+                <span class="resultado-label">🥇 Ganhador:</span>
+                <div style="text-align: right;">
+                    <div class="resultado-nome">JOÃO</div>
+                    <div class="resultado-pontos">22 acertos em 55 questões</div>
+                </div>
+            </div>
+            <div class="resultado-item">
+                <span class="resultado-label">🥈 Segundo lugar:</span>
+                <div style="text-align: right;">
+                    <div class="resultado-nome">CARLOS</div>
+                    <div class="resultado-pontos">18 acertos em 55 questões</div>
+                </div>
+            </div>
+            <div class="resultado-item">
+                <span class="resultado-label">🥉 Terceiro lugar:</span>
+                <div style="text-align: right;">
+                    <div class="resultado-nome">MARIA</div>
+                    <div class="resultado-pontos">17 acertos em 55 questões</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- RANKING GERAL -->
+        <div class="ranking-geral">
+            <div class="ranking-titulo">🎉 Ranking Geral de Todos os Jogos</div>
+            <div class="ranking-podio">
+                <div class="podio-item">
+                    <div class="podio-medalha">🥇</div>
+                    <div class="podio-nome">MARIA</div>
+                    <div class="podio-posicao">2 vitórias (Bingo + Advinha)</div>
+                </div>
+                <div class="podio-item">
+                    <div class="podio-medalha">🥈</div>
+                    <div class="podio-nome">JOÃO</div>
+                    <div class="podio-posicao">1 vitória (Quiz) + Bingo 🥈</div>
+                </div>
+                <div class="podio-item">
+                    <div class="podio-medalha">🥉</div>
+                    <div class="podio-nome">ANA</div>
+                    <div class="podio-posicao">1 vitória (Bingo 🥉)</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- BOTÕES -->
+        <div class="botoes">
+            <button class="btn btn-celebrar" onclick="celebrar()">🎉 CELEBRAÇÃO!</button>
+            <button class="btn btn-download">📥 BAIXAR PDF</button>
+            <button class="btn btn-backup">💾 BACKUP JSON</button>
+        </div>
+    </div>
+
+    <script>
+        function celebrar() {
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    const confete = document.createElement('div');
+                    confete.className = 'confete';
+                    confete.textContent = ['🎉', '🎊', '🏆', '✨', '💕'][Math.floor(Math.random() * 5)];
+                    confete.style.left = Math.random() * 100 + '%';
+                    confete.style.fontSize = Math.random() * 30 + 20 + 'px';
+                    document.body.appendChild(confete);
+
+                    setTimeout(() => confete.remove(), 3000);
+                }, i * 50);
+            }
+        }
+    </script>
+</body>
+</html>

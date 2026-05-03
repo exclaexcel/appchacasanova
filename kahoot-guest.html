@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>🏡 Kahoot — Casa Nova da Dany</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+:root {
+  --ouro: #B8956A;
+  --ouro-escuro: #a07d54;
+  --bege: #F5F1E8;
+  --bege-escuro: #ede8dc;
+  --texto: #5C4A3D;
+  --texto-claro: #8B7355;
+  --cor-a: #c0392b;
+  --cor-b: #2471a3;
+  --cor-c: #b7770d;
+  --cor-d: #1e8449;
+  --cor-v: #1e8449;
+  --cor-m: #c0392b;
+}
+
+html, body {
+  height: 100%;
+  font-family: 'Georgia', serif;
+  background: var(--bege);
+  color: var(--texto);
+  overflow: hidden;
+}
+
+/* ── TELAS ── */
+.tela {
+  display: none;
+  position: fixed;
+  inset: 0;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: fadeIn 0.3s ease;
+}
+.tela.ativa { display: flex; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ── TELA LOGIN ── */
+#tela-login {
+  background: linear-gradient(160deg, var(--bege) 0%, var(--bege-escuro) 100%);
+  gap: 22px;
+}
+.login-logo { font-size: 64px; animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.08); } }
+.login-titulo { font-size: 24px; color: var(--ouro); text-align: center; line-height: 1.3; }
+.login-sub { font-size: 14px; color: var(--texto-claro); text-align: center; font-style: italic; }
+.login-input {
+  width: 100%;
+  max-width: 320px;
+  padding: 16px 20px;
+  background: white;
+  border: 2px solid var(--ouro);
+  border-radius: 50px;
+  color: var(--texto);
+  font-family: 'Georgia', serif;
+  font-size: 18px;
+  text-align: center;
+  outline: none;
+  box-shadow: 0 2px 10px rgba(184,149,106,0.15);
+}
+.login-input::placeholder { color: #c9b89a; }
+.login-input:focus { border-color: var(--ouro-escuro); box-shadow: 0 2px 14px rgba(184,149,106,0.25); }
+.btn-entrar {
+  width: 100%;
+  max-width: 320px;
+  padding: 18px;
+  background: var(--ouro);
+  color: white;
+  border: none;
+  border-radius: 50px;
+  font-family: 'Georgia', serif;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 4px 16px rgba(184,149,106,0.35);
+}
+.btn-entrar:hover { background: var(--ouro-escuro); transform: scale(1.02); }
+.btn-entrar:active { transform: scale(0.98); }
+
+/* ── TELA ESPERA ── */
+#tela-espera {
+  background: linear-gradient(160deg, var(--bege) 0%, var(--bege-escuro) 100%);
+  gap: 18px;
+  text-align: center;
+}
+.espera-nome {
+  font-size: 14px;
+  color: var(--ouro-escuro);
+  background: white;
+  border: 1.5px solid var(--ouro);
+  padding: 6px 18px;
+  border-radius: 20px;
+  box-shadow: 0 2px 8px rgba(184,149,106,0.15);
+}
+.espera-emoji { font-size: 72px; animation: bounce 1.4s infinite; }
+@keyframes bounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-14px); } }
+.espera-texto { font-size: 22px; color: var(--texto); font-weight: bold; }
+.espera-sub { font-size: 14px; color: var(--texto-claro); font-style: italic; }
+.espera-pontos {
+  margin-top: 8px;
+  font-size: 32px;
+  color: var(--ouro);
+  font-weight: bold;
+}
+.espera-pontos-label { font-size: 11px; color: var(--texto-claro); text-transform: uppercase; letter-spacing: 1px; }
+
+/* ── TELA PERGUNTA ── */
+#tela-pergunta {
+  background: var(--bege);
+  justify-content: flex-start;
+  padding: 0;
+  gap: 0;
+}
+.pergunta-header {
+  width: 100%;
+  background: linear-gradient(135deg, var(--ouro) 0%, var(--ouro-escuro) 100%);
+  padding: 14px 16px 14px;
+  text-align: center;
+}
+.pergunta-bloco-tag {
+  display: inline-block;
+  font-size: 11px;
+  color: rgba(255,255,255,0.85);
+  border: 1px solid rgba(255,255,255,0.5);
+  padding: 2px 10px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+}
+.pergunta-texto-display {
+  font-size: 17px;
+  color: white;
+  font-weight: bold;
+  line-height: 1.4;
+  padding: 0 4px;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.15);
+}
+.opcoes-container {
+  flex: 1;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3px;
+  background: var(--bege-escuro);
+  padding: 3px;
+}
+.opcao-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 16px 12px;
+  border: none;
+  cursor: pointer;
+  color: white;
+  font-family: 'Georgia', serif;
+  font-size: 14px;
+  font-weight: bold;
+  text-align: center;
+  line-height: 1.3;
+  border-radius: 10px;
+  transition: filter 0.15s, transform 0.1s;
+  min-height: 88px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+.opcao-btn:active { filter: brightness(0.88); transform: scale(0.97); }
+.opcao-btn.selecionada { filter: brightness(0.75); position: relative; }
+.opcao-btn.selecionada::after {
+  content: '✔';
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  font-size: 16px;
+  opacity: 0.9;
+}
+.opcao-btn .op-letra { font-size: 20px; opacity: 0.95; }
+.opcao-btn .op-texto { font-size: 12px; line-height: 1.3; }
+.opcao-btn.a { background: var(--cor-a); }
+.opcao-btn.b { background: var(--cor-b); }
+.opcao-btn.c { background: var(--cor-c); }
+.opcao-btn.d { background: var(--cor-d); }
+.opcao-btn.v { background: var(--cor-v); }
+.opcao-btn.m { background: var(--cor-m); }
+.opcao-btn.bloqueada { pointer-events: none; opacity: 0.55; }
+
+.opcoes-container.tres .opcao-btn:last-child { grid-column: span 2; }
+.opcoes-container.dois .opcao-btn { font-size: 20px; min-height: 110px; }
+
+/* ── TELA ENVIADO ── */
+#tela-enviado {
+  background: linear-gradient(160deg, var(--bege) 0%, var(--bege-escuro) 100%);
+  gap: 20px;
+  text-align: center;
+}
+.enviado-icone { font-size: 72px; }
+.enviado-texto { font-size: 22px; font-weight: bold; color: var(--texto); }
+.enviado-sub { font-size: 14px; color: var(--texto-claro); font-style: italic; }
+.enviado-opcao {
+  background: white;
+  border: 1.5px solid var(--ouro);
+  border-radius: 12px;
+  padding: 12px 24px;
+  font-size: 15px;
+  color: var(--texto);
+  box-shadow: 0 2px 8px rgba(184,149,106,0.15);
+}
+
+/* ── TELA RESULTADO ── */
+#tela-resultado {
+  gap: 20px;
+  text-align: center;
+}
+#tela-resultado.acertou { background: linear-gradient(160deg, #eaf6ee 0%, #d4edda 100%); }
+#tela-resultado.errou   { background: linear-gradient(160deg, #fdf0f0 0%, #f5d5d5 100%); }
+.resultado-icone { font-size: 80px; }
+.resultado-texto { font-size: 26px; font-weight: bold; color: var(--texto); }
+.resultado-correta {
+  font-size: 14px;
+  color: var(--texto-claro);
+  background: white;
+  border: 1.5px solid #c8d8c0;
+  padding: 10px 20px;
+  border-radius: 10px;
+  line-height: 1.6;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+.resultado-correta strong { color: #1e8449; }
+.resultado-pontos { font-size: 34px; font-weight: bold; color: var(--ouro); }
+.resultado-pontos-label { font-size: 11px; color: var(--texto-claro); text-transform: uppercase; letter-spacing: 1px; }
+
+/* ── TELA PLACAR ── */
+#tela-placar {
+  background: linear-gradient(160deg, var(--bege) 0%, var(--bege-escuro) 100%);
+  justify-content: flex-start;
+  overflow-y: auto;
+  gap: 0;
+  padding: 0;
+}
+.placar-header {
+  width: 100%;
+  background: linear-gradient(135deg, var(--ouro) 0%, var(--ouro-escuro) 100%);
+  padding: 20px 16px 16px;
+  text-align: center;
+}
+.placar-titulo { font-size: 22px; font-weight: bold; color: white; }
+.placar-sub { font-size: 13px; color: rgba(255,255,255,0.75); margin-top: 4px; }
+.placar-lista {
+  width: 100%;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.placar-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  background: white;
+  border-radius: 10px;
+  border-left: 4px solid var(--bege-escuro);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+.placar-item.voce { border-left-color: var(--ouro); background: #fff8f0; }
+.placar-item.primeiro { border-left-color: #d4a017; background: #fffbe8; }
+.placar-pos { font-size: 24px; min-width: 36px; text-align: center; }
+.placar-nome { flex: 1; font-size: 16px; font-weight: bold; color: var(--texto); }
+.placar-pts { font-size: 18px; font-weight: bold; color: var(--ouro); }
+
+/* ── ERRO FIREBASE ── */
+#erro-firebase {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: var(--bege);
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 16px;
+  padding: 24px;
+  text-align: center;
+  z-index: 999;
+}
+#erro-firebase.visivel { display: flex; }
+#erro-firebase h2 { color: var(--ouro); font-size: 20px; }
+#erro-firebase p { color: var(--texto-claro); font-size: 14px; line-height: 1.6; }
+</style>
+</head>
+<body>
+
+<!-- ── TELA LOGIN ── -->
+<div class="tela ativa" id="tela-login">
+  <div class="login-logo">🏡</div>
+  <div class="login-titulo">Chá de Casa Nova<br><span style="font-size:18px;color:rgba(255,255,255,0.7)">da Dany ✨</span></div>
+  <div class="login-sub">Digite seu nome para entrar no jogo</div>
+  <input class="login-input" id="input-nome" type="text" maxlength="20" placeholder="Seu nome..." autocomplete="off" autocorrect="off">
+  <button class="btn-entrar" onclick="entrar()">Entrar no Jogo 🎮</button>
+</div>
+
+<!-- ── TELA ESPERA ── -->
+<div class="tela" id="tela-espera">
+  <div class="espera-nome" id="espera-nome-label"></div>
+  <div class="espera-emoji">🏡</div>
+  <div class="espera-texto">Aguardando a Dany...</div>
+  <div class="espera-sub">O jogo vai começar em breve!</div>
+  <div style="margin-top:16px;">
+    <div class="espera-pontos-label">seus pontos</div>
+    <div class="espera-pontos" id="espera-pts">0</div>
+  </div>
+</div>
+
+<!-- ── TELA PERGUNTA ── -->
+<div class="tela" id="tela-pergunta">
+  <div class="pergunta-header">
+    <div class="pergunta-bloco-tag" id="p-bloco-tag"></div>
+    <div class="pergunta-texto-display" id="p-texto"></div>
+  </div>
+  <div class="opcoes-container" id="opcoes-container"></div>
+</div>
+
+<!-- ── TELA ENVIADO ── -->
+<div class="tela" id="tela-enviado">
+  <div class="enviado-icone">✔️</div>
+  <div class="enviado-texto">Resposta enviada!</div>
+  <div class="enviado-opcao" id="enviado-opcao-label"></div>
+  <div class="enviado-sub">Aguardando a Dany revelar...</div>
+</div>
+
+<!-- ── TELA RESULTADO ── -->
+<div class="tela" id="tela-resultado">
+  <div class="resultado-icone" id="resultado-icone"></div>
+  <div class="resultado-texto" id="resultado-texto"></div>
+  <div class="resultado-correta" id="resultado-correta"></div>
+  <div>
+    <div class="resultado-pontos-label">seus pontos</div>
+    <div class="resultado-pontos" id="resultado-pts"></div>
+  </div>
+</div>
+
+<!-- ── TELA PLACAR ── -->
+<div class="tela" id="tela-placar">
+  <div class="placar-header">
+    <div class="placar-titulo">🏆 Placar</div>
+    <div class="placar-sub" id="placar-sub">Ranking dos jogadores</div>
+  </div>
+  <div class="placar-lista" id="placar-lista"></div>
+</div>
+
+<!-- ── ERRO FIREBASE ── -->
+<div id="erro-firebase">
+  <div style="font-size:48px;">⚠️</div>
+  <h2>Conexão não encontrada</h2>
+  <p>O Firebase ainda não está configurado.<br>Peça para a Dany configurar o jogo primeiro.<br><br>Se você é a Dany: cole o firebaseConfig nos dois arquivos HTML.</p>
+</div>
+
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+
+<script>
+// ══════════════════════════════════════════════════════════
+// COLE SEU FIREBASE CONFIG AQUI (copiar do console Firebase)
+// ══════════════════════════════════════════════════════════
+const firebaseConfig = {
+  apiKey: "AIzaSyBbpvwTrMx7kBJh7z15qU0c-xx3-wSdNxI",
+  authDomain: "cha-de-casa-nova--dany.firebaseapp.com",
+  databaseURL: "https://cha-de-casa-nova--dany-default-rtdb.firebaseio.com",
+  projectId: "cha-de-casa-nova--dany",
+  storageBucket: "cha-de-casa-nova--dany.firebasestorage.app",
+  messagingSenderId: "730654393250",
+  appId: "1:730654393250:web:f55ec806a91fdef0a828fb"
+};
+// ══════════════════════════════════════════════════════════
+
+// Identidade do jogador nesta sessão
+let uid = sessionStorage.getItem('kahoot_uid');
+if (!uid) {
+  uid = Math.random().toString(36).slice(2, 10);
+  sessionStorage.setItem('kahoot_uid', uid);
+}
+
+let nomeJogador = sessionStorage.getItem('kahoot_nome') || '';
+let db = null;
+let salaRef = null;
+let minhaPontuacao = 0;
+let minhaResposta = null;
+let perguntaAtualId = null;
+let estadoAtual = 'aguardando';
+
+// ── INICIALIZAR FIREBASE ──
+function inicializarFirebase() {
+  if (firebaseConfig.apiKey === 'COLE_AQUI') {
+    document.getElementById('erro-firebase').classList.add('visivel');
+    return false;
+  }
+  try {
+    if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+    db = firebase.database();
+    salaRef = db.ref('sala');
+    return true;
+  } catch(e) {
+    document.getElementById('erro-firebase').classList.add('visivel');
+    return false;
+  }
+}
+
+// ── TELAS ──
+function mostrarTela(id) {
+  document.querySelectorAll('.tela').forEach(t => t.classList.remove('ativa'));
+  document.getElementById(id).classList.add('ativa');
+}
+
+// ── LOGIN ──
+document.getElementById('input-nome').addEventListener('keydown', e => { if (e.key === 'Enter') entrar(); });
+
+if (nomeJogador) {
+  document.getElementById('input-nome').value = nomeJogador;
+}
+
+function entrar() {
+  const nome = document.getElementById('input-nome').value.trim();
+  if (!nome) { document.getElementById('input-nome').style.borderColor = '#e74c3c'; return; }
+  nomeJogador = nome;
+  sessionStorage.setItem('kahoot_nome', nome);
+
+  if (!inicializarFirebase()) return;
+
+  // Registrar jogador
+  db.ref('jogadores/' + uid).set({ nome, pontos: 0 });
+
+  // Recuperar pontos anteriores
+  db.ref('jogadores/' + uid + '/pontos').get().then(snap => {
+    minhaPontuacao = snap.val() || 0;
+  });
+
+  document.getElementById('espera-nome-label').textContent = '👤 ' + nome;
+  document.getElementById('espera-pts').textContent = minhaPontuacao;
+  mostrarTela('tela-espera');
+
+  // Escutar a sala
+  salaRef.on('value', onSalaUpdate);
+}
+
+// ── ATUALIZAÇÃO DA SALA ──
+function onSalaUpdate(snap) {
+  const sala = snap.val();
+  if (!sala) return;
+
+  estadoAtual = sala.estado || 'aguardando';
+  const pergId = sala.perguntaId || null;
+
+  // Se mudou de pergunta, reset resposta local
+  if (pergId !== perguntaAtualId) {
+    perguntaAtualId = pergId;
+    minhaResposta = null;
+  }
+
+  switch(estadoAtual) {
+    case 'aguardando':
+      atualizarPontos();
+      mostrarTela('tela-espera');
+      break;
+
+    case 'pergunta':
+      if (minhaResposta !== null) {
+        mostrarTela('tela-enviado');
+      } else {
+        renderPergunta(sala.pergunta);
+        mostrarTela('tela-pergunta');
+      }
+      break;
+
+    case 'fechado':
+      if (minhaResposta !== null) {
+        mostrarTela('tela-enviado');
+      } else {
+        // Bloqueou sem responder
+        bloquearOpcoes();
+        mostrarTela('tela-pergunta');
+      }
+      break;
+
+    case 'revelado':
+      renderResultado(sala);
+      break;
+
+    case 'placar':
+      renderPlacar();
+      break;
+  }
+}
+
+// ── RENDER PERGUNTA ──
+function renderPergunta(p) {
+  if (!p) return;
+  document.getElementById('p-bloco-tag').textContent = p.bloco || '';
+  document.getElementById('p-texto').textContent = p.texto || '';
+
+  const container = document.getElementById('opcoes-container');
+  container.className = 'opcoes-container';
+  container.innerHTML = '';
+
+  let ops = [];
+  if (p.tipo === 'abc') {
+    ops = (p.ops || []).map((txt, i) => ({ cls: ['a','b','c'][i], letra: ['A','B','C'][i], texto: txt }));
+    container.classList.add('tres');
+  } else if (p.tipo === 'abcd') {
+    ops = (p.ops || []).map((txt, i) => ({ cls: ['a','b','c','d'][i], letra: ['A','B','C','D'][i], texto: txt }));
+  } else if (p.tipo === 'vm') {
+    ops = [
+      { cls: 'v', letra: 'V', texto: 'Verdade' },
+      { cls: 'm', letra: 'M', texto: 'Mentira' }
+    ];
+    container.classList.add('dois');
+  }
+
+  ops.forEach((op, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'opcao-btn ' + op.cls;
+    btn.innerHTML = `<span class="op-letra">${op.letra})</span><span class="op-texto">${op.texto}</span>`;
+    btn.onclick = () => responder(i, op.letra, op.texto);
+    container.appendChild(btn);
+  });
+}
+
+function bloquearOpcoes() {
+  document.querySelectorAll('.opcao-btn').forEach(b => b.classList.add('bloqueada'));
+}
+
+// ── RESPONDER ──
+function responder(indice, letra, texto) {
+  if (estadoAtual !== 'pergunta') return;
+  if (minhaResposta !== null) return;
+
+  minhaResposta = indice;
+
+  // Salvar no Firebase
+  db.ref('respostas/' + perguntaAtualId + '_' + uid).set({
+    opcao: indice,
+    ts: Date.now()
+  });
+
+  // UI de enviado
+  document.getElementById('enviado-opcao-label').textContent = letra + ') ' + texto;
+  mostrarTela('tela-enviado');
+}
+
+// ── RESULTADO ──
+async function renderResultado(sala) {
+  const p = sala.pergunta;
+  const resp = sala.respostaCorreta; // índice correto ou 'V'/'M'
+  const acertou = minhaResposta !== null && minhaResposta == resp;
+
+  // Atualizar pontos localmente (o admin já somou no banco)
+  await db.ref('jogadores/' + uid + '/pontos').get().then(snap => {
+    minhaPontuacao = snap.val() || 0;
+  });
+
+  const el = document.getElementById('tela-resultado');
+  el.className = 'tela ativa ' + (acertou ? 'acertou' : 'errou');
+
+  document.getElementById('resultado-icone').textContent = acertou ? '✅' : '❌';
+  document.getElementById('resultado-texto').textContent = acertou ? 'Acertou! 🎉' : (minhaResposta === null ? 'Não respondeu' : 'Errou...');
+  document.getElementById('resultado-pts').textContent = minhaPontuacao;
+
+  // Mostrar resposta correta
+  let textoCorreta = '';
+  if (resp !== null && resp !== undefined && p) {
+    const letras = p.tipo === 'vm' ? [] : ['A','B','C','D'];
+    if (p.tipo === 'vm') {
+      textoCorreta = `Resposta correta: <strong>${resp === 0 ? 'V) Verdade' : 'M) Mentira'}</strong>`;
+    } else if (p.ops && p.ops[resp] !== undefined) {
+      textoCorreta = `Resposta correta: <strong>${letras[resp]}) ${p.ops[resp]}</strong>`;
+    }
+  }
+  document.getElementById('resultado-correta').innerHTML = textoCorreta;
+
+  mostrarTela('tela-resultado');
+}
+
+// ── PLACAR ──
+async function renderPlacar() {
+  const snap = await db.ref('jogadores').orderByChild('pontos').get();
+  const jogadores = [];
+  snap.forEach(child => {
+    jogadores.push({ uid: child.key, ...child.val() });
+  });
+  jogadores.sort((a, b) => b.pontos - a.pontos);
+
+  const medalhas = ['🥇','🥈','🥉'];
+  const lista = document.getElementById('placar-lista');
+  lista.innerHTML = jogadores.map((j, i) => {
+    const ehVoce = j.uid === uid;
+    const cls = ehVoce ? 'placar-item voce' : (i === 0 ? 'placar-item primeiro' : 'placar-item');
+    const pos = medalhas[i] || `#${i+1}`;
+    return `<div class="${cls}">
+      <span class="placar-pos">${pos}</span>
+      <span class="placar-nome">${j.nome}${ehVoce ? ' 👈' : ''}</span>
+      <span class="placar-pts">${j.pontos} pts</span>
+    </div>`;
+  }).join('');
+
+  document.getElementById('placar-sub').textContent = `${jogadores.length} jogador${jogadores.length !== 1 ? 'es' : ''}`;
+  mostrarTela('tela-placar');
+}
+
+function atualizarPontos() {
+  if (!db) return;
+  db.ref('jogadores/' + uid + '/pontos').get().then(snap => {
+    minhaPontuacao = snap.val() || 0;
+    document.getElementById('espera-pts').textContent = minhaPontuacao;
+  });
+}
+
+// Se já tinha nome, auto-preencher
+if (nomeJogador) {
+  document.getElementById('input-nome').value = nomeJogador;
+}
+</script>
+</body>
+</html>

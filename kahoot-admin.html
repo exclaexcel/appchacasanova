@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>🎮 Admin — Kahoot Casa Nova</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+:root {
+  --ouro: #B8956A;
+  --ouro-escuro: #a07d54;
+  --bege: #F5F1E8;
+  --bege-escuro: #ede8dc;
+  --texto: #5C4A3D;
+  --texto-claro: #8B7355;
+  --cor-a: #c0392b;
+  --cor-b: #2471a3;
+  --cor-c: #b7770d;
+  --cor-d: #1e8449;
+  --cor-v: #1e8449;
+  --cor-m: #c0392b;
+}
+
+html, body {
+  min-height: 100%;
+  font-family: 'Georgia', serif;
+  background: var(--bege);
+  color: var(--texto);
+}
+
+body { padding-bottom: 100px; }
+
+/* ── HEADER ── */
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: linear-gradient(135deg, var(--ouro) 0%, var(--ouro-escuro) 100%);
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  box-shadow: 0 3px 12px rgba(184,149,106,0.3);
+}
+.header-titulo { font-size: 16px; font-weight: bold; color: white; }
+.header-estado {
+  font-size: 11px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.estado-aguardando { background: rgba(255,255,255,0.25); color: white; }
+.estado-pergunta   { background: #2471a3; color: white; }
+.estado-fechado    { background: #6c3483; color: white; }
+.estado-revelado   { background: #1e8449; color: white; }
+.estado-placar     { background: white; color: var(--ouro-escuro); }
+
+.jogadores-count {
+  font-size: 12px;
+  color: rgba(255,255,255,0.85);
+  white-space: nowrap;
+}
+
+/* ── SEÇÕES ── */
+.secao { padding: 14px 16px; }
+
+/* ── SELETOR DE BLOCO ── */
+.bloco-wrap { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 4px; }
+.bloco-btn {
+  padding: 8px 12px;
+  background: white;
+  border: 2px solid #d4c4b0;
+  border-radius: 8px;
+  color: var(--texto-claro);
+  font-family: 'Georgia', serif;
+  font-size: 12px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.bloco-btn.ativo { background: var(--ouro); border-color: var(--ouro); color: white; }
+
+/* ── CARD PERGUNTA ── */
+.card-pergunta {
+  background: white;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 14px;
+  border: 2px solid #e0d4c0;
+  box-shadow: 0 3px 12px rgba(184,149,106,0.12);
+}
+.card-pergunta-topo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+.pergunta-tag {
+  font-size: 11px;
+  color: var(--ouro-escuro);
+  border: 1px solid var(--ouro);
+  padding: 2px 10px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.nav-perguntas { display: flex; align-items: center; gap: 8px; }
+.nav-btn {
+  background: var(--bege);
+  border: 1.5px solid #d4c4b0;
+  color: var(--texto);
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.nav-btn:active { background: #e8ddd0; }
+.nav-idx { font-size: 12px; color: var(--texto-claro); }
+
+.pergunta-titulo { font-size: 17px; font-weight: bold; color: var(--texto); line-height: 1.4; margin-bottom: 14px; }
+
+/* ── OPÇÕES NO ADMIN ── */
+.opcoes-admin { display: flex; flex-direction: column; gap: 7px; }
+.opcao-admin {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.opcao-admin.a { background: #fdf0ef; border-color: #f0b8b2; }
+.opcao-admin.b { background: #eef4fb; border-color: #a9c9e8; }
+.opcao-admin.c { background: #fdf6e8; border-color: #e8c980; }
+.opcao-admin.d { background: #eef8f2; border-color: #95d4ae; }
+.opcao-admin.v { background: #eef8f2; border-color: #95d4ae; }
+.opcao-admin.m { background: #fdf0ef; border-color: #f0b8b2; }
+.opcao-admin.marcada-correta { outline: 3px solid #1e8449; outline-offset: 1px; }
+
+.opcao-letra {
+  font-size: 14px;
+  font-weight: bold;
+  min-width: 26px;
+  text-align: center;
+}
+.opcao-admin.a .opcao-letra { color: var(--cor-a); }
+.opcao-admin.b .opcao-letra { color: var(--cor-b); }
+.opcao-admin.c .opcao-letra { color: var(--cor-c); }
+.opcao-admin.d .opcao-letra { color: var(--cor-d); }
+.opcao-admin.v .opcao-letra { color: var(--cor-v); }
+.opcao-admin.m .opcao-letra { color: var(--cor-m); }
+
+.opcao-texto { flex: 1; font-size: 14px; color: var(--texto); }
+.opcao-contagem {
+  font-size: 13px;
+  font-weight: bold;
+  color: var(--texto);
+  background: var(--bege);
+  border: 1px solid #d4c4b0;
+  padding: 3px 10px;
+  border-radius: 20px;
+  min-width: 36px;
+  text-align: center;
+}
+.nota-marcar {
+  font-size: 12px;
+  color: var(--texto-claro);
+  font-style: italic;
+  text-align: center;
+  padding: 6px 0 0;
+}
+
+/* ── CONTADOR ── */
+.contador-respostas {
+  text-align: center;
+  padding: 10px;
+  background: white;
+  border: 1.5px solid #e0d4c0;
+  border-radius: 8px;
+  margin-bottom: 14px;
+  font-size: 13px;
+  color: var(--texto-claro);
+  box-shadow: 0 2px 6px rgba(184,149,106,0.08);
+}
+.contador-respostas strong { color: var(--ouro); font-size: 20px; }
+
+/* ── BOTÃO PRINCIPAL ── */
+.btn-acao-wrap {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: white;
+  border-top: 2px solid var(--ouro);
+  padding: 12px 16px 16px;
+  display: flex;
+  gap: 8px;
+  box-shadow: 0 -4px 16px rgba(184,149,106,0.15);
+}
+.btn-acao {
+  flex: 1;
+  padding: 16px;
+  border: none;
+  border-radius: 12px;
+  font-family: 'Georgia', serif;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: white;
+}
+.btn-acao:active { transform: scale(0.97); filter: brightness(0.9); }
+.btn-acao.enviar  { background: #2471a3; }
+.btn-acao.fechar  { background: #6c3483; }
+.btn-acao.revelar { background: #1e8449; }
+.btn-acao.placar  { background: var(--ouro); }
+.btn-acao.proxima { background: #2471a3; }
+.btn-acao.desabilitado { background: #ccc; cursor: not-allowed; opacity: 0.6; }
+
+.btn-reset-sala {
+  background: var(--bege);
+  border: 1.5px solid #d4c4b0;
+  color: var(--texto-claro);
+  padding: 16px 14px;
+  border-radius: 12px;
+  font-size: 18px;
+  cursor: pointer;
+}
+.btn-reset-sala:active { background: #fde8e8; border-color: #f0b8b2; }
+
+/* ── PLACAR ADMIN ── */
+#secao-placar { display: none; }
+#secao-placar.visivel { display: block; }
+.placar-item-admin {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  background: white;
+  border-radius: 10px;
+  margin-bottom: 8px;
+  border-left: 4px solid var(--ouro);
+  box-shadow: 0 2px 6px rgba(184,149,106,0.1);
+}
+.placar-pos { font-size: 20px; min-width: 30px; }
+.placar-nome-admin { flex: 1; font-size: 15px; font-weight: bold; color: var(--texto); }
+.placar-pts-admin { font-size: 18px; font-weight: bold; color: var(--ouro); }
+
+/* ── AVISO ── */
+.aviso {
+  background: #fff8f0;
+  border: 1.5px solid var(--ouro);
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 13px;
+  color: var(--ouro-escuro);
+  margin-bottom: 14px;
+  line-height: 1.5;
+}
+</style>
+</head>
+<body>
+
+<!-- ── HEADER ── -->
+<div class="header">
+  <div>
+    <a href="index.html" style="font-size:12px;color:rgba(255,255,255,0.75);text-decoration:none;display:block;margin-bottom:2px;">← Início</a>
+    <div class="header-titulo">🎮 Kahoot Admin</div>
+    <div class="jogadores-count" id="jogadores-count">0 jogadores conectados</div>
+  </div>
+  <div class="header-estado estado-aguardando" id="estado-badge">Aguardando</div>
+</div>
+
+<!-- ── SELETOR DE BLOCO ── -->
+<div class="secao">
+  <div class="bloco-wrap" id="bloco-wrap"></div>
+</div>
+
+<!-- ── PERGUNTA ATUAL ── -->
+<div class="secao" id="secao-jogo">
+  <div class="aviso" id="aviso-gabarito" style="display:none;">
+    ⚠️ Esta pergunta não tem gabarito definido. Toque na opção correta antes de revelar.
+  </div>
+
+  <div class="card-pergunta">
+    <div class="card-pergunta-topo">
+      <span class="pergunta-tag" id="p-tag"></span>
+      <div class="nav-perguntas">
+        <button class="nav-btn" onclick="navegar(-1)">‹</button>
+        <span class="nav-idx" id="p-idx">1/12</span>
+        <button class="nav-btn" onclick="navegar(1)">›</button>
+      </div>
+    </div>
+    <div class="pergunta-titulo" id="p-titulo"></div>
+    <div class="opcoes-admin" id="opcoes-admin"></div>
+    <div class="nota-marcar" id="nota-marcar" style="display:none;">Toque em uma opção para marcá-la como correta</div>
+  </div>
+
+  <div class="contador-respostas" id="contador">
+    <strong id="count-n">0</strong> de <strong id="count-t">0</strong> responderam
+  </div>
+</div>
+
+<!-- ── PLACAR ADMIN ── -->
+<div class="secao" id="secao-placar">
+  <div style="font-size:14px;color:var(--ouro);font-weight:bold;margin-bottom:12px;text-transform:uppercase;letter-spacing:1px;">🏆 Placar Atual</div>
+  <div id="placar-lista-admin"></div>
+</div>
+
+<!-- ── BOTÃO DE AÇÃO (fixo no rodapé) ── -->
+<div class="btn-acao-wrap">
+  <button class="btn-acao enviar" id="btn-principal" onclick="acaoPrincipal()">🚀 Enviar Pergunta</button>
+  <button class="btn-reset-sala" onclick="resetarSala()" title="Resetar sala">🔄</button>
+</div>
+
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+
+<script>
+// ══════════════════════════════════════════════════════════
+// COLE SEU FIREBASE CONFIG AQUI (mesmo config do guest)
+// ══════════════════════════════════════════════════════════
+const firebaseConfig = {
+  apiKey: "AIzaSyBbpvwTrMx7kBJh7z15qU0c-xx3-wSdNxI",
+  authDomain: "cha-de-casa-nova--dany.firebaseapp.com",
+  databaseURL: "https://cha-de-casa-nova--dany-default-rtdb.firebaseio.com",
+  projectId: "cha-de-casa-nova--dany",
+  storageBucket: "cha-de-casa-nova--dany.firebasestorage.app",
+  messagingSenderId: "730654393250",
+  appId: "1:730654393250:web:f55ec806a91fdef0a828fb"
+};
+// ══════════════════════════════════════════════════════════
+
+// ── PERGUNTAS OBJETIVAS ──
+const BLOCOS = [
+  {
+    id: 'advinha', nome: '🤔 Advinha',
+    perguntas: [
+      { texto:'Qual será o cômodo mais usado da casa?',                        tipo:'abc', ops:['Sala','Cozinha','Quarto'],                              resp: null },
+      { texto:'Onde a Dany vai passar mais tempo?',                            tipo:'abc', ops:['Sofá','Cama','Cozinha'],                                resp: null },
+      { texto:'Qual objeto tem mais chance de quebrar primeiro?',               tipo:'abc', ops:['Copo','Prato','Alguma coisa aleatória'],                 resp: null },
+      { texto:'A casa vai ficar organizada por quanto tempo?',                  tipo:'abc', ops:['1 semana','3 dias','Depende do humor'],                  resp: null },
+      { texto:'O que mais vai acumular rápido?',                               tipo:'abc', ops:['Louça','Roupa','Caixas'],                                resp: null },
+      { texto:'Qual tarefa vai ser empurrada com a barriga?',                  tipo:'abc', ops:['Limpeza pesada','Organizar armários','Lavar banheiro'],  resp: null },
+      { texto:'O horário preferido de arrumar a casa será:',                   tipo:'abc', ops:['Manhã','Noite','Nunca é o horário certo'],               resp: null },
+      { texto:'Quantas vezes por dia a geladeira será aberta "sem fome"?',    tipo:'abc', ops:['Poucas','Algumas','Várias vezes'],                       resp: null },
+      { texto:'Quem apaga a luz que ficou acesa?',                             tipo:'abc', ops:['Dany','O vento','Gasparzinho'],                          resp: null },
+      { texto:'Barulho estranho à noite é:',                                   tipo:'abc', ops:['Encanamento','Vizinho','Imaginação criativa'],            resp: null },
+      { texto:'Se algo cair sozinho, a reação será:',                          tipo:'abc', ops:['Investigar','Fingir que não ouviu','Rezar e dormir'],    resp: null },
+      { texto:'Quem mora nessa casa além da Dany?',                            tipo:'abc', ops:['Só ela','Ela e os pensamentos','Ela e Gasparzinho'],     resp: null }
+    ]
+  },
+  {
+    id: 'qb1', nome: '🏡 Quiz B1',
+    perguntas: [
+      { texto:'Qual é a primeira coisa que vira bagunça numa casa nova?',           tipo:'abcd', ops:['A sala de estar','A cozinha','O quarto','Tudo de uma vez'],           resp: null },
+      { texto:'O que costuma acabar primeiro: gás, paciência ou papel higiênico?',  tipo:'abcd', ops:['Gás','Paciência','Papel higiênico','A vontade de morar sozinha'],    resp: null },
+      { texto:'Qual objeto some misteriosamente e reaparece dias depois?',          tipo:'abcd', ops:['Controle remoto','Chaves','Caneta','Depende do dia'],                 resp: null },
+      { texto:'O sofá serve mais para sentar ou para deitar?',                      tipo:'abcd', ops:['Sentar','Deitar','Cama alternativa','Guarda-roupa secundário'],       resp: null },
+      { texto:'Qual tarefa doméstica sempre fica pra depois?',                      tipo:'abcd', ops:['Lavar louça','Passar roupa','Limpar banheiro','Todas as acima'],     resp: null },
+      { texto:'Qual é o horário oficial de limpar a casa?',                         tipo:'abcd', ops:['8 da manhã','Quando chega visita','Quando não aguenta mais','Que limpeza?'], resp: null },
+      { texto:'Qual item você compra achando que vai usar muito… e nunca usa?',     tipo:'abcd', ops:['Panela de pressão','Livro de receitas','Escova de limpar','Tudo que compra'], resp: null },
+      { texto:'O que mais cansa ao chegar em casa?',                                tipo:'abcd', ops:['Trabalho do dia','Subir as escadas','Ver a bagunça','Decidir o que comer'], resp: null },
+      { texto:'Qual cômodo mais acumula "coisas sem lugar"?',                       tipo:'abcd', ops:['Quarto','Sala','Cozinha','A cadeira das roupas'],                   resp: null },
+      { texto:'Qual é o maior inimigo da casa organizada?',                         tipo:'abcd', ops:['Preguiça','Falta de espaço','Gasparzinho','A vida mesmo'],           resp: null }
+    ]
+  },
+  {
+    id: 'qb2', nome: '👻 Quiz B2',
+    perguntas: [
+      { texto:'Quem apaga a luz que você tem certeza que deixou acesa?',                  tipo:'abcd', ops:['Você mesma (esqueceu)','Gasparzinho','O vizinho magicamente','Fantasma ecologista'], resp: null },
+      { texto:'Barulho estranho à noite é: encanamento, vizinho ou Gasparzinho?',         tipo:'abcd', ops:['Encanamento','Vizinho','Gasparzinho','Paranoia da madrugada'],    resp: null },
+      { texto:'Qual objeto parece cair sozinho?',                                          tipo:'abcd', ops:['Quadro','Espelho','Copo','Sua sanidade'],                         resp: null },
+      { texto:'O que sempre faz barulho de madrugada?',                                   tipo:'abcd', ops:['Geladeira','Encanamento','Vento','Seu coração acelerado'],        resp: null },
+      { texto:'Você investiga o barulho ou finge que não ouviu?',                         tipo:'abcd', ops:['Investiga','Finge dormir','Chama pelo WhatsApp','Reza'],          resp: null },
+      { texto:'Qual lugar da casa mais dá a sensação de "tem alguém aqui"?',              tipo:'abcd', ops:['Banheiro','Cozinha à noite','Debaixo da cama','Armário'],        resp: null },
+      { texto:'Qual item muda de lugar sozinho?',                                          tipo:'abcd', ops:['Chinelo','Caneta','Carregador','Sua sanidade mental'],            resp: null },
+      { texto:'Ventilador desligado pode causar medo?',                                   tipo:'abcd', ops:['Sim, faz barulho ao ligar','Sim, parece "vivo"','Sim, esqueceu de desligar','Não, é só um ventilador'], resp: null },
+      { texto:'Qual é a reação automática ao ouvir um barulho à noite?',                 tipo:'abcd', ops:['Fica imóvel','Cobre a cabeça','Agarra o celular','Grita'],        resp: null },
+      { texto:'Quem mora na casa além de você?',                                           tipo:'abcd', ops:['Gasparzinho','As aranhas','Ninguém','Gatos e espíritos'],        resp: null }
+    ]
+  },
+  {
+    id: 'qb3', nome: '🍽️ Quiz B3',
+    perguntas: [
+      { texto:'Abrir a geladeira sem fome acontece quantas vezes por dia?',         tipo:'abcd', ops:['1 a 3 vezes','5 a 10 vezes','Mais de 10 vezes','Perdi a conta'],   resp: null },
+      { texto:'O que estraga primeiro na geladeira?',                                tipo:'abcd', ops:['Leite','Aquele pote misterioso','Verdura','Sua esperança de cozinhar'], resp: null },
+      { texto:'Qual a refeição mais repetida numa casa solo?',                       tipo:'abcd', ops:['Arroz com feijão','Macarrão','Ovo','Delivery'],                      resp: null },
+      { texto:'O que você compra achando que vai cozinhar… e não cozinha?',         tipo:'abcd', ops:['Verdura','Carne','Ingredientes sofisticados','Tudo'],                resp: null },
+      { texto:'Qual item você sempre esquece no mercado?',                           tipo:'abcd', ops:['Leite','Pão','Aquilo que ia vender','De onde estacionou'],          resp: null },
+      { texto:'Depois de quantos dias a pia começa a lotar?',                        tipo:'abcd', ops:['1 dia','2 dias','3 dias','Desde ontem'],                             resp: null },
+      { texto:'O prato "de emergência" é qual?',                                     tipo:'abcd', ops:['Miojo','Ovo frito','Pão com manteiga','Comer no prato anterior'],   resp: null },
+      { texto:'Qual eletrodoméstico é o mais usado?',                                tipo:'abcd', ops:['Geladeira','Micro-ondas','Cafeteira','Fogão'],                      resp: null },
+      { texto:'Qual utensílio você nunca sabe onde está?',                           tipo:'abcd', ops:['Colher','Faca','Garfo','Tudo quando precisa'],                      resp: null },
+      { texto:'Cozinhar em casa é economia, terapia ou ilusão?',                     tipo:'abcd', ops:['Economia','Terapia','Ilusão','Cansaço'],                            resp: null }
+    ]
+  },
+  {
+    id: 'qb4', nome: '🧹 Quiz B4',
+    perguntas: [
+      { texto:'Quantos dias uma caixa demora para ser desempacotada?',              tipo:'abcd', ops:['1 semana','1 mês','3 meses','Virou móvel decorativo'],               resp: null },
+      { texto:'Onde fica a famosa "cadeira das roupas"?',                           tipo:'abcd', ops:['Quarto','Sala','Ambos os lugares','Espalhada pela casa'],             resp: null },
+      { texto:'Roupa limpa vai direto pro armário?',                                 tipo:'abcd', ops:['Sim','Fica na cadeira','Na cama','Sai da máquina e volta'],          resp: null },
+      { texto:'Qual lugar da casa ninguém vê, mas você sabe que existe?',           tipo:'abcd', ops:['Armário de coisas','Guarda-roupa secreto','Debaixo da cama','A porta fechada'], resp: null },
+      { texto:'Qual objeto sempre fica fora do lugar?',                              tipo:'abcd', ops:['Chinelo','Capa de almofada','Espelho','Depende do humor'],           resp: null },
+      { texto:'Quanto tempo a casa fica organizada depois da limpeza?',             tipo:'abcd', ops:['1 dia','1 hora','30 minutos','Até você sair do banheiro'],           resp: null },
+      { texto:'O que você só organiza quando alguém vai visitar?',                  tipo:'abcd', ops:['Sala','Cozinha','Quarto','Tudo'],                                    resp: null },
+      { texto:'Limpeza geral acontece com ânimo, música ou força do ódio?',        tipo:'abcd', ops:['Ânimo','Música','Força do ódio','Nunca acontece'],                   resp: null },
+      { texto:'Qual área da casa você finge que não existe?',                        tipo:'abcd', ops:['Embaixo da cama','Fundo do armário','Atrás da porta','Tudo que fecha'], resp: null },
+      { texto:'Qual frase define a casa num dia normal?',                            tipo:'abcd', ops:['"Que bagunça!"','"Preciso organizar"','"Amanhã eu limpo"','"É um caos controlado"'], resp: null }
+    ]
+  },
+  {
+    id: 'qb5', nome: '✅ Quiz B5 V/M',
+    perguntas: [
+      { texto:'Morar sozinha deixa a casa mais bagunçada',   tipo:'vm', resp: null },
+      { texto:'Morar sozinha deixa a casa mais silenciosa',  tipo:'vm', resp: null },
+      { texto:'A casa fica arrumada todos os dias',          tipo:'vm', resp: null },
+      { texto:'Luz acesa em cômodo vazio é inevitável',      tipo:'vm', resp: null },
+      { texto:'Planta sobrevive sem água',                    tipo:'vm', resp: null },
+      { texto:'Barulho estranho sempre dá medo',             tipo:'vm', resp: null },
+      { texto:'A casa reflete o humor do dia',               tipo:'vm', resp: null },
+      { texto:'Todo mundo conversa sozinho em casa',         tipo:'vm', resp: null },
+      { texto:'Dormir no sofá acontece',                     tipo:'vm', resp: null },
+      { texto:'A cama vira escritório às vezes',             tipo:'vm', resp: null }
+    ]
+  }
+];
+
+// ── ESTADO LOCAL ──
+let db, salaRef;
+let blocoAtual = 0;
+let pergAtual = 0;
+let estadoSala = 'aguardando';
+let totalJogadores = 0;
+let respostasContagem = {};
+let respostaManual = null; // índice marcado pelo admin quando resp=null
+
+// ── INIT FIREBASE ──
+firebase.initializeApp(firebaseConfig);
+db = firebase.database();
+salaRef = db.ref('sala');
+
+// Escutar jogadores
+db.ref('jogadores').on('value', snap => {
+  totalJogadores = snap.numChildren();
+  document.getElementById('jogadores-count').textContent = `${totalJogadores} jogador${totalJogadores !== 1 ? 'es' : ''} conectado${totalJogadores !== 1 ? 's' : ''}`;
+});
+
+// Escutar sala
+salaRef.on('value', snap => {
+  const sala = snap.val();
+  if (!sala) return;
+  estadoSala = sala.estado || 'aguardando';
+  atualizarBadge();
+  atualizarBotao();
+});
+
+// Escutar respostas da pergunta atual
+function escutarRespostas() {
+  const pergId = pergId_atual();
+  respostasContagem = {};
+  db.ref('respostas').orderByKey().startAt(pergId + '_').endAt(pergId + '_').on('value', snap => {
+    respostasContagem = {};
+    snap.forEach(child => {
+      const r = child.val();
+      const k = r.opcao;
+      respostasContagem[k] = (respostasContagem[k] || 0) + 1;
+    });
+    atualizarContador();
+    atualizarBarras();
+  });
+}
+
+function pergId_atual() {
+  return `${BLOCOS[blocoAtual].id}_${pergAtual}`;
+}
+
+// ── RENDER BLOCOS ──
+function renderBlocos() {
+  const wrap = document.getElementById('bloco-wrap');
+  wrap.innerHTML = BLOCOS.map((b, i) =>
+    `<button class="bloco-btn${i === blocoAtual ? ' ativo' : ''}" onclick="selecionarBloco(${i})">${b.nome}</button>`
+  ).join('');
+}
+
+function selecionarBloco(i) {
+  blocoAtual = i;
+  pergAtual = 0;
+  respostaManual = null;
+  renderBlocos();
+  renderPergunta();
+}
+
+// ── RENDER PERGUNTA ──
+function renderPergunta() {
+  const bloco = BLOCOS[blocoAtual];
+  const p = bloco.perguntas[pergAtual];
+  const total = bloco.perguntas.length;
+
+  document.getElementById('p-tag').textContent = bloco.nome;
+  document.getElementById('p-idx').textContent = `${pergAtual + 1}/${total}`;
+  document.getElementById('p-titulo').textContent = p.texto;
+
+  // Aviso gabarito
+  const aviso = document.getElementById('aviso-gabarito');
+  const nota = document.getElementById('nota-marcar');
+  if (p.resp === null) {
+    aviso.style.display = 'block';
+    nota.style.display = 'block';
+  } else {
+    aviso.style.display = 'none';
+    nota.style.display = 'none';
+  }
+
+  // Opções
+  const container = document.getElementById('opcoes-admin');
+  container.innerHTML = '';
+
+  const correta = p.resp !== null ? p.resp : respostaManual;
+
+  if (p.tipo === 'abc') {
+    const letras = ['A','B','C'];
+    const cls = ['a','b','c'];
+    p.ops.forEach((op, i) => {
+      container.appendChild(criarOpcaoAdmin(i, cls[i], letras[i], op, correta, p));
+    });
+  } else if (p.tipo === 'abcd') {
+    const letras = ['A','B','C','D'];
+    const cls = ['a','b','c','d'];
+    p.ops.forEach((op, i) => {
+      container.appendChild(criarOpcaoAdmin(i, cls[i], letras[i], op, correta, p));
+    });
+  } else if (p.tipo === 'vm') {
+    container.appendChild(criarOpcaoAdmin(0, 'v', 'V', 'Verdade', correta, p));
+    container.appendChild(criarOpcaoAdmin(1, 'm', 'M', 'Mentira', correta, p));
+  }
+
+  atualizarContador();
+  escutarRespostas();
+}
+
+function criarOpcaoAdmin(i, cls, letra, texto, correta, p) {
+  const div = document.createElement('div');
+  div.className = 'opcao-admin ' + cls + (i === correta ? ' marcada-correta' : '');
+  div.innerHTML = `
+    <span class="opcao-letra">${letra})</span>
+    <span class="opcao-texto">${texto}</span>
+    <span class="opcao-contagem" id="cnt-${i}">0</span>
+    <div class="opcao-barra-wrap" style="position:absolute;bottom:0;left:0;right:0;display:none;"></div>
+  `;
+  // Clique para marcar como correta (quando resp é null)
+  if (p.resp === null) {
+    div.style.cursor = 'pointer';
+    div.onclick = () => marcarCorreta(i);
+  }
+  return div;
+}
+
+function marcarCorreta(i) {
+  respostaManual = respostaManual === i ? null : i;
+  renderPergunta();
+}
+
+// ── CONTADOR ──
+function atualizarContador() {
+  const total = Object.values(respostasContagem).reduce((a, b) => a + b, 0);
+  document.getElementById('count-n').textContent = total;
+  document.getElementById('count-t').textContent = totalJogadores;
+  atualizarBarras();
+}
+
+function atualizarBarras() {
+  const total = Object.values(respostasContagem).reduce((a, b) => a + b, 0);
+  const p = BLOCOS[blocoAtual].perguntas[pergAtual];
+  const numOps = p.tipo === 'vm' ? 2 : (p.tipo === 'abc' ? 3 : 4);
+  for (let i = 0; i < numOps; i++) {
+    const el = document.getElementById('cnt-' + i);
+    if (el) el.textContent = respostasContagem[i] || 0;
+  }
+}
+
+// ── BADGE ESTADO ──
+const BADGE_CLASSES = {
+  aguardando: ['estado-aguardando', 'Aguardando'],
+  pergunta:   ['estado-pergunta',   'Respondendo'],
+  fechado:    ['estado-fechado',    'Fechado'],
+  revelado:   ['estado-revelado',   'Revelado'],
+  placar:     ['estado-placar',     'Placar']
+};
+function atualizarBadge() {
+  const badge = document.getElementById('estado-badge');
+  badge.className = 'header-estado ' + (BADGE_CLASSES[estadoSala]?.[0] || 'estado-aguardando');
+  badge.textContent = BADGE_CLASSES[estadoSala]?.[1] || estadoSala;
+}
+
+// ── BOTÃO PRINCIPAL ──
+const BOTOES = {
+  aguardando: { txt: '🚀 Enviar Pergunta',   cls: 'enviar',  fn: enviarPergunta },
+  pergunta:   { txt: '🔒 Fechar Respostas',  cls: 'fechar',  fn: fecharRespostas },
+  fechado:    { txt: '👁 Revelar Gabarito',  cls: 'revelar', fn: revelarGabarito },
+  revelado:   { txt: '🏆 Ver Placar',        cls: 'placar',  fn: verPlacar },
+  placar:     { txt: '➡️ Próxima Pergunta',  cls: 'proxima', fn: proximaPergunta }
+};
+function atualizarBotao() {
+  const b = document.getElementById('btn-principal');
+  const cfg = BOTOES[estadoSala] || BOTOES.aguardando;
+  b.textContent = cfg.txt;
+  b.className = 'btn-acao ' + cfg.cls;
+  b.onclick = cfg.fn;
+}
+
+// ── AÇÕES ──
+function acaoPrincipal() {
+  (BOTOES[estadoSala]?.fn || enviarPergunta)();
+}
+
+function navegar(dir) {
+  const bloco = BLOCOS[blocoAtual];
+  const novo = pergAtual + dir;
+  if (novo < 0 || novo >= bloco.perguntas.length) return;
+  pergAtual = novo;
+  respostaManual = null;
+  renderPergunta();
+}
+
+function enviarPergunta() {
+  const bloco = BLOCOS[blocoAtual];
+  const p = bloco.perguntas[pergAtual];
+
+  salaRef.set({
+    estado: 'pergunta',
+    perguntaId: pergId_atual(),
+    pergunta: {
+      bloco: bloco.nome,
+      texto: p.texto,
+      tipo: p.tipo,
+      ops: p.ops || null,
+      resp: p.resp
+    }
+  });
+}
+
+function fecharRespostas() {
+  salaRef.update({ estado: 'fechado' });
+}
+
+async function revelarGabarito() {
+  const p = BLOCOS[blocoAtual].perguntas[pergAtual];
+  const correta = p.resp !== null ? p.resp : respostaManual;
+
+  if (correta === null || correta === undefined) {
+    alert('Marque qual é a resposta correta antes de revelar!');
+    return;
+  }
+
+  // Calcular pontos: quem acertou +1
+  const pergId = pergId_atual();
+  const snap = await db.ref('respostas').orderByKey().startAt(pergId + '_').endAt(pergId + '_').get();
+  const updates = {};
+
+  snap.forEach(child => {
+    const r = child.val();
+    const uid = child.key.replace(pergId + '_', '');
+    if (r.opcao == correta) {
+      // Incrementar ponto
+      updates[`jogadores/${uid}/pontos`] = firebase.database.ServerValue.increment(1);
+    }
+  });
+
+  await db.ref().update(updates);
+  salaRef.update({ estado: 'revelado', respostaCorreta: correta });
+}
+
+async function verPlacar() {
+  salaRef.update({ estado: 'placar' });
+  renderPlacarAdmin();
+  document.getElementById('secao-placar').classList.add('visivel');
+}
+
+function renderPlacarAdmin() {
+  db.ref('jogadores').orderByChild('pontos').get().then(snap => {
+    const lista = [];
+    snap.forEach(c => lista.push({ uid: c.key, ...c.val() }));
+    lista.sort((a, b) => b.pontos - a.pontos);
+    const medalhas = ['🥇','🥈','🥉'];
+    document.getElementById('placar-lista-admin').innerHTML = lista.map((j, i) =>
+      `<div class="placar-item-admin">
+        <span class="placar-pos">${medalhas[i] || '#' + (i+1)}</span>
+        <span class="placar-nome-admin">${j.nome}</span>
+        <span class="placar-pts-admin">${j.pontos} pts</span>
+      </div>`
+    ).join('');
+  });
+}
+
+function proximaPergunta() {
+  document.getElementById('secao-placar').classList.remove('visivel');
+  const bloco = BLOCOS[blocoAtual];
+  if (pergAtual + 1 < bloco.perguntas.length) {
+    pergAtual++;
+  } else {
+    // Acabou o bloco
+    salaRef.update({ estado: 'aguardando' });
+    return;
+  }
+  respostaManual = null;
+  renderPergunta();
+  salaRef.update({ estado: 'aguardando' });
+}
+
+function resetarSala() {
+  if (!confirm('Resetar a sala? Todos os jogadores e pontos serão apagados.')) return;
+  db.ref('/').set({ sala: { estado: 'aguardando' } });
+  respostasContagem = {};
+  respostaManual = null;
+  renderPergunta();
+}
+
+// ── INIT ──
+renderBlocos();
+renderPergunta();
+atualizarBadge();
+atualizarBotao();
+</script>
+</body>
+</html>
