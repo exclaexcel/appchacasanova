@@ -52,7 +52,21 @@ html, body {
 .login-logo { font-size: 64px; animation: pulse 2s infinite; }
 @keyframes pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.08); } }
 .login-titulo { font-size: 24px; color: var(--ouro); text-align: center; line-height: 1.3; }
-.login-sub { font-size: 14px; color: var(--texto-claro); text-align: center; font-style: italic; }
+.login-anfitria {
+  font-size: 21px;
+  font-weight: 800;
+  color: var(--ouro-escuro);
+  text-align: center;
+  line-height: 1.3;
+  letter-spacing: 0.02em;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+.login-instrucao {
+  font-size: 15px;
+  color: var(--texto-claro);
+  text-align: center;
+  line-height: 1.35;
+}
 .login-input {
   width: 100%;
   max-width: 320px;
@@ -303,19 +317,18 @@ html, body {
 <!-- ── TELA LOGIN ── -->
 <div class="tela ativa" id="tela-login">
   <div class="login-logo">🏡</div>
-  <div class="login-titulo">Chá de Casa Nova<br><span style="font-size:18px;color:rgba(255,255,255,0.7)">da Dany ✨</span></div>
-  <div class="login-sub">Digite seu nome para entrar — pontos somam no jogo todo; errar não elimina ninguém.</div>
+  <div class="login-titulo">Chá de Casa Nova</div>
+  <div class="login-anfitria">da Dany ✨</div>
+  <div class="login-instrucao">Digite seu nome para entrar</div>
   <input class="login-input" id="input-nome" type="text" maxlength="20" placeholder="Seu nome..." autocomplete="off" autocorrect="off">
-  <button class="btn-entrar" onclick="entrar()">Entrar no Jogo 🎮</button>
+  <button class="btn-entrar" onclick="entrar()">Entrar</button>
 </div>
 
 <!-- ── TELA ESPERA ── -->
 <div class="tela" id="tela-espera">
   <div class="espera-nome" id="espera-nome-label"></div>
   <div class="espera-emoji">🏡</div>
-  <div class="espera-texto">Aguardando a Dany...</div>
-  <div class="espera-sub">O jogo vai começar em breve!</div>
-  <div class="espera-sub" style="font-size:12px;margin-top:8px;">Quem tiver mais pontos no final ganha — cada erro só significa não ganhar +1 nesta rodada.</div>
+  <div class="espera-texto">Aguardando...</div>
   <div style="margin-top:16px;">
     <div class="espera-pontos-label">seus pontos</div>
     <div class="espera-pontos" id="espera-pts">0</div>
@@ -614,7 +627,7 @@ async function renderPlacar() {
   }).join('');
 
   document.getElementById('placar-sub').textContent =
-    `${jogadores.length} jogador${jogadores.length !== 1 ? 'es' : ''} · Pontuação acumulada (sem eliminação)`;
+    `${jogadores.length} jogador${jogadores.length !== 1 ? 'es' : ''}`;
   mostrarTela('tela-placar');
 }
 
