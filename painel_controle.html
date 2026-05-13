@@ -161,6 +161,57 @@ body {
 }
 .home-titulo h1 { font-size: 26px; color: var(--ouro); }
 .home-titulo .sub { font-size: 14px; color: var(--texto-claro); font-style: italic; margin-top: 6px; }
+.home-ordem-livre {
+  font-size: 13px;
+  color: var(--texto);
+  background: #fff8f0;
+  border: 1.5px solid var(--ouro);
+  border-radius: var(--radius);
+  padding: 10px 14px;
+  margin-bottom: 14px;
+  line-height: 1.45;
+}
+.kahoot-home-card {
+  background: white;
+  border: 2px solid #d4c4b0;
+  border-radius: var(--radius);
+  padding: 12px 14px;
+  margin-bottom: 14px;
+}
+.kahoot-home-card h4 {
+  font-size: 13px;
+  color: var(--ouro);
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.kahoot-home-card > p { font-size: 12px; color: var(--texto-claro); margin-bottom: 10px; line-height: 1.4; }
+.kahoot-home-links { display: flex; flex-direction: column; gap: 8px; }
+.kahoot-home-links a {
+  display: block;
+  text-align: center;
+  padding: 12px;
+  border-radius: var(--radius);
+  font-size: 13px;
+  font-weight: bold;
+  text-decoration: none;
+  font-family: 'Georgia', serif;
+}
+.kahoot-home-links a.kahoot-link-admin { background: var(--ouro); color: white; border: 2px solid var(--ouro-escuro); }
+.kahoot-home-links a.kahoot-link-guest { background: var(--bege); color: var(--texto); border: 2px solid var(--ouro); }
+.quiz-bloco-dica {
+  font-size: 12px;
+  color: var(--texto-claro);
+  font-style: italic;
+  margin: -6px 0 12px;
+  padding: 8px 10px;
+  background: #fff8f0;
+  border-radius: 8px;
+  border-left: 4px solid var(--ouro);
+  line-height: 1.4;
+}
+.cabecalho .quiz-kahoot-link { font-size: 12px; margin-top: 6px; }
+.cabecalho .quiz-kahoot-link a { color: var(--ouro); font-weight: bold; }
 
 .jogos-grid { display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px; }
 
@@ -627,6 +678,7 @@ body {
 /* ── PRINT ── */
 @media print {
   .nav, .acoes-home, .btn, input { display: none !important; }
+  .kahoot-home-card, .home-ordem-livre { display: none !important; }
   .secao { display: block !important; }
   body { background: white; }
 }
@@ -653,11 +705,11 @@ body {
 
       <!-- ROTEIRO DO DIA -->
       <div class="instrucao-bloco">
-        <div class="instrucao-bloco-titulo">🧭 Roteiro do Dia</div>
+        <div class="instrucao-bloco-titulo">🧭 Sugestão de ordem (opcional)</div>
         <div class="instrucao-bloco-corpo">
-          <div class="instrucao-item">1️⃣ <strong>Bingo da Casa Nova</strong> — aquece o grupo, fácil de começar</div>
-          <div class="instrucao-item">2️⃣ <strong>Advinha com a Dany</strong> — interação leve, conversa e risadas</div>
-          <div class="instrucao-item">3️⃣ <strong>Quiz</strong> — auge da animação, o jogo âncora!</div>
+          <div class="instrucao-item">A ordem dos jogos é <strong>sua escolha</strong> — comece pelo que preferir e pule o que quiser usando os botões da home e do Quiz (blocos B1–B6).</div>
+          <div class="instrucao-item">Ideia só para referência: <strong>Bingo</strong> (aquecer) → <strong>Advinha</strong> (conversa) → <strong>Quiz</strong> (pico de animação).</div>
+          <div class="instrucao-item">Para o quiz no celular, use os links <strong>Kahoot</strong> na home do painel (admin + convidados).</div>
           <div class="instrucao-destaque">⚠️ Se o tempo apertar: corte <strong>1 jogo inteiro</strong> sem culpa. O evento continua ótimo.</div>
         </div>
       </div>
@@ -701,6 +753,7 @@ body {
           <div class="instrucao-item">• Divida em 2 times (ou 4, se quiser mais animação)</div>
           <div class="instrucao-item">• Explique: <em>"Vou fazer perguntas sobre vida em casa nova. Dá pra responder, passar ou repassar."</em></div>
           <div class="instrucao-item">• Leia uma pergunta por vez — controle leve de pontos</div>
+          <div class="instrucao-item">• No painel, os blocos <strong>B1–B6</strong> podem ser escolhidos em <strong>qualquer ordem</strong> — toque em outro bloco para pular</div>
           <div class="instrucao-item">• Interaja, comente, brinque! Vale mais a risada que a precisão 😄</div>
           <div class="instrucao-destaque">
             🎁 <strong>Mimo:</strong> Kit mini café + chá<br>
@@ -737,6 +790,8 @@ body {
     <div class="sub">Painel da Dany ✨</div>
   </div>
 
+  <p class="home-ordem-livre"><strong>Ordem livre:</strong> você decide por onde começar (Bingo, Advinha ou Quiz) e pode pular jogos ou blocos quando quiser. Use os botões abaixo ou o menu no fim da página.</p>
+
   <div class="jogos-grid">
     <button class="jogo-btn" onclick="irPara('bingo')">
       <span class="emoji">🎰</span>
@@ -762,6 +817,15 @@ body {
       </div>
       <span class="badge" id="badge-quiz">0 reg.</span>
     </button>
+  </div>
+
+  <div class="kahoot-home-card">
+    <h4>Quiz no celular (Kahoot)</h4>
+    <p>Mesmas perguntas no modo digital; convidados respondem no próprio aparelho.</p>
+    <div class="kahoot-home-links">
+      <a class="kahoot-link-admin" href="kahoot-admin.html">Abrir Kahoot — Admin (anfitriã)</a>
+      <a class="kahoot-link-guest" href="kahoot-guest.html">Link para convidados jogarem</a>
+    </div>
   </div>
 
   <div class="acoes-home">
@@ -868,13 +932,15 @@ body {
 <div class="secao" id="secao-quiz">
   <div class="cabecalho">
     <h1>🎤 Quiz Casa Nova</h1>
-    <p>Gasparzinho aprova 👻</p>
+    <p>Gasparzinho aprova 👻 · Blocos B1–B6 em qualquer ordem</p>
+    <p class="quiz-kahoot-link"><a href="kahoot-admin.html">Quiz no celular → Kahoot (admin)</a></p>
   </div>
 
   <!-- Seletor de bloco -->
   <div class="bloco-selector" id="quiz-blocos">
     <!-- gerado via JS -->
   </div>
+  <p class="quiz-bloco-dica">Qualquer bloco, em qualquer ordem — toque em outro bloco acima para pular.</p>
 
   <!-- Navegação -->
   <div class="navegacao-perguntas">

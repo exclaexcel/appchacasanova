@@ -237,13 +237,6 @@ html, body {
   box-shadow: 0 2px 8px rgba(0,0,0,0.06);
 }
 .resultado-correta strong { color: #1e8449; }
-.resultado-regras {
-  font-size: 13px;
-  color: var(--texto);
-  line-height: 1.45;
-  max-width: 320px;
-  padding: 0 12px;
-}
 .resultado-pontos { font-size: 34px; font-weight: bold; color: var(--ouro); }
 .resultado-pontos-label { font-size: 11px; color: var(--texto-claro); text-transform: uppercase; letter-spacing: 1px; }
 
@@ -350,7 +343,6 @@ html, body {
 <div class="tela" id="tela-resultado">
   <div class="resultado-icone" id="resultado-icone"></div>
   <div class="resultado-texto" id="resultado-texto"></div>
-  <div class="resultado-regras" id="resultado-regras"></div>
   <div class="resultado-correta" id="resultado-correta"></div>
   <div>
     <div class="resultado-pontos-label">seus pontos</div>
@@ -582,8 +574,6 @@ async function renderResultado(sala) {
 
   document.getElementById('resultado-icone').textContent = acertou ? '✅' : '❌';
   document.getElementById('resultado-texto').textContent = acertou ? 'Acertou! 🎉' : (minhaResposta === null ? 'Não respondeu' : 'Errou...');
-  document.getElementById('resultado-regras').textContent =
-    'Sem eliminação: só entram pontos quando acerta (+1 por rodada). No fim, ganha quem tiver mais pontos — pode continuar tranquilo nas próximas!';
   document.getElementById('resultado-pts').textContent = minhaPontuacao;
 
   // Mostrar resposta correta

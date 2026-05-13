@@ -238,6 +238,21 @@ body { padding-bottom: 100px; }
 }
 .btn-reset-sala:active { background: #fde8e8; border-color: #f0b8b2; }
 
+.btn-voltar-aguardando {
+  background: #e8f4fc;
+  border: 1.5px solid #2471a3;
+  color: #2471a3;
+  padding: 16px 12px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: bold;
+  font-family: 'Georgia', serif;
+  cursor: pointer;
+  max-width: 72px;
+  line-height: 1.2;
+}
+.btn-voltar-aguardando:active { filter: brightness(0.95); }
+
 /* ── PLACAR ADMIN ── */
 #secao-placar { display: none; }
 #secao-placar.visivel { display: block; }
@@ -323,6 +338,7 @@ body { padding-bottom: 100px; }
 <!-- ── BOTÃO DE AÇÃO (fixo no rodapé) ── -->
 <div class="btn-acao-wrap">
   <button class="btn-acao enviar" id="btn-principal" onclick="acaoPrincipal()">🚀 Enviar Pergunta</button>
+  <button type="button" class="btn-voltar-aguardando" onclick="voltarAguardando()" title="Libera trocar bloco ou pergunta. Não apaga jogadores nem pontos.">Aguardando</button>
   <button class="btn-reset-sala" onclick="resetarSala()" title="Resetar sala">🔄</button>
 </div>
 
@@ -763,6 +779,17 @@ function resetarSala() {
   respostasContagem = {};
   respostaManual = null;
   renderPergunta();
+}
+
+function voltarAguardando() {
+  if (!confirm('Voltar a sala para Aguardando?\n\nIsso libera trocar de bloco ou número da pergunta. Os pontos dos jogadores não são apagados.')) return;
+  document.getElementById('secao-placar').classList.remove('visivel');
+  estadoSala = 'aguardando';
+  respostaManual = null;
+  atualizarBadge();
+  atualizarBotao();
+  renderPergunta();
+  salaRef.set({ estado: 'aguardando' });
 }
 
 // ── INIT ──
