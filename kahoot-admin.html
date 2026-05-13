@@ -342,98 +342,98 @@ const firebaseConfig = {
 };
 // ══════════════════════════════════════════════════════════
 
-// ── PERGUNTAS OBJETIVAS ──
+// ── PERGUNTAS OBJETIVAS (alinhar com para_imprimir.html — Seções 2 e 3)
 const BLOCOS = [
   {
-    id: 'advinha', nome: '🤔 Advinha',
+    id: 'advinha', nome: '🤔 Adivinha',
     perguntas: [
-      { texto:'Qual será o cômodo mais usado da casa?',                        tipo:'abc', ops:['Sala','Cozinha','Quarto'],                              resp: null },
-      { texto:'Onde a Dany vai passar mais tempo?',                            tipo:'abc', ops:['Sofá','Cama','Cozinha'],                                resp: null },
-      { texto:'Qual objeto tem mais chance de quebrar primeiro?',               tipo:'abc', ops:['Copo','Prato','Alguma coisa aleatória'],                 resp: null },
-      { texto:'A casa vai ficar organizada por quanto tempo?',                  tipo:'abc', ops:['1 semana','3 dias','Depende do humor'],                  resp: null },
-      { texto:'O que mais vai acumular rápido?',                               tipo:'abc', ops:['Louça','Roupa','Caixas'],                                resp: null },
-      { texto:'Qual tarefa vai ser empurrada com a barriga?',                  tipo:'abc', ops:['Limpeza pesada','Organizar armários','Lavar banheiro'],  resp: null },
-      { texto:'O horário preferido de arrumar a casa será:',                   tipo:'abc', ops:['Manhã','Noite','Nunca é o horário certo'],               resp: null },
-      { texto:'Quantas vezes por dia a geladeira será aberta "sem fome"?',    tipo:'abc', ops:['Poucas','Algumas','Várias vezes'],                       resp: null },
-      { texto:'Quem apaga a luz que ficou acesa?',                             tipo:'abc', ops:['Dany','O vento','Gasparzinho'],                          resp: null },
-      { texto:'Barulho estranho à noite é:',                                   tipo:'abc', ops:['Encanamento','Vizinho','Imaginação criativa'],            resp: null },
-      { texto:'Se algo cair sozinho, a reação será:',                          tipo:'abc', ops:['Investigar','Fingir que não ouviu','Rezar e dormir'],    resp: null },
-      { texto:'Quem mora nessa casa além da Dany?',                            tipo:'abc', ops:['Só ela','Ela e os pensamentos','Ela e Gasparzinho'],     resp: null }
+      { texto:'Qual será o cômodo mais usado da casa?',              tipo:'abc', ops:['Sala','Cozinha','Quarto'],                              resp: 0 },
+      { texto:'Onde a Dany vai passar mais tempo?',                  tipo:'abc', ops:['Sofá','Cama','Cozinha'],                                resp: 2 },
+      { texto:'Qual objeto tem mais chance de quebrar primeiro?',   tipo:'abc', ops:['Copo','Prato','Alguma coisa aleatória'],             resp: 2 },
+      { texto:'Jurar que vai estudar só na mesa dura quanto, na prática?', tipo:'abc', ops:['Até o primeiro episódio de série','Até a bateria do notebook gritar','Depende do humor — e do Wi-Fi'], resp: 2 },
+      { texto:'O que mais briga pela mesma tomada ao mesmo tempo?', tipo:'abc', ops:['Celular, notebook e abajur','Carregador, Kindle e "só mais esse cabinho"','Tudo — morou sozinha pra isso'], resp: 0 },
+      { texto:'Qual promessa vira "depois eu faço" por semanas?',   tipo:'abc', ops:['Comprar aquela extensão decente','Marcar curso online e começar "segunda"','Responder DM antigo com calma'], resp: 1 },
+      { texto:'Banho "rapidinho" no fim do dia vira:',              tipo:'abc', ops:['Spa acidental com playlist','Celular no vidro e um álbum inteiro','Reflexão existencial sob o chuveiro'], resp: 0 },
+      { texto:'Quantas vezes por dia a geladeira será aberta "sem fome"?', tipo:'abc', ops:['Poucas','Algumas','Várias vezes'],             resp: 0 },
+      { texto:'Quem apaga a luz que ficou acesa?',                  tipo:'abc', ops:['Dany','O vento','Gasparzinho'],                       resp: 2 },
+      { texto:'Barulho estranho à noite é:',                        tipo:'abc', ops:['Encanamento','Vizinho','Imaginação criativa'],       resp: 2 },
+      { texto:'Se algo cair sozinho, a reação será:',             tipo:'abc', ops:['Investigar','Fingir que não ouviu','Rezar e dormir'], resp: 2 },
+      { texto:'Quem mora nessa casa além da Dany?',                  tipo:'abc', ops:['Só ela','Ela e os pensamentos','Ela e Gasparzinho'], resp: 2 }
     ]
   },
   {
     id: 'qb1', nome: '🏡 Quiz B1',
     perguntas: [
-      { texto:'Qual é a primeira coisa que vira bagunça numa casa nova?',           tipo:'abcd', ops:['A sala de estar','A cozinha','O quarto','Tudo de uma vez'],           resp: null },
-      { texto:'O que costuma acabar primeiro: gás, paciência ou papel higiênico?',  tipo:'abcd', ops:['Gás','Paciência','Papel higiênico','A vontade de morar sozinha'],    resp: null },
-      { texto:'Qual objeto some misteriosamente e reaparece dias depois?',          tipo:'abcd', ops:['Controle remoto','Chaves','Caneta','Depende do dia'],                 resp: null },
-      { texto:'O sofá serve mais para sentar ou para deitar?',                      tipo:'abcd', ops:['Sentar','Deitar','Cama alternativa','Guarda-roupa secundário'],       resp: null },
-      { texto:'Qual tarefa doméstica sempre fica pra depois?',                      tipo:'abcd', ops:['Lavar louça','Passar roupa','Limpar banheiro','Todas as acima'],     resp: null },
-      { texto:'Qual é o horário oficial de limpar a casa?',                         tipo:'abcd', ops:['8 da manhã','Quando chega visita','Quando não aguenta mais','Que limpeza?'], resp: null },
-      { texto:'Qual item você compra achando que vai usar muito… e nunca usa?',     tipo:'abcd', ops:['Panela de pressão','Livro de receitas','Escova de limpar','Tudo que compra'], resp: null },
-      { texto:'O que mais cansa ao chegar em casa?',                                tipo:'abcd', ops:['Trabalho do dia','Subir as escadas','Ver a bagunça','Decidir o que comer'], resp: null },
-      { texto:'Qual cômodo mais acumula "coisas sem lugar"?',                       tipo:'abcd', ops:['Quarto','Sala','Cozinha','A cadeira das roupas'],                   resp: null },
-      { texto:'Qual é o maior inimigo da casa organizada?',                         tipo:'abcd', ops:['Preguiça','Falta de espaço','Gasparzinho','A vida mesmo'],           resp: null }
+      { texto:'O que desmorona primeiro na rotina de quem mora sozinha?',           tipo:'abcd', ops:['Plano de estudar na mesa','Promessa de banho de cinco minutos','Fila de louça que virou monumento — e a fé numa tomada livre','Tudo acima — abraço'], resp: 3 },
+      { texto:'O que costuma acabar primeiro: gás, paciência ou papel higiênico?', tipo:'abcd', ops:['Gás','Paciência','Papel higiênico','A vontade de morar sozinha'],    resp: 1 },
+      { texto:'Qual objeto some misteriosamente e reaparece dias depois?',        tipo:'abcd', ops:['Controle remoto','Chaves','Caneta','Depende do dia'],                 resp: 3 },
+      { texto:'Qual cantinho vira o refúgio oficial — sem ser cama nem sofá?',      tipo:'abcd', ops:['A poltrona perto da janela','O tapete com almofada no chão','A bancada da cozinha (cadeira alta)','Qualquer lugar com tomada por perto'],       resp: 3 },
+      { texto:'Qual promessa doméstica digital nunca sai da lista?',               tipo:'abcd', ops:['Comprar extensão com tomada de verdade','"Amanhã eu começo o curso"','Organizar fotos na nuvem desde 2019','Todas — o bloco de notas é teatro'],     resp: 3 },
+      { texto:'O que finalmente te tira do banho?',                                tipo:'abcd', ops:['Água esfriou de verdade','Série acabou no clifhanger errado','Bateria do celular em modo resgate','Lembrete de que o mundo existe'], resp: 0 },
+      { texto:'Qual item você compra achando que vai usar muito… e nunca usa?',     tipo:'abcd', ops:['Panela de pressão','Livro de receitas','Air fryer que ainda sonha com batata congelada','Tudo que compra'], resp: 1 },
+      { texto:'O que mais cansa ao chegar em casa?',                               tipo:'abcd', ops:['Trabalho do dia','Subir as escadas','Pendências e um floreado de bagunça te dando boas-vindas','Decidir o que comer'], resp: 1 },
+      { texto:'Onde nasce o emaranhado oficial de cabos e carregadores?',         tipo:'abcd', ops:['Beirada da cama / criado-mudo','Cantinho da mesa de estudo','Próximo ao sofá "só dessa vez"','Em todos os universos paralelos'],                   resp: 3 },
+      { texto:'O que mais encarna o "vou resolver depois" na casa vivida?',         tipo:'abcd', ops:['Pilha "doar outro dia" que ganhou aniversário','Gaveta dos cabos, pilhas e mistérios','A cadeira que virou guarda-roupa honorário','Todas — o lar é um calendário em negação'],           resp: 2 }
     ]
   },
   {
     id: 'qb2', nome: '👻 Quiz B2',
     perguntas: [
-      { texto:'Quem apaga a luz que você tem certeza que deixou acesa?',                  tipo:'abcd', ops:['Você mesma (esqueceu)','Gasparzinho','O vizinho magicamente','Fantasma ecologista'], resp: null },
-      { texto:'Barulho estranho à noite é: encanamento, vizinho ou Gasparzinho?',         tipo:'abcd', ops:['Encanamento','Vizinho','Gasparzinho','Paranoia da madrugada'],    resp: null },
-      { texto:'Qual objeto parece cair sozinho?',                                          tipo:'abcd', ops:['Quadro','Espelho','Copo','Sua sanidade'],                         resp: null },
-      { texto:'O que sempre faz barulho de madrugada?',                                   tipo:'abcd', ops:['Geladeira','Encanamento','Vento','Seu coração acelerado'],        resp: null },
-      { texto:'Você investiga o barulho ou finge que não ouviu?',                         tipo:'abcd', ops:['Investiga','Finge dormir','Chama pelo WhatsApp','Reza'],          resp: null },
-      { texto:'Qual lugar da casa mais dá a sensação de "tem alguém aqui"?',              tipo:'abcd', ops:['Banheiro','Cozinha à noite','Debaixo da cama','Armário'],        resp: null },
-      { texto:'Qual item muda de lugar sozinho?',                                          tipo:'abcd', ops:['Chinelo','Caneta','Carregador','Sua sanidade mental'],            resp: null },
-      { texto:'Ventilador desligado pode causar medo?',                                   tipo:'abcd', ops:['Sim, faz barulho ao ligar','Sim, parece "vivo"','Sim, esqueceu de desligar','Não, é só um ventilador'], resp: null },
-      { texto:'Qual é a reação automática ao ouvir um barulho à noite?',                 tipo:'abcd', ops:['Fica imóvel','Cobre a cabeça','Agarra o celular','Grita'],        resp: null },
-      { texto:'Quem mora na casa além de você?',                                           tipo:'abcd', ops:['Gasparzinho','As aranhas','Ninguém','Gatos e espíritos'],        resp: null }
+      { texto:'Chegou pacote nos Correios com nome meio estranho na etiqueta. O que você faz?', tipo:'abcd', ops:['Abre com cuidado e finge investigação','Pergunta na portaria se era pra você mesmo','Assina e decide que o universo explica depois','Deixa na mesa "pra resolver amanhã" por uma semana'], resp: 1 },
+      { texto:'O interfone toca tarde da noite. Primeiro pensamento:',            tipo:'abcd', ops:['Entrega que você nem lembrava de ter pedido','Vizinho apertando o botão errado','Bug do prédio / sinal fantasma','Começou o trailer do filme de terror na sua cabeça'],    resp: 3 },
+      { texto:'Sua "segurança caseira" morando sozinha é, na prática:',           tipo:'abcd', ops:['Tranca dupla e olho mágico','Lista de contato favorito no celular','Roteador com nome de vizinho assustador','Manta grossa e coragem de adulta'],        resp: 3 },
+      { texto:'Vídeo de bicho fofo no celular à 1h da manhã significa:',          tipo:'abcd', ops:['Insônia elegante','O algoritmo venceu de novo','Culpa do dia pendente','Ritual sagrado de quem mora sozinha'],        resp: 1 },
+      { texto:'Vizinho reclama de barulho num dia em que você estava:',           tipo:'abcd', ops:['Deitada em modo santuário','Testando acústica do banho com música','Literalmente só existindo','No episódio certo de novela com final feliz'],        resp: 2 },
+      { texto:'Primeiro ritual ao atravessar a porta depois de um dia pesado:',   tipo:'abcd', ops:['Trancar e testar a tranca de novo','Largar bolsa e liberar o tênis','Acender só a luz certa (economia + mood)','Suspirar fundo — casa é refúgio'],        resp: 1 },
+      { texto:'"Estilo minimalista" no seu apartamento significa:',                tipo:'abcd', ops:['Menos coisas, mais caras','Mesma quantidade, melhor escondida','Foto pro Instagram; gaveta conta a verdade','Um conceito — a realidade é outro bloco'],        resp: 3 },
+      { texto:'Alarme de carro na rua de noite. Sua reação civilizada:',          tipo:'abcd', ops:['Espreitar a cortina uma vez','Ignorar e aumentar o volume da série','Culpar o vizinho antes de provas','Torcer pra parar antes do terceiro bip'], resp: 3 },
+      { texto:'Correio deixou aviso: encomenda retida. Estado emocional:',        tipo:'abcd', ops:['Já sei que chorei no checkout','"Eu trabalhei por isso"','Vou fingir que não existe até vencer','Planejamento de rota digno de missão'],        resp: 1 },
+      { texto:'Companhia fixa silenciosa no apartamento:',                        tipo:'abcd', ops:['O Wi-Fi que às vezes te abandona','A geladeira com sugestão de luz','A planta que você jurou regar','A pilha de "vou guardar isso hoje"'],        resp: 2 }
     ]
   },
   {
     id: 'qb3', nome: '🍽️ Quiz B3',
     perguntas: [
-      { texto:'Abrir a geladeira sem fome acontece quantas vezes por dia?',         tipo:'abcd', ops:['1 a 3 vezes','5 a 10 vezes','Mais de 10 vezes','Perdi a conta'],   resp: null },
-      { texto:'O que estraga primeiro na geladeira?',                                tipo:'abcd', ops:['Leite','Aquele pote misterioso','Verdura','Sua esperança de cozinhar'], resp: null },
-      { texto:'Qual a refeição mais repetida numa casa solo?',                       tipo:'abcd', ops:['Arroz com feijão','Macarrão','Ovo','Delivery'],                      resp: null },
-      { texto:'O que você compra achando que vai cozinhar… e não cozinha?',         tipo:'abcd', ops:['Verdura','Carne','Ingredientes sofisticados','Tudo'],                resp: null },
-      { texto:'Qual item você sempre esquece no mercado?',                           tipo:'abcd', ops:['Leite','Pão','Aquilo que ia vender','De onde estacionou'],          resp: null },
-      { texto:'Depois de quantos dias a pia começa a lotar?',                        tipo:'abcd', ops:['1 dia','2 dias','3 dias','Desde ontem'],                             resp: null },
-      { texto:'O prato "de emergência" é qual?',                                     tipo:'abcd', ops:['Miojo','Ovo frito','Pão com manteiga','Comer no prato anterior'],   resp: null },
-      { texto:'Qual eletrodoméstico é o mais usado?',                                tipo:'abcd', ops:['Geladeira','Micro-ondas','Cafeteira','Fogão'],                      resp: null },
-      { texto:'Qual utensílio você nunca sabe onde está?',                           tipo:'abcd', ops:['Colher','Faca','Garfo','Tudo quando precisa'],                      resp: null },
-      { texto:'Cozinhar em casa é economia, terapia ou ilusão?',                     tipo:'abcd', ops:['Economia','Terapia','Ilusão','Cansaço'],                            resp: null }
+      { texto:'Abrir o armário da cozinha "só pra ver o que tem" acontece:',      tipo:'abcd', ops:['Raramente — você é focada','Algumas vezes por semana','Várias vezes por dia, sem culpa','Virou passatempo oficial'],   resp: 0 },
+      { texto:'O que estraga primeiro na geladeira?',                               tipo:'abcd', ops:['Leite','Aquele pote misterioso','Verdura','Sua esperança de cozinhar'], resp: 1 },
+      { texto:'Qual a refeição mais repetida numa casa solo?',                     tipo:'abcd', ops:['Arroz com feijão','Macarrão','Ovo','Delivery'],                      resp: 0 },
+      { texto:'O que você compra achando que vai cozinhar… e não cozinha?',        tipo:'abcd', ops:['Verdura','Carne','Ingredientes sofisticados','Tudo'],                resp: 2 },
+      { texto:'Qual item você sempre esquece no mercado?',                         tipo:'abcd', ops:['Leite','Pão','Aquilo que ia vender','De onde estacionou'],          resp: 3 },
+      { texto:'"Só dez minutinhos" de banho vira, em realidade:',                  tipo:'abcd', ops:['Meia hora de paz','Episódio inteiro de série','Lembrete visual da pia que "não julga, só acumula"','Quase um spa sem sair do box'], resp: 0 },
+      { texto:'O prato "de emergência" é qual?',                                    tipo:'abcd', ops:['Miojo','Ovo frito','Pão com manteiga','Comer no prato anterior'],   resp: 0 },
+      { texto:'Qual eletrodoméstico é o mais usado?',                               tipo:'abcd', ops:['Geladeira','Micro-ondas','Cafeteira','Fogão'],                      resp: 1 },
+      { texto:'Qual utensílio você nunca sabe onde está?',                          tipo:'abcd', ops:['Colher','Faca','Garfo','Tudo quando precisa'],                      resp: 3 },
+      { texto:'Cozinhar em casa é economia, terapia ou ilusão?',                   tipo:'abcd', ops:['Economia','Terapia','Ilusão','Cansaço'],                            resp: 1 }
     ]
   },
   {
-    id: 'qb4', nome: '🧹 Quiz B4',
+    id: 'qb4', nome: '🔌 Quiz B4',
     perguntas: [
-      { texto:'Quantos dias uma caixa demora para ser desempacotada?',              tipo:'abcd', ops:['1 semana','1 mês','3 meses','Virou móvel decorativo'],               resp: null },
-      { texto:'Onde fica a famosa "cadeira das roupas"?',                           tipo:'abcd', ops:['Quarto','Sala','Ambos os lugares','Espalhada pela casa'],             resp: null },
-      { texto:'Roupa limpa vai direto pro armário?',                                 tipo:'abcd', ops:['Sim','Fica na cadeira','Na cama','Sai da máquina e volta'],          resp: null },
-      { texto:'Qual lugar da casa ninguém vê, mas você sabe que existe?',           tipo:'abcd', ops:['Armário de coisas','Guarda-roupa secreto','Debaixo da cama','A porta fechada'], resp: null },
-      { texto:'Qual objeto sempre fica fora do lugar?',                              tipo:'abcd', ops:['Chinelo','Capa de almofada','Espelho','Depende do humor'],           resp: null },
-      { texto:'Quanto tempo a casa fica organizada depois da limpeza?',             tipo:'abcd', ops:['1 dia','1 hora','30 minutos','Até você sair do banheiro'],           resp: null },
-      { texto:'O que você só organiza quando alguém vai visitar?',                  tipo:'abcd', ops:['Sala','Cozinha','Quarto','Tudo'],                                    resp: null },
-      { texto:'Limpeza geral acontece com ânimo, música ou força do ódio?',        tipo:'abcd', ops:['Ânimo','Música','Força do ódio','Nunca acontece'],                   resp: null },
-      { texto:'Qual área da casa você finge que não existe?',                        tipo:'abcd', ops:['Embaixo da cama','Fundo do armário','Atrás da porta','Tudo que fecha'], resp: null },
-      { texto:'Qual frase define a casa num dia normal?',                            tipo:'abcd', ops:['"Que bagunça!"','"Preciso organizar"','"Amanhã eu limpo"','"É um caos controlado"'], resp: null }
+      { texto:'Caixa de mudança fechada na sala, meses depois, virou:',             tipo:'abcd', ops:['Móvel decorativo com história de suspense','Capsula do tempo que ninguém pediu','Lembrete em 3D de "essa semana eu abro"','Patrimônio imaterial do otimismo'],               resp: 0 },
+      { texto:'Qual cadeira herdou o título extraoficial de "guarda-roupa expandido"?', tipo:'abcd', ops:['A do quarto — biografia das roupas limpas','A da escrivaninha nos dias de rebeldia','A que recebe "só até secar" desde o inverno passado','Todas se candidatam à coroa'],             resp: 0 },
+      { texto:'Notebook aberto na mesa enquanto a cadeira ostenta roupa limpa costuma gerar:', tipo:'abcd', ops:['Dilema: salvar o arquivo ou a dignidade da cadeira','Uma aba séria e quinze de distração','Culpa em camadas — produtiva e doméstica','Story mental "não foi assim que eu planejei"'],          resp: 3 },
+      { texto:'Qual pasta ou área digital você nunca abre sem coragem?',           tipo:'abcd', ops:['Downloads desde sempre','Print de coisa "importante"','E-mail com anexo "ler depois"','Álbum da nuvem sem filtro'], resp: 1 },
+      { texto:'O que migra do lugar certo sem pedir licença — mundo físico?',      tipo:'abcd', ops:['Par de chinelos em greve de coordenadas','Travesseiro que conquistou o sofá','Entulho de cabos na beira da mesa','Os três num mesmo capítulo'],           resp: 3 },
+      { texto:'Após semanas de correria, o que grita mais num cenário de "e se vier visita?"', tipo:'abcd', ops:['Pia e louça com enredo próprio','Bagunça que jurou ser "só até segunda"','Cabos e tomadas em modo instalação','Banheiro que pensa alto demais'],           resp: 1 },
+      { texto:'Modo vitrine antes de visita: prioridade ninja para esconder',      tipo:'abcd', ops:['Louça com narrativa e sacolas com arquivo histórico','Cabos "artísticos" atrás da TV','Evidências de estudo migrado pra cama','Tudo — premiação de improviso'],                                    resp: 3 },
+      { texto:'Sessão longa de banho quase sempre inclui:',                        tipo:'abcd', ops:['Epifania sobre a existência','Playlist que não combina com o clima','Lembrete de que esqueceu toalha seca','Planejamento de vida que esquece na saída'],           resp: 0 },
+      { texto:'Qual app ou aba você finge que não está aberta?',                   tipo:'abcd', ops:['Carrinho cheio sem checkout','Scroll infinito em rede social','Curso gravado no piloto automático','Todas — multitarefa é um verbo'],           resp: 3 },
+      { texto:'Frase que resume o dia num apartamento solo:',                      tipo:'abcd', ops:['"Cadê o carregador?"','"Amanhã eu limpo" — clássico atemporal','"Cadê o espaço livre?" (na mesa e na cabeça)','"A mesa era pra estudo; a tomada, piada cruel"'], resp: 1 }
     ]
   },
   {
     id: 'qb5', nome: '✅ Quiz B5 V/M',
     perguntas: [
-      { texto:'Morar sozinha deixa a casa mais bagunçada',   tipo:'vm', resp: null },
-      { texto:'Morar sozinha deixa a casa mais silenciosa',  tipo:'vm', resp: null },
-      { texto:'A casa fica arrumada todos os dias',          tipo:'vm', resp: null },
-      { texto:'Luz acesa em cômodo vazio é inevitável',      tipo:'vm', resp: null },
-      { texto:'Planta sobrevive sem água',                    tipo:'vm', resp: null },
-      { texto:'Barulho estranho sempre dá medo',             tipo:'vm', resp: null },
-      { texto:'A casa reflete o humor do dia',               tipo:'vm', resp: null },
-      { texto:'Todo mundo conversa sozinho em casa',         tipo:'vm', resp: null },
-      { texto:'Dormir no sofá acontece',                     tipo:'vm', resp: null },
-      { texto:'A cama vira escritório às vezes',             tipo:'vm', resp: null }
+      { texto:'A bagunça leve ocupa só um cantinho e não invade superfícies inteiras',   tipo:'vm', resp: 1 },
+      { texto:'Sempre existe tomada livre perto da cama quando o celular precisa',       tipo:'vm', resp: 0 },
+      { texto:'Morar sozinha deixa a casa mais silenciosa',                               tipo:'vm', resp: 1 },
+      { texto:'"Hoje eu só estudo na mesa" acontece todos os dias',                     tipo:'vm', resp: 1 },
+      { texto:'Luz acesa em cômodo vazio é inevitável',                              tipo:'vm', resp: 1 },
+      { texto:'Planta sobrevive sem água',                                                tipo:'vm', resp: 0 },
+      { texto:'Barulho estranho sempre dá medo',                                          tipo:'vm', resp: 0 },
+      { texto:'A casa reflete o humor do dia',                                            tipo:'vm', resp: 0 },
+      { texto:'Todo mundo conversa sozinho em casa',                                     tipo:'vm', resp: 0 },
+      { texto:'Dormir no sofá ou transformar a cama em escritório às vezes acontece',     tipo:'vm', resp: 0 }
     ]
   }
 ];
