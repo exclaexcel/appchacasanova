@@ -287,7 +287,10 @@ body { padding-bottom: 100px; }
 </div>
 
 <!-- ── PERGUNTA ATUAL ── -->
-<div class="secao" id="secao-jogo">
+  <div class="secao" id="secao-jogo">
+  <div class="aviso" style="margin-bottom:12px;background:#f0faf3;border-color:#95d4ae;">
+    <strong>Regra da casa:</strong> sem eliminação. Só entra <strong>+1 ponto</strong> quem acerta na rodada; quem erra continua no jogo. <strong>Ganha quem tiver mais pontos no final.</strong>
+  </div>
   <div class="aviso" id="aviso-gabarito" style="display:none;">
     ⚠️ Esta pergunta não tem gabarito definido. Toque na opção correta antes de revelar.
   </div>
@@ -446,6 +449,8 @@ let estadoSala = 'aguardando';
 let totalJogadores = 0;
 let respostasContagem = {};
 let respostaManual = null; // índice marcado pelo admin quando resp=null
+/** Evita vários .on('value') em paralelo sobrescrevendo respostasContagem */
+let respostasReg = null;
 
 // ── INIT FIREBASE ──
 firebase.initializeApp(firebaseConfig);
@@ -467,11 +472,16 @@ salaRef.on('value', snap => {
   atualizarBotao();
 });
 
-// Escutar respostas da pergunta atual
+// Escutar respostas da pergunta atual (um único listener por vez)
 function escutarRespostas() {
+  if (respostasReg) {
+    respostasReg.query.off('value', respostasReg.callback);
+    respostasReg = null;
+  }
   const pergId = pergId_atual();
+  const query = db.ref('respostas').orderByKey().startAt(pergId + '_').endAt(pergId + '_');
   respostasContagem = {};
-  db.ref('respostas').orderByKey().startAt(pergId + '_').endAt(pergId + '_').on('value', snap => {
+  const callback = snap => {
     respostasContagem = {};
     snap.forEach(child => {
       const r = child.val();
@@ -480,7 +490,9 @@ function escutarRespostas() {
     });
     atualizarContador();
     atualizarBarras();
-  });
+  };
+  respostasReg = { query, callback };
+  query.on('value', callback);
 }
 
 function pergId_atual() {
@@ -490,12 +502,14 @@ function pergId_atual() {
 // ── RENDER BLOCOS ──
 function renderBlocos() {
   const wrap = document.getElementById('bloco-wrap');
+  const travar = estadoSala !== 'aguardando';
   wrap.innerHTML = BLOCOS.map((b, i) =>
-    `<button class="bloco-btn${i === blocoAtual ? ' ativo' : ''}" onclick="selecionarBloco(${i})">${b.nome}</button>`
+    `<button type="button" class="bloco-btn${i === blocoAtual ? ' ativo' : ''}" ${travar ? 'disabled style="opacity:0.55;cursor:not-allowed"' : ''} onclick="selecionarBloco(${i})">${b.nome}</button>`
   ).join('');
 }
 
 function selecionarBloco(i) {
+  if (estadoSala !== 'aguardando') return;
   blocoAtual = i;
   pergAtual = 0;
   respostaManual = null;
@@ -549,6 +563,16 @@ function renderPergunta() {
 
   atualizarContador();
   escutarRespostas();
+  atualizarNavTravada();
+}
+
+function atualizarNavTravada() {
+  const travar = estadoSala !== 'aguardando';
+  document.querySelectorAll('.nav-btn').forEach(btn => {
+    btn.disabled = travar;
+    btn.style.opacity = travar ? '0.45' : '';
+    btn.style.cursor = travar ? 'not-allowed' : '';
+  });
 }
 
 function criarOpcaoAdmin(i, cls, letra, texto, correta, p) {
@@ -603,6 +627,8 @@ function atualizarBadge() {
   const badge = document.getElementById('estado-badge');
   badge.className = 'header-estado ' + (BADGE_CLASSES[estadoSala]?.[0] || 'estado-aguardando');
   badge.textContent = BADGE_CLASSES[estadoSala]?.[1] || estadoSala;
+  atualizarNavTravada();
+  renderBlocos();
 }
 
 // ── BOTÃO PRINCIPAL ──
@@ -627,6 +653,10 @@ function acaoPrincipal() {
 }
 
 function navegar(dir) {
+  if (estadoSala !== 'aguardando') {
+    alert('Termine esta rodada na ordem: Fechar respostas → Revelar gabarito → Ver placar → Próxima pergunta. Depois você pode trocar de número ou bloco.');
+    return;
+  }
   const bloco = BLOCOS[blocoAtual];
   const novo = pergAtual + dir;
   if (novo < 0 || novo >= bloco.perguntas.length) return;
@@ -711,13 +741,20 @@ function proximaPergunta() {
   if (pergAtual + 1 < bloco.perguntas.length) {
     pergAtual++;
   } else {
-    // Acabou o bloco
-    salaRef.update({ estado: 'aguardando' });
+    respostaManual = null;
+    estadoSala = 'aguardando';
+    atualizarBadge();
+    atualizarBotao();
+    renderPergunta();
+    salaRef.set({ estado: 'aguardando' });
     return;
   }
   respostaManual = null;
+  estadoSala = 'aguardando';
+  atualizarBadge();
+  atualizarBotao();
   renderPergunta();
-  salaRef.update({ estado: 'aguardando' });
+  salaRef.set({ estado: 'aguardando' });
 }
 
 function resetarSala() {
